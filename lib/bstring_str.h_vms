@@ -1,0 +1,251 @@
+//
+// bstring.h
+//
+//	String class for Basic to C++ translator
+//
+// Description:
+//
+//	This file impliments a string class for my Basic
+//	translater using VMS style descriptors and string
+//	functions. This allows the programs to interface
+//	with the VMS routines as easily as under the
+//	real VAX/BASIC compiler.
+//
+//	This is really nothing more than a wrapper around
+//	the STR$xxx functions, and the DSC$DESCRIPTOR_S
+//	stuff.
+//
+// History:
+//
+//	01.00.00 - 09/19/1996 - Kevin Handy
+//		Original version. Very minimal. Assignment and output
+//		only exist. All code contained in '.h' file (easier
+//		to debug).
+//
+//	01.02.01 - 09/20/1996 - Kevin Handy
+//		Added in '+' operator for BString and char.
+//
+//	01.02.02 - 01/01/1997 - Kevin Handy
+//		Added sever string functions, including left,
+//		right, mid, string, space, strlen.
+//
+//	01.02.03 - 01/04/1997 - Kevin Handy
+//		Added comparison operators (Bstring to Bstring)
+//
+//	01.02.04 - 01/05/1997 - Kevin Handy
+//		Added more functions. Qnum, Qnum1
+//
+//	01.02.05 - 01/26/1997 - Kevin Handy
+//		Code for gosub.
+//
+//	01.03.01 - 01/29/1997 - Kevin Handy
+//		More functions! Ascii, Edit, Ert.
+//
+//	01.03.02 - 02/07/1997 - Kevin Handy
+//		Change 'short' to 'unsigned short' for various length
+//		variable definitions.
+//
+//	01.03.03 - 02/19/1997 - Kevin Handy
+//		Use str$compare instead of str$compare_eql in
+//		operator '==', so matches work like Vax/Basic
+//		(re spaces at end of a string)
+//
+//	01.03.04 - 02/19/1997 - Kevin Handy
+//		Fix a couple of bugs in 'edit' function.
+//
+//	01.03.05 - 04/09/1997 - Kevin Handy
+//		Move out stuff not related to string into basicfun.h
+//		Modify "char" based "instr" function to handle base
+//		too small problems.
+//
+//	01.05.01 - 01/26/1998 - Kevin Handy
+//		Wrap include of STR stuff in 'extern "C"'
+//
+//	03/02/1998 - Kevin Handy
+//		Lose several warning error messages.
+//
+//	08/27/1998 - Kevin Handy
+//		Add "length" function to match C++ STL length.
+//		Lifted several functions into the BString class, and
+//		made inline functions for a call with a BString parameter.
+//
+//	12/07/1998 - Kevin Handy
+//		Fix Qnum(int) and Qnum1(int) problems.
+//
+//	12/07/1998 - Kevin Handy
+//		Create POS functions that mimic INSTR.
+//
+//	12/19/2000 - Kevin Handy
+//		Create definition for Inkey function
+//
+#ifndef _bstring_h_
+#define _bstring_h_
+
+//
+// Include files
+//
+#include <cstdio>
+#include <cctype>
+#include <cassert>
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+//******************************************************************
+// This version of the string routines use descriptors for everything
+//
+extern "C"
+{
+#include "descrip.h"
+#include "str$routines.h"
+}
+
+#ifndef MAX_INPUT
+// Sometimes it's defined, sometimes it isn't
+#define MAX_INPUT 128
+#endif
+
+//
+// BString class
+//
+class BString : public dsc$descriptor_s
+{
+public:
+	BString(void);
+	BString(const char* Text);
+	BString(const char* Text, unsigned short Length);
+	BString(char ch, int Length=1);
+	BString(int Length, char ch);
+	~BString();
+
+	const char *data(void) const { return dsc$a_pointer; }
+	const int length(void) const { return dsc$a_length; }
+
+	//
+	// Operators
+	//
+	BString& operator = (const char* Text);
+	inline BString& operator = (const BString& Source)
+		{ str$copy_dx(this, &Source); return *this; }
+
+	//
+	// Functions
+	//
+	void ReMap(const char* Value, int Length);
+	long length() const;
+	int Ascii() const;
+	int instr(long Start, const BString& SearchString) const
+		{ return str$position(this, &SearchString, &Start); }
+	double atof() const;
+	void ToChar(char* Buffer, int MaxChar) const;
+
+	//
+	// I/O functions (Hack, needs lots of work)
+	//
+	inline friend ostream& operator<< (ostream& os, const BString& bs)
+		{ if (bs.dsc$a_pointer != NULL)
+		{os.write(bs.dsc$a_pointer, bs.dsc$w_length); } return os; }
+
+	inline friend istream& operator>> (istream& is, BString& bs)
+		{ char inputstr[128]; is >> inputstr; bs = inputstr; return is; }
+};
+
+
+BString left(const BString& Source, long Length);
+BString right(const BString& Source, long Length);
+BString Qseg(const BString& Source, long Start, long End);
+BString mid(const BString& Source, long Start, long Length);
+BString trm(const BString& Source);
+BString& operator + (const BString& Text1, const BString& Text2);
+BString& operator + (const BString& Text1, const char* Text2);
+inline int operator == (const BString& Text1, const BString& Text2)
+{
+	return str$compare(&Text1, &Text2) == 0;
+}
+
+inline int operator < (const BString& Text1, const BString& Text2)
+{
+	 return str$compare(&Text1, &Text2) == -1;
+}
+
+inline int operator <= (const BString& Text1, const BString& Text2)
+{
+	return str$compare(&Text1, &Text2) <= 0;
+}
+
+inline int operator > (const BString& Text1, const BString& Text2)
+{
+	return str$compare(&Text1, &Text2) == 1;
+}
+
+inline int operator >= (const BString& Text1, const BString& Text2)
+{
+	return str$compare(&Text1, &Text2) >= 0;
+}
+
+inline int operator != (const BString& Text1, const BString& Text2)
+{
+	return str$compare(&Text1, &Text2) != 0;
+}
+
+//
+// Various string type functions
+//
+int instr(unsigned long Start, char* Base, char* Search);
+BString& edit(const BString& Source, const int Code);
+long cvtai(BString x);
+BString cvtia(int x);
+double cvtaf(BString x);
+BString cvtfa(double x);
+int unlink(BString const &);
+int atoi(const BString&);
+
+inline long strlen(const BString& Source) { return Source.length(); }
+inline long length(const BString& Source) { return Source.length(); }
+inline int Ascii(const char x) { return x; }
+inline int Ascii(const char* x) { return *x; }
+inline int Ascii(const BString& Source) { return Source.Ascii(); }
+
+inline BString Qstring(long Count, int Character)
+	{ return BString(Count, (char)Character); }
+inline BString Char(int Character) { return BString((char)Character); }
+inline BString Qspace(long Count) { return BString(Count, ' '); }
+
+BString Qnum(long Number);
+inline BString Qnum(int Number) { return Qnum((long)Number); }
+BString Qnum(double Number);
+BString Qnum1(long Number);
+inline BString Qnum1(int Number) { return Qnum1((long)Number); }
+BString Qnum1(double Number);
+
+inline BString str(long Number) { return Qnum1(Number); }
+inline BString str(double Number) { return Qnum1(Number); }
+
+inline int instr(unsigned long Start, const BString& BaseString,
+	const BString& SearchString)
+	{ return BaseString.find(SearchString, Start) + 1; }
+inline int pos(char* Base, char* Search, unsigned long Start)
+	{ return instr(Start, Base, Search) + 1; }
+inline int pos(const BString& BaseString,const BString& SearchString,
+	unsigned long Start)
+	{ return BaseString.find(SearchString, Start) + 1; }
+inline double atof(const BString& Source) { return Source.atof(); }
+
+BString Qrad(const unsigned int Number);
+BString& ert(const long Number);
+
+void BChange1(const BString& source, int *dest);
+void BChange1(const char* source, int *dest);
+void BChange1(const BString& source, long *dest);
+void BChange1(const char* source, long *dest);
+void BChange1(const BString& source, double *dest);
+void BChange1(const char* source, double *dest);
+void BChange2(const int *source, BString& dest);
+void BChange2(const long *source, BString& dest);
+void BChange2(const double *source, BString& dest);
+
+BString Inkey(long channel, long wait = 0);
+
+#endif
+

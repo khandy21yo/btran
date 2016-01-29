@@ -13,6 +13,7 @@ Configure src
 	libtoolize
 	aclocal
 	automake --add-missing
+	autoheader
 	automake
 	autoconf
 	./configure

@@ -1,0 +1,8 @@
+This directory contains the library that needs to be linked
+against the converted BASIC to C++ programs, as well as the
+associated header files.
+
+This library is currently not in sync with the traanslator.
+It still uses the bstring class which is depreciated.
+
+It alsoappears to have problems building.

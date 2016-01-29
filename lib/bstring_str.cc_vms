@@ -1,0 +1,585 @@
+//
+// bstring.cc
+//
+//	String class for Basic to C++ translator
+//
+// Description:
+//
+//	This file impliments a string class for my Basic
+//	translater using VMS style descriptors and string
+//	functions. This allows the programs to interface
+//	with the VMS routines as easily as under the
+//	real VAX/BASIC compiler.
+//
+//	This is really nothing more than a wrapper around
+//	the STR$xxx functions, and the DSC$DESCRIPTOR_S
+//	stuff.
+//
+// History:
+//
+//	09/19/1996 - Kevin Handy
+//		Original version. Very minimal. Assignment and output
+//		only exist. All code contained in '.h' file (easier
+//		to debug).
+//
+//	09/20/1996 - Kevin Handy
+//		Added in '+' operator for BString and char.
+//
+//	01/01/1997 - Kevin Handy
+//		Added sever string functions, including left,
+//		right, pos, mid, string, space, strlen.
+//
+//	01/04/1997 - Kevin Handy
+//		Added comparison operators (Bstring to Bstring)
+//
+//	01/05/1997 - Kevin Handy
+//		Added more functions. Qnum, Qnum1
+//
+//	01/26/1997 - Kevin Handy
+//		Code for gosub.
+//
+//	01/29/1997 - Kevin Handy
+//		More functions! Ascii, Edit, Ert.
+//
+//	02/07/1997 - Kevin Handy
+//		Change 'short' to 'unsigned short' for various length
+//		variable definitions.
+//
+//	02/19/1997 - Kevin Handy
+//		Use str$compare instead of str$compare_eql in
+//		operator '==', so matches work like Vax/Basic
+//		(re spaces at end of a string)
+//
+//	02/19/1997 - Kevin Handy
+//		Fix a couple of bugs in 'edit' function.
+//
+//	04/09/1997 - Kevin Handy
+//		Move out stuff not related to string into basicfun.h
+//		Modify "char" based "instr" function to handle base
+//		too small problems.
+//
+//	12/06/1998 - Kevin Handy
+//		Added ToChar function
+//
+//	04/16/1999 - Kevin Handy
+//		Fix bug in atoi function where it never ended.
+
+//
+// Include files
+//
+#include <cstdio>
+#include <cctype>
+#include <cassert>
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+#include "basicfun.h"
+#include "bstring.h"
+#include "basicchannel.h"
+
+//
+// Global values
+//
+long ErrNum = 0;
+long ErrLine = 0;
+long Status = 0;
+
+
+//******************************************************************
+// These versions are for VAX descriptor version of the strings
+// only.
+//
+#include "descrip.h"
+#include "str$routines.h"
+//
+// Empty Constructor
+//
+BString::BString(void)
+{
+	dsc$b_dtype = DSC$K_DTYPE_T;		// Text class
+	dsc$b_class = DSC$K_CLASS_D;		// Dynamic
+	dsc$w_length = 0;			// Length = 0
+	dsc$a_pointer = NULL;			// No allocation
+}
+
+//
+// Create from a text string
+//
+BString::BString(const char* Text)
+{
+	unsigned short Length = strlen(Text);
+
+	dsc$b_dtype = DSC$K_DTYPE_T;		// Text class
+	dsc$b_class = DSC$K_CLASS_D;		// Static
+	dsc$w_length = 0;			// Length
+	dsc$a_pointer = NULL;			// Point at origional string
+
+	str$copy_r(this, &Length, Text);
+}
+
+//
+// Create from a text string
+//
+BString::BString(const char* Text, unsigned short Length)
+{
+	dsc$b_dtype = DSC$K_DTYPE_T;		// Text class
+	dsc$b_class = DSC$K_CLASS_D;		// Static
+	dsc$w_length = 0;			// Length
+	dsc$a_pointer = NULL;			// Point at origional string
+
+	str$copy_r(this, &Length, Text);
+}
+
+//
+// Create from a byte constant
+//
+BString::BString(char ch, int Length)
+{
+	const unsigned short Length = 1;
+	char *Text = new char[Length + 1];
+	int loop;
+
+	dsc$b_dtype = DSC$K_DTYPE_T;		// Text class
+	dsc$b_class = DSC$K_CLASS_D;		// Static
+	dsc$w_length = 0;			// Length
+	dsc$a_pointer = NULL;			// Pointer
+
+	for (loop = 0; loop < Length; loop++)
+	{
+		Text[loop] = ch;
+	}
+	Text[Length] = '\0';
+	str$copy_r(this, &Length, &Text);
+}
+
+
+//
+// Create from a byte constant
+//
+BString::BString(int Length, char ch)
+{
+	const unsigned short Length = 1;
+	char *Text = new char[Length + 1];
+	int loop;
+
+	dsc$b_dtype = DSC$K_DTYPE_T;		// Text class
+	dsc$b_class = DSC$K_CLASS_D;		// Static
+	dsc$w_length = 0;			// Length
+	dsc$a_pointer = NULL;			// Pointer
+
+	for (loop = 0; loop < Length; loop++)
+	{
+		Text[loop] = ch;
+	}
+	Text[Length] = '\0';
+	str$copy_r(this, &Length, &Text);
+}
+
+//
+// Destructor
+//
+BString::~BString()
+{
+	//
+	// Release memory allocation if this is a string class
+	//
+	if ((dsc$b_class == DSC$K_CLASS_D) && (dsc$a_pointer != NULL))
+	{
+		str$free1_dx(this);
+	}
+}
+
+//
+// Assignment
+//
+BString& BString::operator = (const char* Text)
+{
+	unsigned short Length = strlen(Text);
+
+	str$copy_r(this, &Length, Text);
+	return *this;
+}
+
+//
+// Left()
+//
+BString left(const BString& Source, long Length)
+{
+	BString* NewString = new BString;
+	str$left(NewString, &Source, &Length);
+	return *NewString;
+}
+
+//
+// Right()
+//
+BString right(const BString& Source, long Length)
+{
+	BString* NewString = new BString;
+	str$right(NewString, &Source, &Length);
+	return *NewString;
+}
+
+//
+// Pos()
+//
+BString Qseg(const BString& Source, long Start, long End)
+{
+	BString* NewString = new BString;
+	str$pos_extr(NewString, &Source, &Start, &End);
+	return *NewString;
+}
+
+//
+// Mid()
+//
+BString mid(const BString& Source, long Start, long Length)
+{
+	BString* NewString = new BString;
+	str$len_extr(NewString, &Source, &Start, &Length);
+	return *NewString;
+}
+
+//
+// Trm
+//
+BString trm(const BString& Source)
+{
+	BString* NewString = new BString;
+	unsigned short Length;
+
+	str$trim(NewString, &Source, &Length);
+	return *NewString;
+}
+
+//
+// length
+//
+long BString::length() const
+{
+	unsigned short Length;
+	char* Address;
+
+	str$analyze_sdesc(this, &Length, &Address);
+	return Length;
+}
+
+
+//
+// Addition
+//
+BString& operator + (const BString& Text1, const BString& Text2)
+{
+	//
+	// Allocate a new string
+	//
+	BString* NewString = new BString;
+
+	//
+	// Combine strings together.
+	//	Using copy,aappend instead of concat, because varargs
+	//	won't give me information about number of paramaters.
+	//
+	str$copy_dx(NewString, &Text1);
+	str$append(NewString, &Text2);
+
+	//
+	// Give back the new string
+	//
+	return *NewString;
+}
+
+BString& operator + (const BString& Text1, const char* Text2)
+{
+	//
+	// Allocate a new string
+	//
+	BString* NewString = new BString;
+	BString Transform(Text2);
+
+	//
+	// Combine strings together
+	//
+	str$copy_dx(NewString, &Text1);
+	str$append(NewString, &Transform);
+
+	//
+	// Give back the string
+	//
+	return *NewString;
+}
+
+int BString::Ascii() const
+{
+	unsigned short Length;
+	char* Address;
+	str$analyze_sdesc(this, &Length, &Address);
+	if (Length == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return *Address;
+	}
+}
+
+//
+// Instr
+//
+int instr(unsigned long Start, char* Base, char* Search)
+{
+	if (Start > strlen(Base))
+	{
+		return 0;
+	}
+	else
+	{
+		char* test = strstr((Base + Start - 1), Search);
+		return (test != NULL) ? (int)(test - Base + 1) : 0;
+	}
+}
+
+
+
+//
+// Convert ascii to integer
+//
+//	Really needs some error trapping.
+//
+int atoi(const BString &str)
+{
+	unsigned short Length;
+	char* Address;
+	int result = 0;
+
+	str$analyze_sdesc(&str, &Length, &Address);
+
+	if (Length == 0)
+	{
+		return 0;
+	}
+
+	while(Length--)
+	{
+		if (isdigit(*Address))
+		{
+			result = result * 10 + *Address - '0';
+		}
+		Address++;
+	}
+
+	return result;
+}
+
+//******************************************************************
+// These versions of the functions will work with either the STL string
+// or the VAX Descriptior version of BString
+//
+
+//
+// ToChar
+//
+//	Used to copy string into a char result.
+//	Very ugly, probibly a better way to do this, but maybe
+//	it will work well enough to test things out.
+//
+void BString::ToChar(char* Text, int MaxLength) const
+{
+	if ((MaxLength >= length()) && (data() != NULL))
+	{
+		memcpy(Text, data(), length());
+		Text[length()] = '\0';
+	}
+	else
+	{
+		Text[0] = '\0';
+	}
+}
+
+//
+// Qnum(integer)
+//
+BString Qnum(long Number)
+{
+	char Result[32];
+
+	sprintf(Result, "%ld ", Number);
+
+	return BString(Result);
+}
+
+//
+// Qnum(float)
+//
+BString Qnum(double Number)
+{
+	char Result[32];
+
+	sprintf(Result, "%f ", Number);
+
+	return BString(Result);
+}
+
+//
+// Qnum1(integer)
+//
+BString Qnum1(long Number)
+{
+	char Result[32];
+
+	sprintf(Result, "%ld", Number);
+
+	return BString(Result);;
+}
+
+//
+// Qnum1(float)
+//
+BString Qnum1(double Number)
+{
+	char Result[64];
+
+	sprintf(Result, "%f", Number);
+
+	return BString(Result);
+
+}
+
+//
+// rad()
+//
+//	Convert a number to its radix50 (50octal = 40decimal)
+//	string equivelent
+//
+BString Qrad(const unsigned int Number)
+{
+	const char RadChar[] = " ABCDEFGHIJKLMNOPQRSTUVWXYZ$.?0123456789";
+	char Result[4];
+
+	Result[0] = RadChar[(Number / (40 * 40)) % 40];	// 1st Character
+	Result[1] = RadChar[(Number / 40) % 40];	// 2nd Character
+	Result[2] = RadChar[Number % 40];		// 3rd character
+	Result[3] = '\0';
+
+	return BString(Result);
+}
+
+//
+// Change a string into an integer array
+//
+void BChange1(const BString& source, int *dest)
+{
+	int lt = source.length();
+	dest[0] = lt;
+	for (int loop = 0; loop < lt; loop++)
+	{
+		dest[loop + 1] = int(source[loop]);
+	}
+}
+
+void BChange1(const char* source, int *dest)
+{
+	int lt = strlen(source);
+	dest[0] = lt;
+	for (int loop = 0; loop < lt; loop++)
+	{
+		dest[loop + 1] = int(source[loop]);
+	}
+}
+
+void BChange1(const BString& source, long *dest)
+{
+	int lt = source.length();
+	dest[0] = lt;
+	for (int loop = 0; loop < lt; loop++)
+	{
+		dest[loop + 1] = long(source[loop]);
+	}
+}
+
+void BChange1(const char* source, long *dest)
+{
+	int lt = strlen(source);
+	dest[0] = lt;
+	for (int loop = 0; loop < lt; loop++)
+	{
+		dest[loop + 1] = long(source[loop]);
+	}
+}
+
+void BChange1(const BString& source, double *dest)
+{
+	int lt = source.length();
+	dest[0] = lt;
+	for (int loop = 0; loop < lt; loop++)
+	{
+		dest[loop + 1] = double(source[loop]);
+	}
+}
+
+void BChange1(const char* source, double *dest)
+{
+	int lt = strlen(source);
+	dest[0] = lt;
+	for (int loop = 0; loop < lt; loop++)
+	{
+		dest[loop + 1] = double(source[loop]);
+	}
+}
+
+
+//
+// Change an integer array into a string
+//
+void BChange2(const int *source, BString& dest)
+{
+	dest = "";
+	for (int loop = 1; loop <= source[0]; loop++)
+	{
+		dest += char(source[loop]);
+	}
+}
+
+void BChange2(const long *source, BString& dest)
+{
+	dest = "";
+	for (int loop = 1; loop <= source[0]; loop++)
+	{
+		dest += char(source[loop]);
+	}
+}
+
+
+void BChange2(const double *source, BString& dest)
+{
+	dest = "";
+	for (int loop = 1; loop <= source[0]; loop++)
+	{
+		dest += char(source[loop]);
+	}
+}
+
+
+//
+// Inkey
+//
+//	Input a single character from the user
+//
+BString Inkey(long channel, long timeout)
+{
+//	cerr << "Inkey not yet implemented!" << endln;
+	exit(1);
+}
+
+//
+// Convert ascii to integer
+//
+//	Really needs some error trapping.
+//
+int atoi(const BString &str)
+{
+	return atoi(str.c_str());
+}
