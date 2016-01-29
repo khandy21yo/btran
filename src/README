@@ -1,0 +1,4 @@
+This directory contains the source code for the actual translator itself,
+and a filter to convert old style basic programs to something acceptable
+to VaxBasic.
+

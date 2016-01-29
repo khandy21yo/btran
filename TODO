@@ -1,0 +1,10 @@
+Things that need working on.
+
+MAP,RECORD, etc.
+	Code is currently buggy.
+
+Built in functions.
+	Need to use standard C++ and BOOST versions.
+
+Testing/Debugging
+
