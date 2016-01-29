@@ -208,5 +208,6 @@ static inline void Rset
 			dest[loop] = ' ';
 		}
 	}
+}
 #endif
 
