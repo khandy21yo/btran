@@ -1,5 +1,9 @@
 Things that need working on.
 
+parse.h - copy from parse.hh in makefile
+
+Clean up #include at start of generated code.
+
 MAP,RECORD, etc.
 	Code is currently buggy.
 

@@ -1,0 +1,28 @@
+Tools you will need to install
+
+	automake
+	autoconf
+	libtool
+	flex
+	bison
+	libboost
+
+Configure src
+
+	cd src
+	libtoolize
+	aclocal
+	automake --add-missing
+	automake
+	autoconf
+	./configure
+	make
+
+	<error about parse.h>
+	cp parse.hh parse.h
+	make
+
+Translate code
+
+	btran < test.bas > test.cc
+
