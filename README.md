@@ -33,6 +33,9 @@ Doing otherwise creates "not C++" code.
 	  "a=b.substr(b.length*(-1))" which causes a segfault when "B$" is
 	  empty. Editing this to be "a=b.rbegin()" works better, but it
 	  returnes a "char" instead of a "std::string".
+	- RIGHT off the end of a string is Ok in bsic, but will crash C++.
+	- Zero length strings can cause odd problems. text.rbegin() for
+	  example does not return a 0.
 - GOSUB. Actually works, but has the same limitations in C++ as goto.
 	- No jumping over initializers.
 - DEF functions.

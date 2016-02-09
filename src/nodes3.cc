@@ -41,6 +41,49 @@ static Node* IOChannel;		/**< \brief IO Channel to use (NULL if default) */
 static Node* IOUsing;		/**< \brief Print using format */
 static int DataWidth;		/**< \brief Used to format DATA statements */
 
+/** \brief add/subtract from string with optimization
+ *
+ * Adds or subtracts from a value, and if possible
+ * optimizing it to a simple value if possible, otherwise
+ * appending a '+ n' or '- n' ss necessary.
+ */
+static std::string IncrString(const std::string &orig, long increment)
+{
+	const char *nptr = orig.c_str();
+	char *endptr = 0;
+	long value;
+	char buffer[64];
+
+	/*
+	 * Try to convert original string
+	 */
+	value = strtol(nptr, &endptr, 10);
+
+	/*
+	 * Did it work?
+	 */
+	if (*endptr == 0)
+	{
+		sprintf(buffer, "%d", value + increment);
+		return buffer;
+	}
+	else
+	{
+		std::string Result = orig;
+		if (increment >= 0)
+		{
+			sprintf(buffer, "%d", increment);
+			Result = Result + " + " + buffer;
+		}
+		else
+		{
+			sprintf(buffer, "%d", -increment);
+			Result = Result + " - " + buffer;
+		}
+		return Result;
+	}
+}
+
 
 /**
  * \brief Main function to output translated code.
@@ -903,7 +946,8 @@ void Node::OutputCodeOne(
 		// Output function name
 		//
 		os << std::endl;
-		os << Indent() << "int basic_main()" << std::endl;
+		os << Indent() << "int main(int argc, char **argv)" <<
+			std::endl;
 
 		//
 		// Braces starting function
@@ -1948,25 +1992,21 @@ std::string Node::Expression(void)
 		else if (result == "basic::right" && Tree[0]->Type == BAS_N_LIST)
 		{
 			result = Tree[0]->Tree[0]->ParenString() + ".substr(" + 
-				Tree[0]->Tree[1]->NoParen() + " - 1)";
+				IncrString(Tree[0]->Tree[1]->NoParen(), -1) + ")";
 		}
 		else if (result == "basic::mid" &&
 			Tree[0]->Type == BAS_N_LIST &&
 			Tree[0]->Tree[1]->Type == BAS_N_LIST)
 		{
 			result = Tree[0]->Tree[0]->ParenString() + ".substr(" + 
-				Tree[0]->Tree[1]->Tree[0]->NoParen() + " - 1, " +
+				IncrString(Tree[0]->Tree[1]->Tree[0]->NoParen(), -1) + ", " +
 				Tree[0]->Tree[1]->Tree[1]->NoParen() + ")";
 		}
 		else if (result == "basic::instr" &&
 			Tree[0]->Type == BAS_N_LIST &&
 			Tree[0]->Tree[1]->Type == BAS_N_LIST)
 		{
-			std::string temp = Tree[0]->Tree[0]->NoParen() + " - 1";
-			if (temp == "1 - 1")
-			{
-				temp = "0";
-			}
+			std::string temp = IncrString(Tree[0]->Tree[0]->NoParen(), -1);
 			result = std::string("(") +
 				Tree[0]->Tree[1]->Tree[0]->ParenString() + ".find(" + 
 				Tree[0]->Tree[1]->Tree[1]->NoParen() + ", " +
