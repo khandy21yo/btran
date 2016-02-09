@@ -2993,19 +2993,14 @@ void Node::OutputMap(
 	VariableStruct* ThisVar = Variables->Lookup(Tree[0]->TextValue, 0);
 	assert(ThisVar != 0);
 
-	os << Indent() << "struct " << ThisVar->GetName() << " ";
+	os << "// #pragma psect static_rw " << ThisVar->GetName() <<
+		",gbl,ovr" << std::endl;
 
 	if (Tree[1] != 0)
 	{
-		os << std::endl << Indent() << "{" << std::endl;
-
-		Level++;
 		Tree[1]->OutputDefinitionList(os, 0, 0);
-		Level--;
-
-		os << Indent() << "} ";
 	}
-	os << ThisVar->GetName() << ";" << std::endl;
+	os << "// #pragma psect end " << ThisVar->GetName() << std::endl;
 }
 
 /**
@@ -3469,6 +3464,11 @@ void Node::OutputDefinitionList(
 
 		break;
 
+
+	case BAS_S_REMARK:
+		os << Indent();
+		OutputRemark(os);
+		break;
 
 	default:
 		os << Indent() << OutputDefinition(MainType, ExtType) << ";" << std::endl;
