@@ -8,33 +8,6 @@
  *	This part includes the variable scanning routines.
  */
 
-/*
-History:
-
-	07/08/1999 - Kevin Handy
-		Split into three parts.
-
-	02/19/2000 - Kevin Handy
-		Fix 'SmoothTypes' so that it handles variable types
-		better (so DIM A$(2),B%(2) doesn't make them both strings)
-
-	04/07/2000 - Kevin Handy
-		Handle 'CHANGE' function.
-
-	04/12/2000 - Kevin Handy
-		Don't put numeric constants in the variable table.
-
-	07/01/2000 - Kevin Handy
-		Clean out commented out code.
-
-	08/03/2000 - Kevin Handy
-		Add code for MAT operations
-
-	10/10/2000 - Kevin Handy
-		Fix up scanning of BAS_S_SUB
-
-*******************************************************************************/
-
 //
 // System Include Files
 //

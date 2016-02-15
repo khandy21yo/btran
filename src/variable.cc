@@ -7,55 +7,6 @@
  */
 
 /*
-History:
-
-	08/30/1996 - Kevin Handy
-		Update version number to 1.1, and update on internet.
-
-	10/22/1996 - Kevin Handy
-		Handle new 'IntegerType' and 'RealType' variables.
-
-	04/30/1997 - Kevin Handy
-		Guestimate the number of parameters to a array/function,
-		and use this guess when outputing default definitions.
-
-	06/16/1997 - Kevin Handy
-		Set version to 1.6
-
-	06/24/1997 - Kevin Handy
-		Output correct for 'VARTYPE_REAL' based on 'option' value
-
-	07/06/1997 - Kevin Handy
-		Broke out some common code into the functions DumpVarType,
-		OutputVarType, and GuessVarType.
-
-	11/28/1997 - Kevin Handy
-		Removed Left, Right fields (Replaced by STL functions).
-		Added copy constructor for STL.
-
-	12/15/1997 - Kevin Handy
-		Changed 'Node' member 'TextValue' from 'char*' to 'string'
-
-	01/26/1998 - Kevin Handy
-		Force basic names to upper case
-
-	02/05/1998 - Kevin Handy
-		Move several class functions into the header, greatly
-		reducing executable size.
-
-	08/20/1999 - Kevin Handy
-		Added UnguessVartype function
-
-	06/16/2000 - Kevin Handy
-		Added code to GuessVartype to handle --integer option.
-
-	12/19/2000 - Kevin Handy
-		Lose the stupid Int32 and Int codes, and just output 'int'
-		and 'long' instead.
-
-*******************************************************************************/
-
-/*
  * System Include Files
  */
 #include <iostream>

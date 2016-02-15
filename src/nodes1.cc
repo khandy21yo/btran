@@ -8,17 +8,6 @@
  *
  */
 
-/*
-History:
-
-	07/08/1999 - Kevin Handy
-		Split nodes.cc into three sections
-
-	08/20/1999 - Kevin Handy
-		Modify PrintTree to add cases of Tree[3] and Tree[4].
-
-*/
-
 //
 // System Include Files
 //

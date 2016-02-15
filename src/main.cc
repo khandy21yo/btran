@@ -33,60 +33,6 @@
  *	format than the actual basic compiler likes.
  */
 
-/*
-History:
-
-	08/30/1996 - Kevin Handy
-		Set version number to 1.1, and install on internet.
-
-	08/31/1996 - Kevin Handy
-		Changed 'TreeStruct' to 'Node', which makes more sense.
-		Modified for privatization of Nodes data.
-		Lose extra calls to 'UnDownLink', which werent needed.
-		Found bug in "IF x THEN IF y THEN z else a else b"
-
-	10/22/1996 - Kevin Handy
-		Added variables 'IntegerType' and 'RealType'.
-
-	12/17/1996 - Kevin Handy
-		Move initalization of 'IntegerType' and 'RealType' from
-		parse.y to main().
-
-	01/05/1997 - Kevin Handy
-		Created a function to write out the titles.
-		Added date and time of translation.
-
-	03/04/1997 - Kevin Handy
-		Use getopt to parse command line
-
-	04/02/1997 - Kevin Handy
-		Handle UNLESS statelents like IF nistatements.
-
-	06/16/1997 - Kevin Handy
-		Set version number to 1.4
-
-	07/25/1997 - Kevin Handy
-		Add 'line' option to leave all line numbers on.
-
-	01/26/1998 - Kevin Handy
-		Added 'UpperCase' function
-
-	02/02/1998 - Kevin Handy
-		Cast NULL's to make new C++ rules happy
-		Use 'extern "C"' around getopt.h
-
-	08/09/1999 - Kevin Handy
-		Initialize 'node_type' array.
-
-	06/16/2000 - Kevin Handy
-		Added '--integer' option to force unspecified variable
-		types to be integer.
-
-	10/27/2000 - Kevin Handy
-		Allow for "ONERROR" in place of "ON ERROR"
-
-*******************************************************************************/
-
 //
 // System Include Files
 //

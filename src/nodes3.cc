@@ -3286,7 +3286,7 @@ void Node::OutputRemark(
  *	statement. The 'switch' portion is generated before calling this
  *	code, this only outputs the case labels/goto's.
  *
- *	\return It returns nonzero if a default case was output, else it returns 0.
+ *	\return returns nonzero if a default case was output, else it returns 0.
  */
 int Node::OutputOngo(
 	std::ostream& os,	/**< iostream to write C++ code to */
