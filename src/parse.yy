@@ -1022,7 +1022,7 @@ fundeflist:	fundef
 ;
 
 fundef:		BAS_V_NAME funby { $1->SetType(BAS_V_FUNCTION);
-			$$ = (new Node(BAS_V_DEFINEFUN))->Link($1, 0, 0, $2); }
+			$$ = (new Node(BAS_V_DEFINEFUN))->Link($1, 0, new Node(BAS_N_NULL), $2); }
 		| BAS_V_NAME funby '(' funparlist ')' { $1->SetType(BAS_V_FUNCTION);
 			$$ = (new Node(BAS_V_DEFINEFUN))->Link($1, 0, $4, $2);
 			delete $3; delete $5; }
