@@ -187,50 +187,9 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_N_EXTERNALFUNCTION:
-		//
-		// Function Definition
-		//
-		assert(Tree[1] != 0);
-
-		if (Tree[0] != 0)
-		{
-			ThisType = Tree[0]->ScanType();
-		}
-		else
-		{
-			ThisType = VARTYPE_VOID;
-		}
-
-		ThisVar = Variables->Lookup(Tree[1]->TextValue, this);
-		if (ThisVar == 0)
-		{
-			//
-			// Create variable
-			//
-			VariableStruct NewVar(Tree[1]->TextValue,
-				ThisType, VARCLASS_FUNC, InDefineFlag);
-
-			//
-			// Add to variable table
-			//
-			Variables->Append(NewVar, true);	// Forced global
-		}
-		else
-		{
-			ThisVar->SetClass(VARCLASS_FUNC);
-			ThisVar->SetType(ThisType);
-		}
-
-		//
-		// Scan calling parameters
-		//
-		if (Tree[3] != 0)
-		{
-			Tree[3]->VariableScan(1);
-		}
-
+		assert(Tree[0] != 0);
+		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_FUNC, true);
 		break;
-
 
 	case BAS_S_FUNCTION:
 	case BAS_S_DEF:

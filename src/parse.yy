@@ -567,10 +567,10 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->SetType(BAS_N_CASEELSE); delete $2; }
 			delete $2; $$ = $1; }
 		| BAS_S_END
 		| BAS_S_EXTEND { delete $1; $$ = 0; }
-		| BAS_S_EXTERNAL datatype BAS_S_FUNCTION formalname passmech formalparam {
+		| BAS_S_EXTERNAL vartype BAS_S_FUNCTION fundeflist {
+			$4->SmoothTypes($2); delete $2; delete $3;
 			$1->SetType(BAS_N_EXTERNALFUNCTION);
-			delete $3;
-			$$ = $1->Link($2, $4, $5, $6); }
+			$$ = $1->Link($4); }
 		| BAS_S_EXTERNAL vartype BAS_S_CONSTANT constlist {
 			$4->SmoothTypes($2); delete $2; delete $3;
 			$1->SetType(BAS_N_EXTERNALCONSTANT);

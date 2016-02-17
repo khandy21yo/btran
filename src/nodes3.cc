@@ -644,8 +644,10 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_N_EXTERNALFUNCTION:
-		os << Indent() << OutputNewDefinition() << ";" << std::endl;
+		assert(Tree[0] != 0);
+		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
 		break;
+
 
 	case BAS_S_EXIT:
 		os << Indent() <<  "return;" << std::endl;
@@ -3404,6 +3406,7 @@ void Node::OutputDefinitionList(
 		break;
 
 	case BAS_V_DEFINEFUN:
+	case BAS_N_EXTERNALFUNCTION:
 		assert(Tree[0] != 0);
 
 		os << Indent();
