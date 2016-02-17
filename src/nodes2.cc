@@ -98,7 +98,8 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_N_EXTERNALSUB:
-		Tree[1]->ScanVarList(VARTYPE_VOID, VARCLASS_FUNC, true);
+		assert(Tree[0] != 0);
+		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_FUNC, true);
 		break;
 
 	case BAS_S_CALL:
