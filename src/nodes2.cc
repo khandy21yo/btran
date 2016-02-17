@@ -697,7 +697,7 @@ void Node::ScanOneDefstar(
  * \brief Scans a block of code for the variable type.
  *
  *	Scans a (possible) list for the variable names of the
- *	current type.
+ *	current type. This is used for definitions and calls.
  *
  */
 void Node::ScanVarList(
@@ -843,17 +843,14 @@ void Node::ScanVarList(
 		}
 		if (Tree[0] != NULL)
 		{
-			Tree[0]->ScanVarList(ThisType, VARCLASS_NONE, false);
+			Tree[0]->VariableScanOne(false);
 		}
-		break;
-
-	case BAS_N_NULL:
 		break;
 
 	case BAS_S_BY:
 		if (Tree[0] != NULL)
 		{
-			Tree[0]->ScanVarList(ThisType, VARCLASS_NONE, false);
+			Tree[0]->ScanVarList(ThisType, ThisClass, false);
 		}
 		break;
 
@@ -869,21 +866,6 @@ void Node::ScanVarList(
 			VariableStruct NewVar(TextValue,
 				FinalType, ThisClass, Status);
 			Variables->Append(NewVar);
-		}
-		break;
-
-	default:
-		//
-		// Catch-all for everything not checked for, such as
-		// mathematical functions.
-		//
-		if (Tree[0] != 0)
-		{
-			Tree[0]->ScanVarList(ThisType, ThisClass, Status);
-		}
-		if (Tree[1] != 0)
-		{
-			Tree[1]->ScanVarList(ThisType, ThisClass, Status);
 		}
 		break;
 	}
