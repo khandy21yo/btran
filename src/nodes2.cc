@@ -790,7 +790,7 @@ void Node::ScanVarList(
 				// Create variable
 				//
 				VariableStruct NewVar(Tree[0]->TextValue,
-					ThisType, VARCLASS_NONE, Status);
+					ThisType, VARCLASS_FUNC, Status);
 
 				//
 				// Add to variable table
