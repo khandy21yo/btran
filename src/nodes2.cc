@@ -714,8 +714,14 @@ void Node::ScanVarList(
 	case BAS_N_LIST:
 	case BAS_N_ASSIGNLIST:
 
-		Tree[0]->ScanVarList(ThisType, ThisClass, Status);
-		Tree[1]->ScanVarList(ThisType, ThisClass, Status);
+		if (Tree[0] != 0)
+		{
+			Tree[0]->ScanVarList(ThisType, ThisClass, Status);
+		}
+		if (Tree[1] != 0)
+		{
+			Tree[1]->ScanVarList(ThisType, ThisClass, Status);
+		}
 		break;
 
 	case '=':
@@ -778,7 +784,7 @@ void Node::ScanVarList(
 		}
 		else
 		{
-			std::cerr << "Scanning: Type = NULL in BAS_C_DEFINEFUN" << std::endl;
+			std::cerr << "Scanning: Type = NULL in BAS_V_DEFINEFUN" << std::endl;
 			ThisType = VARTYPE_NONE;
 		}
 		if (Tree[0] != 0)
@@ -822,7 +828,7 @@ void Node::ScanVarList(
 		// Ignore various numeric constants
 		break;
 
-	default:
+	case BAS_V_FUNCTION:
 		ThisVar = Variables->Lookup(TextValue, Tree[0]);
 		if (ThisVar == 0)
 		{
@@ -834,6 +840,50 @@ void Node::ScanVarList(
 			VariableStruct NewVar(TextValue,
 				FinalType, ThisClass, Status);
 			Variables->Append(NewVar);
+		}
+		if (Tree[0] != NULL)
+		{
+			Tree[0]->ScanVarList(ThisType, VARCLASS_NONE, false);
+		}
+		break;
+
+	case BAS_N_NULL:
+		break;
+
+	case BAS_S_BY:
+		if (Tree[0] != NULL)
+		{
+			Tree[0]->ScanVarList(ThisType, VARCLASS_NONE, false);
+		}
+		break;
+
+	case BAS_V_NAME:
+		ThisVar = Variables->Lookup(TextValue, Tree[0]);
+		if (ThisVar == 0)
+		{
+			VARTYPE FinalType = ThisType;
+			if (FinalType == VARTYPE_NONE)
+			{
+				FinalType = GuessVarType(TextValue);
+			}
+			VariableStruct NewVar(TextValue,
+				FinalType, ThisClass, Status);
+			Variables->Append(NewVar);
+		}
+		break;
+
+	default:
+		//
+		// Catch-all for everything not checked for, such as
+		// mathematical functions.
+		//
+		if (Tree[0] != 0)
+		{
+			Tree[0]->ScanVarList(ThisType, ThisClass, Status);
+		}
+		if (Tree[1] != 0)
+		{
+			Tree[1]->ScanVarList(ThisType, ThisClass, Status);
 		}
 		break;
 	}
