@@ -648,7 +648,7 @@ Bugs:
 
 static void mangle_string_value(char *ThisPart, int Base, char Type)
 {
-	char *bascode;
+	const char *bascode;
 	int len;
 	char worktext[64];
 	int StartChar = 1;
