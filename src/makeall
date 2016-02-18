@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Script to do all the autoconf stuff and build the code
+#
+aclocal
+autoheader --add-missing
+autoconf
+./configure
+make
+
