@@ -635,7 +635,34 @@ vardeflist:	vardef { $$ = $1; }
 		| vardef ',' vardeflist { $2->SetType(BAS_N_LIST);
 			$$ = $2->Link($1, $3); }
 ;
+/*
+formalplist:	{ $$ = 0; }
+		| formalvardef ',' formalplist {
+		  delete $2; $$ = $1->DownLink($3); }
+		| formalvardef
+;
 
+formalvardef:	vartype opformalname dimby opdefault funby { $$ =
+			(new Node(BAS_V_DEFINEVAR))->Link($2,
+			$1, $3, $4, $5); }
+		| BAS_V_NAME BAS_V_NAME dimby opdefault funby {
+			$1->SetType(BAS_N_VARTYPE);
+			$$ = (new Node(BAS_V_DEFINEVAR))->Link($2,
+			$1, $3, $4, $5); }
+		| BAS_V_NAME dimby opdefault funby {
+			$$ = (new Node(BAS_V_DEFINEVAR))->Link($1,
+			0, $2, $3, $4); }
+;
+
+*/
+vardef:		vartype opformalname dimby opdefault funby { $$ =
+			(new Node(BAS_V_DEFINEVAR))->Link($2,
+			$1, $3, $4, $5); }
+		| BAS_V_NAME BAS_V_NAME dimby opdefault funby {
+			$1->SetType(BAS_N_VARTYPE);
+			$$ = (new Node(BAS_V_DEFINEVAR))->Link($2,
+			$1, $3, $4, $5); }
+/*
 vardef:		vartype variablex { 
 			$$ = ($1->Link(0, 0, $2)); }
 		| BAS_V_NAME variablex { $1->SetType(BAS_N_VARTYPE);
@@ -648,6 +675,7 @@ vardef:		vartype variablex {
 			$$ = $1->Link(0, 0, $2->Link(0, 0, $4));
 			delete $3; }
 ;
+*/
 
 dimby:		{ $$ = NULL; }
 		| BAS_S_DIM '(' dimcomma ')' { $$ = $3; delete $1; delete $2; delete $4; }

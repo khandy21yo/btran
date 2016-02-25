@@ -1375,10 +1375,7 @@ void Node::OutputCodeOne(
 		if (Block[1] != 0)
 		{
 			Level++;
-			for (Node *loop = Block[1]; loop != 0; loop = loop->Block[0])
-			{
-				loop->OutputDefinitionList(os, 0, 0);
-			}
+			Block[1]->OutputDefinitionList(os, 0, 0);
 			Level--;
 		}
 
