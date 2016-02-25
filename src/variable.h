@@ -6,51 +6,6 @@
  * \bug Lousy. Needs complete re-write
  */
 
-/*
-History:
-
-	01.01.02 - 10/22/1996 - Kevin Handy
-		Added 'SINGLE', "GFLOAT', HFLOAT' types.
-
-	01.03.01 - 04/19/1997 - Kevin Handy
-		Start working on parameters, pass mechanism
-		Make use of more C++'isms.
-
-	01.04.01 - 07/06/1997 - Kevin Handy
-		Renumber VARTYPE's so they fall in weight order.
-		Allows easier determination of conversions.
-
-	01.04.02 - 11/28/1997 - Kevin Handy
-		Modified to use STL classes instead of my own
-		(slow) lists.
-
-	01.05.01 - 12/15/1997 - Kevin Handy
-		Changed 'Node' member 'TextValue' from 'char*' to 'string'
-
-	01.05.02 - 02/15/1998 - Kevin Handy
-		Changed VariableList to use a <vector> instead of
-		the two variables "Global" and "Local", in preparation
-		of handling common variables in "DEF*" statements.
-
-		Moved three functions from VariableList to
-		ListOfVariables, where they really belonged,
-		and lost the 'Tree' on the end of their names.
-
-	01.05.03 - 02/15/1998 - Kevin Handy
-		Made VariableList inherit BaseVariableList instead
-		haveing a variable based on that type. Get to lose a
-		lot of references to 'Variables' that way, as well as
-		a lot of junk trying to make iterators and reverse
-		iterators happy.
-
-	01.05.04 - 09/04/1998 - Kevin Handy
-		Split out the headers for varlist.h from this code
-
-	12/31/2001 - Kevin Handy
-		Added ParList to variable to track parameter definitions
-
-*/
-
 //
 // Variable.h - Some stuff just in case if isn't defined anywhere else
 //

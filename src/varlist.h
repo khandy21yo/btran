@@ -6,21 +6,6 @@
  * \bug Lousy. Needs complete re-write
  */
 
-/*
-History:
-
-	09/04/1998 - Kevin Handy
-		Split out from variable.h
-
-	12/05/1998 - Kevin Handy
-		Added parameter to Lookup
-
-	07/01/2000 - Kevin Handy
-		Clean out commented out code.
-		Lose ~VariableLise, which was empty.
-
-*/
-
 //
 // Variable.h - Some stuff just in case if isn't defined anywhere else
 //

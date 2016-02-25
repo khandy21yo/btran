@@ -6,18 +6,6 @@
  *	This is the main header file for the basic translater.
  */
 
-/*History:
-
-	10/22/1996 - Kevin Handy
-		Added variables 'IntegerType' and 'RealType'.
-
-	08/09/1999 - Kevin Handy
-		Start of table to convert strings to node types
-		'node_type[]' so that we can greatly reduce the
-		complexity of the lexer.
-
-*/
-
 #ifndef _BASIC_H_
 #define _BASIC_H_
 
