@@ -2099,6 +2099,15 @@ std::string Node::Expression(void)
 
 	case BAS_N_STRUCTNAME:
 		result = TextValue;
+		if (Tree[0] != 0)
+		{
+			Node *array = Tree[0];
+			while(array != 0)
+			{
+				result += "[" + array->OutputArrayParam(false) + "]";
+				array = array->Block[0];
+			}
+		}
 		break;
 
 	case BAS_N_NULL:
