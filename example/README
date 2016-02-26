@@ -30,6 +30,8 @@ kmaze.bas	Kevin Handy
 revrse.bas	101 Basic Compuer Games
 		A reverse the digits gane
 		** Doesnt show spaces around numbers
+snak.bas	Kevin Handy
+		Another maze generator
 snoopy.bas	101 Basic Computer Games
 		Print a simple poster
 		** The things that used to amuse us

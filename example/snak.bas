@@ -1,0 +1,38 @@
+20 RANDOM
+30 INPUT"WIDTH, LENGTH";W%,L%
+100 DIM A%(165%,40%),C%(4%)
+110 A%(I%,0%),A%(I%,W%+1%)=5% FOR I%=1% TO L%
+	: A%(0%,I%),A%(L%+1%,I%)=5% FOR I%=1% TO W%
+120 I%=RND*W%+1%: J%=RND*L%+1%: A%(I%,J%)=5%
+200 Q%=0%
+210	IF A%(I%-1%,J%)=0% THEN Q%=Q%+1%: C%(Q%)=1%
+220	IF A%(I%,J%+1%)=0% THEN Q%=Q%+1%: C%(Q%)=2%
+230	IF A%(I%+1%,J%)=0% THEN Q%=Q%+1%: C%(Q%)=3%
+240	IF A%(I%,J%-1%)=0% THEN Q%=Q%+1%: C%(Q%)=4%
+300 GOTO 500 IF Q%=0%: A%=C%(RND*Q%+1%)
+305 ON A% GOTO 310,320,330,340
+310	I%=I%-1%: GOTO 400
+320	J%=J%+1%: GOTO 400
+330	I%=I%+1%: GOTO 400
+340	J%=J%-1%: GOTO 400
+400 Q1%=Q1%+1%: GOSUB 700 IF Q1%>Q2%: A%(I%,J%)=A%: GOTO 200
+500 ON A% GOTO 510,520,530,540
+510	I%=I%+1%: GOTO 600
+520	J%=J%-1%: GOTO 600
+530	I%=I%-1%: GOTO 600
+540	J%=J%+1%: GOTO 600
+600 Q1%=Q1%-1%: A%=A%(I%,J%): GOTO 1000 IF A%=5%:  GOTO 200
+700 Q2%=Q1%: I1%=I%: J1%=J%: RETURN
+1000   FOR I%=1% TO L%
+1010	FOR J%=1% TO W%
+		: PRINT "X";: IF A%(I%,J%)=3% OR A%(I%-1%,J%)=1% THEN
+			PRINT " "; ELSE PRINT "X";
+1020	NEXT J%: PRINT "X": FOR J%=1% TO W%
+		: IF A%(I%,J%)=2% OR A%(I%,J%-1%)=4% THEN
+			PRINT " "; ELSE PRINT "X";
+1030 IF A%(I%,J%)=5% THEN PRINT "S"; ELSE
+	IF (I1%=I% AND J1%=J%) THEN PRINT "E";
+		 ELSE PRINT " ";
+1040	NEXT J%: PRINT "X": NEXT I%
+1050 PRINT "XX"; FOR I%=1% TO W%: PRINT  "X": PRINT 
+32767  END

@@ -1284,7 +1284,7 @@ void Node::OutputCodeOne(
 		{
 				os << Indent() << "default:" << std::endl <<
 					Indent() <<
-					"\tthrow basic::BasicError(58);\t// Out of range" << std::endl;
+					"std::cerr << \"ON-GOTO out of range\" << std::endl; abort();\t// Out of range" << std::endl;
 		}
 		os << Indent() << "}" << std::endl;
 		break;

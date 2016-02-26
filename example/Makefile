@@ -1,4 +1,4 @@
-all: amazin kmaze snoopy revrse
+all: amazin kmaze snak snoopy revrse
 
 amazin: amazin.bas
 	../src/b1filter amazin.bas  | ../src/btran -i > amazin.cc
@@ -7,6 +7,10 @@ amazin: amazin.bas
 kmaze: kmaze.bas
 	../src/btran < kmaze.bas > kmaze.cc
 	c++ -I ../lib/ kmaze.cc -o kmaze
+
+snak: snak.bas
+	../src/b1filter snak.bas  | ../src/btran > snak.cc
+	c++ -I ../lib/ snak.cc -o snak
 
 revrse: revrse.bas
 	../src/btran -i < revrse.bas > revrse.cc
