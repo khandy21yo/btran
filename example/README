@@ -1,0 +1,36 @@
+This subdirectory contains assorted sampla basic
+programs that compile and run without modification
+of the generated c++ files. The makefile shows
+several ways of using the translator, and lets you
+compare the original source to the generated c++
+code.
+
+Some bugs occur because of differences in how C++ and
+Basic expect things to work. For example, Basic puts
+spaces aroung numbers when printed, ans C++ foes not.
+Basic allows multiple  inputs to be entered seperated
+by commas, and C++ wants them entered seperately.
+
+These programs are either from public domain sources,
+or are my own creations.
+
+Several of these need to be passed hrough the b1filter
+program wich converts older Basic+ format, which used
+colons for the statement seerator, to the Basic+2
+format which uses a back-slash seperator.
+
+Just type 'make' to generate all the c++ source, and
+binary executables.
+
+amazin.bas	101 Basic Computer Games
+		A maze generating program
+kmaze.bas	Kevin Handy
+		A maze building program
+		** Top row of maze is wrong
+revrse.bas	101 Basic Compuer Games
+		A reverse the digits gane
+		** Doesnt show spaces around numbers
+snoopy.bas	101 Basic Computer Games
+		Print a simple poster
+		** The things that used to amuse us
+
