@@ -2254,6 +2254,58 @@ std::string Node::Expression(void)
 
 	case BAS_V_PREDEF:
 		result = std::string("basic::") + genname(TextValue);
+		if (result == "basic::bel")
+		{
+			result = "\"\\g\"";
+		}
+		else if (result == "basic::bs")
+		{
+			result = "\"\\h\"";
+		}
+		else if (result == "basic::cr")
+		{
+			result = "\"\\r\"";
+		}
+		else if (result == "basic::del")
+		{
+			result = "\"\\0xff\"";
+		}
+		else if (result == "basic::esc")
+		{
+			result = "\"\\e\"";
+		}
+		else if (result == "basic::ff")
+		{
+			result = "\"\\f\"";
+		}
+		else if (result == "basic::ht")
+		{
+			result = "\"\\i\"";
+		}
+		else if (result == "basic::lf")
+		{
+			result = "\"\\n\"";
+		}
+		else if (result == "basic::pi")
+		{
+			result = "PI";
+		}
+		else if (result == "basic::si")
+		{
+			result = "\"\\0x17\"";
+		}
+		else if (result == "basic::so")
+		{
+			result = "\"\\0x16\"";
+		}
+		else if (result == "basic::sp")
+		{
+			result = " ";
+		}
+		else if (result == "basic::vt")
+		{
+			result = "\"\\f\"";
+		}
 		break;
 
 	case BAS_V_TEXTSTRING:
