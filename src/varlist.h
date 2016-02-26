@@ -23,6 +23,8 @@
 #include "variable.h"
 #include "nodes.h"
 
+std::string genname(const std::string &basename);
+
 /**
  * \brief Contains a list of variables at one block level
  *

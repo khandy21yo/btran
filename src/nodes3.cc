@@ -1116,7 +1116,7 @@ void Node::OutputCodeOne(
 		}
 		else
 		{
-			os << TextValue << ":;" << std::endl;
+			os << genname(TextValue) << ":;" << std::endl;
 		}
 		break;
 
@@ -1368,7 +1368,7 @@ void Node::OutputCodeOne(
 		os << Indent() << "struct ";
 		if (Tree[0] != 0)
 		{
-			os << Tree[0]->Expression();
+			os << genname(Tree[0]->Expression());
 		}
 		os << std::endl << Indent() << "{" << std::endl;
 
@@ -1942,7 +1942,7 @@ std::string Node::Expression(void)
 		}
 		else
 		{
-			result = TextValue;
+			result = genname(TextValue);
 		}
 
 		if (result == "basic::strlen")
@@ -2098,7 +2098,7 @@ std::string Node::Expression(void)
 		break;
 
 	case BAS_N_STRUCTNAME:
-		result = TextValue;
+		result = genname(TextValue);
 		if (Tree[0] != 0)
 		{
 			Node *array = Tree[0];
@@ -2253,7 +2253,7 @@ std::string Node::Expression(void)
 		break;
 
 	case BAS_V_PREDEF:
-		result = std::string("basic::") + TextValue;
+		result = std::string("basic::") + genname(TextValue);
 		break;
 
 	case BAS_V_TEXTSTRING:
@@ -2342,7 +2342,7 @@ std::string Node::OutputVarName(
 	}
 	else
 	{
-		result = TextValue;
+		result = genname(TextValue);
 	}
 
 	//
@@ -3350,7 +3350,7 @@ std::string Node::OutputLabel(void)
 	}
 	else
 	{
-		return TextValue;
+		return genname(TextValue);
 	}
 }
 
@@ -3478,6 +3478,10 @@ void Node::OutputDefinitionList(
 	case BAS_S_REMARK:
 		os << Indent();
 		OutputRemark(os);
+		if (Block[0] != 0)
+		{
+			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+		}
 		break;
 
 	default:
@@ -3538,7 +3542,7 @@ void Node::OutputVirtualList(
 		}
 		else
 		{
-			os << Tree[0]->TextValue << "(";
+			os << genname(Tree[0]->TextValue) << "(";
 		}
 		os << Channel->Expression() << ", " << Tree[2]->Expression();
 
@@ -3935,7 +3939,7 @@ std::string Node::OutputDefinition(
 			}
 			else
 			{
-				result += TextValue;
+				result += genname(TextValue);
 			}
 
 			//
@@ -4003,7 +4007,7 @@ std::string Node::OutputDefinition(
 			}
 			else
 			{
-				result += TextValue;
+				result += genname(TextValue);
 			}
 
 			//
@@ -4487,7 +4491,7 @@ void Node::OutputField(
 
 	default:
 		os << "// **** This shouldn't be possible ***** @ " << lineno << std::endl <<
-			Indent() << TextValue;
+			Indent() << genname(TextValue);
 		break;
 	}
 }
@@ -4659,7 +4663,7 @@ std::string Node::OutputNodeVarType(void)
 	case BAS_N_STRUCTNAME:
 	case BAS_N_VARTYPE:
 // FIXME: This needs attention, at least lower case the bloody name.
-		result = TextValue;
+		result = genname(TextValue);
 		break;
 
 	default:

@@ -25,6 +25,40 @@
 #include "parse.h"
 
 
+/** Create base name given original name
+ *
+ * Create a base variable  name to work with based on the original
+ * name used in the code to be converted.
+ */
+std::string genname(
+	const std::string &basename	/**< Name to be converted */
+)
+{
+	std::string tempname = basename;
+
+	if (tempname[tempname.length()-1] == '(')
+	{
+		tempname = tempname.substr(0, tempname.length() - 1);
+	}
+
+	if ((tempname[tempname.length()-1] == '%') ||
+		(tempname[tempname.length()-1] == '$'))
+	{
+		tempname = tempname.substr(0, tempname.length() - 1);
+	}
+
+	for (int j = 0; j < tempname.length(); j++)
+	{
+		tempname[j] = tolower(tempname[j]);
+		if (tempname[j] == '.')
+		{
+			tempname[j] = '_';
+		}
+	}
+
+	return tempname;
+}
+
 /**
  * \brief Constructor
  *
@@ -581,36 +615,11 @@ void VariableList::Fixup1(
 				// Lables are never reserved, so always
 				// give them a specific value
 				//
-				tempname = "L_" + VarList->BasicName;
-				for (int j = 2; j < tempname.length(); j++)
-				{
-					tempname[j] = tolower(tempname[j]);
-				}
-				VarList->CName = tempname;
+				VarList->CName = "L_" + genname(VarList->BasicName);
 			}
 			else
 			{
-				tempname = VarList->BasicName;
-
-				if (tempname[tempname.length()-1] == '(')
-				{
-					tempname = tempname.substr(0, tempname.length() - 1);
-				}
-				if ((tempname[tempname.length()-1] == '%') ||
-					(tempname[tempname.length()-1] == '$'))
-				{
-					tempname = tempname.substr(0, tempname.length() - 1);
-				}
-
-				for (int j = 0; j < tempname.length(); j++)
-				{
-					tempname[j] = tolower(tempname[j]);
-					if (tempname[j] == '.')
-					{
-						tempname[j] = '_';
-					}
-				}
-
+				tempname = genname(VarList->BasicName);
 
 				//
 				// Don't assign if used by another variable
