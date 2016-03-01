@@ -1928,17 +1928,23 @@ std::string Node::Expression(void)
 		{
 			if (ThisVar->GetName() == "Tab")
 			{
-				if (IOChannel == 0)
-				{
-					result = "BasicChannel[0].";
-				}
-				else
-				{
-					result = std::string("BasicChannel[") +
-						IOChannel->Expression() + "].";
-				}
+				/* \note Tab is not easy to handle on
+				 * systems not designed to know where
+				 * the printhead is currently sitting.
+				 * Here we are just using spaces and
+				 * assuming we are spacing from the left
+				 * margin.
+				 */
+				result = std::string("std::string(") +
+					Tree[0]->NoParen() +
+					", \" \") /* Tab(" + 
+					Tree[0]->NoParen() + ") */";
+				break;
 			}
-			result += ThisVar->GetName();
+			else
+			{
+				result = ThisVar->GetName();
+			}
 		}
 		else
 		{
@@ -1960,7 +1966,7 @@ std::string Node::Expression(void)
 		}
 		else if (result == "basic::Char")
 		{
-			result = "srd::string(1, (char)" + Tree[0]->Paren() + ")";
+			result = "std::string(1, (char)" + Tree[0]->Paren() + ")";
 		}
 		else if (result == "str$find_first_in_set" && Tree[0]->Type == BAS_N_LIST)
 		{
