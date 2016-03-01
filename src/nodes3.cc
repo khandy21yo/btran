@@ -1937,7 +1937,7 @@ std::string Node::Expression(void)
 				 */
 				result = std::string("std::string(") +
 					Tree[0]->NoParen() +
-					", \" \") /* Tab(" + 
+					", ' ') /* Tab(" + 
 					Tree[0]->NoParen() + ") */";
 				break;
 			}
