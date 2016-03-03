@@ -81,7 +81,7 @@ extern long Status;		/**< \brief Status flag */
 /**
  * \brief Die on an eror
  */
-#define OnErrorDie() cerr << "%Error " << ErrNum << " at " << ErrLine << endl; exit(EXIT_FAILURE);
+#define OnErrorDie() std::cerr << "%Error " << ErrNum << " at " << ErrLine << std::endl; exit(EXIT_FAILURE);
 /**
  * \brief ON ERROR GOTO 0
  */

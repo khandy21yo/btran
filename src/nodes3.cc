@@ -135,7 +135,6 @@ void Node::Output(
 	}
 
 	os << "#include \"basicfun.h\"" << std::endl;
-	os << "#include \"bstring.h\"" << std::endl;
 	os << "#include \"basicchannel.h\"" << std::endl;
 
 	NeedChannel = 0;
