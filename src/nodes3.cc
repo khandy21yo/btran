@@ -1494,6 +1494,8 @@ void Node::OutputCodeOne(
 
 			while(LookDown)
 			{
+				int isremark = 0;
+
 				switch(LookDown->Type)
 				{
 				case BAS_S_CASE:
@@ -1514,18 +1516,28 @@ void Node::OutputCodeOne(
 				case BAS_N_CASEELSE:
 					os << Indent() << "default:" << std::endl;
 
+				case BAS_S_REMARK:
+					os << Indent();
+					LookDown->OutputRemark(os);
+					isremark = 1;
+					break;
+
 				}
 
 				//
 				// Output any info under case statement
 				//
-				Level++;
-				if (LookDown->Block[1] != 0)
+				if (isremark == 0)
 				{
-					LookDown->Block[1]->OutputCode(os);
+					Level++;
+					if (LookDown->Block[1] != 0)
+					{
+						LookDown->Block[1]->OutputCode(os);
+					}
+					os << Indent() << "break;" <<
+						std::endl << std::endl;
+					Level--;
 				}
-				os << Indent() << "break;" << std::endl << std::endl;
-				Level--;
 
 				LookDown = LookDown->Block[0];
 			}
