@@ -496,7 +496,7 @@ stmtmod:	assignment
 		| BAS_S_RANDOM
 		| BAS_S_READ readlist { $$ = $2; delete $1; }
 		| BAS_S_MAT BAS_S_READ matreadlist { $$ = $3; delete $1;
-			$1->SetType(BAS_X_MATREAD); delete $2; }
+			delete $2; }
 		| BAS_S_MAT BAS_V_NAME '=' matexpression { $$ = $1->Link($2, $4);
 			delete $3; }
 		| BAS_S_RESET { $$ = $1; NeedDataList = 1; }
