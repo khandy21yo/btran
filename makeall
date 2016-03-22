@@ -1,0 +1,47 @@
+#!/bin/bash -x
+# makeall
+#
+#	Acript to simplify generating this package.
+#
+#	This script builds all parts of this package
+#	from the base github download.
+#	It assumes all the automake, autoconf, libtool
+#	packages are already installed in the system.
+#	It does all the necessary things to generate
+#	the necessary autoconf in he proper directories
+#	and build the parts.
+
+#
+# Main directory
+#
+#make
+
+#
+# src
+#
+cd src
+aclocal
+autoheader
+autoconf
+automake --add-missing
+./configure
+make
+cd ..
+#
+# lib
+#
+cd lib
+libtoolize
+aclocal
+autoheader
+autoconf
+automake --add-missing
+./configure
+make
+cd ..
+#
+# example
+#
+cd example
+make
+cd ..
