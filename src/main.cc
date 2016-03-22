@@ -391,6 +391,7 @@ static void initialize_node_type(void)
 	node_type["any"] = BAS_S_ANY;
 	node_type["append"] = BAS_S_APPEND;
 	node_type["as"] = BAS_S_AS;
+	node_type["ascending"] = BAS_S_ASCENDING;
 	node_type["back"] = BAS_S_BACK;
 	node_type["bel"] = BAS_V_PREDEF;
 	node_type["block"] = BAS_S_BLOCK;
@@ -411,6 +412,7 @@ static void initialize_node_type(void)
 	node_type["com"] = BAS_S_COMMON;
 	node_type["common"] = BAS_S_COMMON;
 	node_type["con"] = BAS_S_CON;
+	node_type["connect"] = BAS_S_CONNECT;
 	node_type["constant"] = BAS_S_CONSTANT;
 	node_type["contiguous"] = BAS_S_CONTIGUOUS;
 	node_type["continue"] = BAS_S_CONTINUE;
@@ -424,6 +426,7 @@ static void initialize_node_type(void)
 	node_type["del"] = BAS_V_PREDEF;
 	node_type["delete"] = BAS_S_DELETE;
 	node_type["desc"] = BAS_S_DESC;
+	node_type["descending"] = BAS_S_DESCENDING;
 	node_type["dim"] = BAS_S_DIM;
 	node_type["dimension"] = BAS_S_DIM;
 	node_type["double"] = BAS_S_DOUBLE;
@@ -481,6 +484,7 @@ static void initialize_node_type(void)
 	node_type["linput"] = BAS_S_LINPUT;
 	node_type["list"] = BAS_S_LIST;
 	node_type["long"] = BAS_S_LONG;
+	node_type["basic$quadword"] = BAS_S_LONG;
 	node_type["lset"] = BAS_S_LSET;
 	node_type["map"] = BAS_S_MAP;
 	node_type["margin"] = BAS_S_MARGIN;

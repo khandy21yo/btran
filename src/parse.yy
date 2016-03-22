@@ -41,6 +41,7 @@
 %token BAS_S_ANY
 %token BAS_S_APPEND
 %token BAS_S_AS
+%token BAS_S_ASCENDING
 %token BAS_S_BACK
 %token BAS_S_BLOCK
 %token BAS_S_BLOCKSIZE
@@ -73,6 +74,7 @@
 %token BAS_S_DEFAULTNAME
 %token BAS_S_DELETE
 %token BAS_S_DESC
+%token BAS_S_DESCENDING
 %token BAS_S_DIM
 %token BAS_S_DOUBLE
 %token BAS_S_DUPLICATES
@@ -1199,8 +1201,10 @@ openitem:	',' BAS_S_ORGANIZATION orgclause { $$ = $2->Link($3);
 			delete $3; $$ = $2->Link($4); }
 		| ',' BAS_S_PRIMARY prenexprlist dupcha { delete $1;
 			$$ = $2->Link($3); }
-		| ',' BAS_S_ALTERNATE BAS_S_KEY prenexprlist dupcha { delete $1;
-			delete $3; $$ = $2->Link($4); }
+		| ',' BAS_S_ALTERNATE BAS_S_KEY prenexprlist dupcha { delete $2;
+			$$ = $1->Link($4,$3); }
+		| ',' BAS_S_ALTERNATE prenexprlist dupcha {
+			$$ = $1->Link($3,$2); }
 		| ',' BAS_S_MODE expression { delete $1;
 			$$ = $2->Link($3); }
 		| ',' BAS_S_VIRTUAL { $$ = $2; delete $1; }
@@ -1238,6 +1242,8 @@ dupcha:		/* Empty */ { $$ = 0; }
 		| BAS_S_DUPLICATES dupcha { $$ = $1->Link($2); }
 		| BAS_S_CHANGES dupcha { $$ = $1->Link($2); }
 		| BAS_S_NOCHANGES dupcha { $$ = $1->Link($2); }
+		| BAS_S_ASCENDING dupcha { $$ = $1->Link($2); }
+		| BAS_S_DESCENDING dupcha { $$ = $1->Link($2); }
 ;
 
 fieldlist:	/* Empty */ { $$ = 0; }
