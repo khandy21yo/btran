@@ -69,7 +69,7 @@ extern "C"
 #include "variable.h"
 #include "varlist.h"
 #include "nodes.h"
-#include "parse.h"
+#include "parse.hh"
 
 //
 // Global Variables
@@ -492,6 +492,7 @@ static void initialize_node_type(void)
 	node_type["name"] = BAS_S_NAME;
 	node_type["next"] = BAS_S_NEXT;
 	node_type["nochanges"] = BAS_S_NOCHANGES;
+	node_type["no"] = BAS_S_NO;
 	node_type["noduplicates"] = BAS_S_NODUPLICATES;
 	node_type["none"] = BAS_S_NONE;
 	node_type["nospan"] = BAS_S_NOSPAN;
@@ -509,6 +510,7 @@ static void initialize_node_type(void)
 	node_type["pi"] = BAS_V_PREDEF;
 	node_type["primary"] = BAS_S_PRIMARY;
 	node_type["print"] = BAS_S_PRINT;
+	node_type["prompt"] = BAS_S_PROMPT;
 	node_type["put"] = BAS_S_PUT;
 	node_type["read"] = BAS_S_READ;
 	node_type["real"] = BAS_S_REAL;
@@ -528,6 +530,7 @@ static void initialize_node_type(void)
 	node_type["scratch"] = BAS_S_SCRATCH;
 	node_type["select"] = BAS_S_SELECT;
 	node_type["sequential"] = BAS_S_SEQUENTIAL;
+	node_type["set"] = BAS_S_SET;
 	node_type["si"] = BAS_V_PREDEF;
 	node_type["single"] = BAS_S_SINGLE;
 	node_type["size"] = BAS_S_SIZE;

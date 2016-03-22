@@ -22,7 +22,7 @@
 #include "variable.h"
 #include "varlist.h"
 #include "nodes.h"
-#include "parse.h"
+#include "parse.hh"
 
 int xline = 1;
 int include_stack_pointer = 0;

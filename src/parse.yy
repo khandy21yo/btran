@@ -137,6 +137,7 @@
 %token BAS_S_MOVE
 %token BAS_S_NAME
 %token BAS_S_NEXT
+%token BAS_S_NO
 %token BAS_S_NOCHANGES
 %token BAS_S_NODUPLICATES
 %token BAS_S_NOECHO
@@ -152,6 +153,7 @@
 %token BAS_S_OVERFLOW
 %token BAS_S_PRIMARY
 %token BAS_S_PRINT
+%token BAS_S_PROMPT
 %token BAS_S_PUT
 %token BAS_S_RANDOM
 %token BAS_S_READ
@@ -176,6 +178,7 @@
 %token BAS_S_SCRATCH
 %token BAS_S_SELECT
 %token BAS_S_SEQUENTIAL
+%token BAS_S_SET
 %token BAS_S_SINGLE
 %token BAS_S_SIZE
 %token BAS_S_SLEEP
@@ -510,6 +513,8 @@ stmtmod:	assignment
 		| BAS_S_RESUME lineno { $$ = $1->Link($2); }
 		| BAS_S_RETURN
 		| BAS_S_RSET assignment { $$ = $1->Link($2); }
+		| BAS_S_SET BAS_S_PROMPT { $$ = $1->Link($2); }
+		| BAS_S_SET BAS_S_NO BAS_S_PROMPT { $$ = $1->Link($2,$3); }
 		| BAS_S_SLEEP expression { $$ = $1->Link($2); NeedUnistd = 1; }
 		| BAS_S_STOP
 		| BAS_S_SUBEXIT

@@ -28,7 +28,7 @@
 #include "variable.h"
 #include "varlist.h"
 #include "nodes.h"
-#include "parse.h"
+#include "parse.hh"
 
 //
 // Module Variables
@@ -1545,6 +1545,17 @@ void Node::OutputCodeOne(
 			os << Indent() << "}" << std::endl;
 		}
 
+		break;
+
+	case BAS_S_SET:
+		if (Tree[0]->Type == BAS_S_NO)
+		{
+			os << Indent() << "// set no prompt" << std::endl;
+		}
+		else
+		{
+			os << Indent() << "// set prompt" << std::endl;
+		}
 		break;
 
 	case BAS_S_STOP:

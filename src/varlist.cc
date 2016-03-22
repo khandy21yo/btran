@@ -22,7 +22,7 @@
 #include "vartype.h"
 #include "basic.h"
 #include "varlist.h"
-#include "parse.h"
+#include "parse.hh"
 
 
 /** Create base name given original name

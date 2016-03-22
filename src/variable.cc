@@ -20,7 +20,7 @@
 #include "vartype.h"
 #include "basic.h"
 #include "variable.h"
-#include "parse.h"
+#include "parse.hh"
 
 
 /**
