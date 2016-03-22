@@ -442,6 +442,7 @@ static void initialize_node_type(void)
 	node_type["extend"] = BAS_S_EXTEND;
 	node_type["extendsize"] = BAS_S_EXTENDSIZE;
 	node_type["external"] = BAS_S_EXTERNAL;
+	node_type["explicit"] = BAS_S_EXPLICIT;
 	node_type["ff"] = BAS_V_PREDEF;
 	node_type["field"] = BAS_S_FIELD;
 	node_type["file"] = BAS_S_FILE;
@@ -531,6 +532,7 @@ static void initialize_node_type(void)
 	node_type["retry"] = BAS_S_RETRY;
 	node_type["rfa"] = BAS_S_RFA;
 	node_type["rset"] = BAS_S_RSET;
+	node_type["scale"] = BAS_S_SCALE;
 	node_type["scratch"] = BAS_S_SCRATCH;
 	node_type["select"] = BAS_S_SELECT;
 	node_type["sequential"] = BAS_S_SEQUENTIAL;

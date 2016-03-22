@@ -177,6 +177,7 @@
 %token BAS_S_RFA
 %token BAS_S_ROUNDING
 %token BAS_S_RSET
+%token BAS_S_SCALE
 %token BAS_S_SCRATCH
 %token BAS_S_SELECT
 %token BAS_S_SEQUENTIAL
@@ -608,10 +609,7 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->SetType(BAS_N_CASEELSE); delete $2; }
 		| BAS_S_UNLESS expression { $$ = $1->Link($2); }
 		| BAS_S_MAP '(' BAS_V_NAME ')' formalplist { delete $2;
 			delete $4; $5->SmoothTypes(); $$ = $1->Link($3, $5); }
-		| BAS_S_OPTION BAS_S_SIZE '=' optiontype { $$ = 0; delete $1;
-			delete $2; delete $3; }
-		| BAS_S_OPTION BAS_S_TYPE '=' BAS_S_EXPLICIT { $$ = 0;
-			delete $1; delete $2; delete $3; delete $4; }
+		| BAS_S_OPTION optlist { $$ = 0; delete $1; }
 		| BAS_S_SELECT expression { $$ = $1->Link($2); }
 		| BAS_S_SUB formalname passmech formalparam {
 			$$ = $1->Link(0, $2, $3, $4); }
@@ -661,6 +659,20 @@ dimcomma:	{ $$ = NULL; }
 		| BAS_V_INTEGER { $$ = $1; }
 		| BAS_V_INT { $$ = $1; }
 		| BAS_V_NAME { $$ = $1; }
+;
+
+optlist:	optlist ',' optvalue { $$ = 0; delete $2; }
+		| optvalue {$$ = 0; }
+;
+
+optvalue:	BAS_S_SIZE '=' optiontype { $$ = 0; delete $1;
+			delete $2; delete $3; }
+		| BAS_S_TYPE '=' BAS_S_EXPLICIT { $$ = 0;
+			delete $1; delete $2; delete $3; }
+		| BAS_S_CONSTANT BAS_S_TYPE '=' BAS_S_EXPLICIT { $$ = 0;
+			delete $1; delete $2; delete $3; delete $4; }
+		| BAS_S_SCALE '=' expression { $$ = 0;
+			delete $1; delete $2; delete $3; }
 ;
 
 opformalname:	{ $$ = NULL; }
