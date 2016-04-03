@@ -453,11 +453,12 @@ void Node::VariableScanOne(
 		// array.
 		//
 		{
+			assert(Tree[1] != 0);
 			//
-			// Assume first one is a string
+			// Assume 2nd one is a string
 			//
 			VARTYPE Type1 = VARTYPE_DYNSTR;
-			if (Tree[0]->Type != BAS_V_NAME)
+			if (Tree[1]->Type != BAS_V_NAME)
 			{
 				//
 				// If it isn't a variable name, it better be
@@ -470,7 +471,7 @@ void Node::VariableScanOne(
 				//
 				// Does it already have a defined type?
 				//
-				ThisVar = Variables->Lookup(Tree[0]->TextValue, 0);
+				ThisVar = Variables->Lookup(Tree[1]->TextValue, 0);
 				if ((ThisVar != 0) &&
 					(ThisVar->Type == VARTYPE_DYNSTR))
 				{
@@ -486,13 +487,15 @@ void Node::VariableScanOne(
 			//
 			if (Type1 == VARTYPE_DYNSTR)
 			{
-				Type = BAS_S_CHANGE1;
-				Tree[1]->Link(new Node(BAS_N_NULL));
+				// change a% to b$
+				Type = BAS_S_CHANGE2;
+				Tree[0]->Link(new Node(BAS_N_NULL));
 			}
 			else
 			{
-				Type = BAS_S_CHANGE2;
-				Tree[0]->Link(new Node(BAS_N_NULL));
+				// change a$ to b%
+				Type = BAS_S_CHANGE1;
+				Tree[1]->Link(new Node(BAS_N_NULL));
 			}
 		}
 		Tree[0]->VariableScan(InDefineFlag);

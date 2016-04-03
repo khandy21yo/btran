@@ -21,3 +21,6 @@ String and other library functions
 	Use host features where available.
 	EDIT$$(CVT$$). Handle boost routines better when multiple bits are set.
 
+CHANGE
+	Check for which side is the numeric array is too simple.
+

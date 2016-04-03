@@ -669,7 +669,7 @@ optvalue:	BAS_S_SIZE '=' optiontype { $$ = 0; delete $1;
 			delete $2; delete $3; }
 		| BAS_S_TYPE '=' BAS_S_EXPLICIT { $$ = 0;
 			delete $1; delete $2; delete $3; }
-		| BAS_S_CONSTANT BAS_S_TYPE '=' BAS_S_EXPLICIT { $$ = 0;
+		| BAS_S_CONSTANT BAS_S_TYPE '='vartype { $$ = 0;
 			delete $1; delete $2; delete $3; delete $4; }
 		| BAS_S_SCALE '=' expression { $$ = 0;
 			delete $1; delete $2; delete $3; }
@@ -1001,6 +1001,8 @@ optiontype:	'(' optionlist ')' { delete $1; delete $3; $$ = 0; }
 			delete $1; delete $2; $$ = 0; }
 		| BAS_S_REAL BAS_S_HFLOAT { RealType = VARTYPE_HFLOAT;
 			delete $1; delete $2; $$ = 0; }
+		| BAS_S_DECIMAL '(' exprlist ')' { delete $2;
+			delete $4; delete $3; $$ = $1; }
 ;
 
 optionlist:	optiontype ',' optionlist { delete $2; $$ = 0; }
@@ -1027,6 +1029,7 @@ vartypetwo:	BAS_S_INTEGER
 		| BAS_S_REAL
 		| BAS_S_STRING
 		| BAS_S_RFA
+		| BAS_S_DECIMAL
 		| BAS_S_DECIMAL '(' exprlist ')' { delete $2;
 			delete $4; delete $3; $$ = $1; }
 ;
