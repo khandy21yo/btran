@@ -1996,6 +1996,15 @@ std::string Node::Expression(void)
 				".find_first_of(" + 
 				Tree[0]->Tree[1]->NoParen() + ") + 1";
 		}
+		else if (result == "basic::left" && Tree[0]->Type == BAS_N_LIST)
+		{
+			result = Tree[0]->Tree[0]->ParenString() +
+				".substr(0, " + 
+				Tree[0]->Tree[1]->NoParen() + ")";
+		}
+
+#if 0		// Doesn't work because substr bast end of string causes crash
+
 		else if (result == "basic::Qseg" &&
 			Tree[0]->Type == BAS_N_LIST &&
 			Tree[0]->Tree[1]->Type == BAS_N_LIST)
@@ -2010,12 +2019,6 @@ std::string Node::Expression(void)
 				")";
 ;
 		}
-		else if (result == "basic::left" && Tree[0]->Type == BAS_N_LIST)
-		{
-			result = Tree[0]->Tree[0]->ParenString() +
-				".substr(0, " + 
-				Tree[0]->Tree[1]->NoParen() + ")";
-		}
 		else if (result == "basic::right" && Tree[0]->Type == BAS_N_LIST)
 		{
 			result = Tree[0]->Tree[0]->ParenString() + ".substr(" + 
@@ -2029,6 +2032,7 @@ std::string Node::Expression(void)
 				IncrString(Tree[0]->Tree[1]->Tree[0]->NoParen(), -1) + ", " +
 				Tree[0]->Tree[1]->Tree[1]->NoParen() + ")";
 		}
+#endif
 		else if (result == "basic::instr" &&
 			Tree[0]->Type == BAS_N_LIST &&
 			Tree[0]->Tree[1]->Type == BAS_N_LIST)

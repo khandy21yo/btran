@@ -50,18 +50,35 @@ inline std::string left(
 	long Length			/**< Characters to take */
 	)
 	{ return std::string(Source, 0, Length); }
+
 /**
  * \brief RIGHT$()
  *
  * Return the right part of a string
+ *
+ * If you use substr past the end of the string, it crashes.
  *
  * \return Right part of string
  */
 inline std::string right(
 	const std::string& Source,	/**< Original string */
 	long Length			/**< Characters to skip over */
-	)
-	{ return std::string(Source, Length - 1); }
+)
+{
+	if (Length <= 0)
+	{
+		Length = 1;
+	}
+	if (Length > 0 && Length <= Source.size())
+	{
+		return std::string(Source, Length - 1);
+	}
+	else
+	{
+		return "";
+	}
+}
+
 /**
  * \brief SEG$()
  * \return substring
@@ -71,12 +88,40 @@ inline std::string Qseg(
 	long Start,			/**< Start position */
 	long End			/**< End position */
 	)
-	{ return std::string(Source, Start - 1, End - Start + 1); }
+{
+	if (Start <= 0)
+	{
+		Start = 1;
+	}
+	if (Start < Source.size())
+	{
+		return std::string(Source, Start - 1, End - Start + 1);
+	}
+	else
+	{
+		return "";
+	}
+}
+
 //! MID$()
 inline std::string mid(const std::string& Source, long Start, long Length)
-	{ return std::string(Source, Start - 1, Length); }
+{
+	if (Start <= 0)
+	{
+		Start = 1;
+	}
+	if (Start < Source.size())
+	{
+		return std::string(Source, Start - 1, Length);
+	}
+	else
+	{
+		return "";
+	}
+}
 //! TRM$()
-inline std::string trm(const std::string& Source) { std::string work = Source;
+inline std::string trm(const std::string& Source)
+	{ std::string work = Source;
 	work.erase(work.find_last_not_of(" \t") + 1);
 	return work; }
 
