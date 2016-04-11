@@ -429,7 +429,7 @@ VARTYPE Node::GetNodeVarType(void)
 		//
 		if (ThisVar != 0)
 		{
-			return ThisVar->GetType();
+			return ThisVar->Type;
 		}
 		break;
 

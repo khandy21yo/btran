@@ -475,7 +475,7 @@ void Node::VariableScanOne(
 				if ((ThisVar != 0) &&
 					(ThisVar->Type == VARTYPE_DYNSTR))
 				{
-					Type1 = ThisVar->GetType();
+					Type1 = ThisVar->Type;
 				}
 				else
 				{

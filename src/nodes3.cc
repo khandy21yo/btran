@@ -4000,7 +4000,7 @@ std::string Node::OutputDefinition(
 			//
 			if (ThisVar != 0)
 			{
-				result += OutputVarType(ThisVar->GetType()) + " ";
+				result += OutputVarType(ThisVar->Type) + " ";
 			}
 			else
 			{
@@ -4068,7 +4068,7 @@ std::string Node::OutputDefinition(
 			//
 			if (ThisVar != 0)
 			{
-				result += OutputVarType(ThisVar->GetType()) + " ";
+				result += OutputVarType(ThisVar->Type) + " ";
 			}
 			else
 			{

@@ -27,7 +27,7 @@
  */
 class Node
 {
-private:
+public:
 	int Type;		/**< \brief Node Type */
 	std::string TextValue;	/**< \brief Text value associated with node */
 	Node *Tree[5];		/**< \brief Pointers to parameters */
@@ -71,10 +71,6 @@ public:
 		int Ptr = 0		/**< Which (next node) to look at (0-1) */
 		) 
 		{ return Block[Ptr]; }
-	/**
-	 * \brief Return type for current node
-	 */
-	int GetType() { return Type; }
 	/**
 	 * \brief Get text value associated with this node
 	 */

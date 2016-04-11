@@ -107,13 +107,6 @@ public:
 	) 
 	{ CName = NewName; }
 	/**
-	 * \brief Get type of variable
-	 */
-	VARTYPE GetType() 
-	{
-		return Type;
-	}
-	/**
 	 * \brief Increment the usage count
 	 */
 	void IncrUsed() 

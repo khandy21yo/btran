@@ -475,7 +475,7 @@ void VariableList::Define(
 		// Assume if there are numerous parameters, that this
 		// is an undocumented function call)
 		//
-		if (ThisNode->GetTree(0)->GetType() == BAS_N_LIST)
+		if (ThisNode->GetTree(0)->Type == BAS_N_LIST)
 		{
 			ThisNode->SetType(BAS_V_FUNCTION);
 		}
@@ -486,9 +486,9 @@ void VariableList::Define(
 		ParCount = ThisNode->GetTree(0)->CountParam();
 	}
 
-	if ((ThisNode->GetType() == BAS_V_FUNCTION) ||
-		(ThisNode->GetType() == BAS_S_MAINFUNCTION) ||
-		(ThisNode->GetType() == BAS_S_FUNCTION))
+	if ((ThisNode->Type == BAS_V_FUNCTION) ||
+		(ThisNode->Type == BAS_S_MAINFUNCTION) ||
+		(ThisNode->Type == BAS_S_FUNCTION))
 	{
 		ThisClass = VARCLASS_FUNC;
 	}

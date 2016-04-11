@@ -172,7 +172,7 @@ static Node *ScanForLoops
 		//
 		// Preview this node, and decide what to do with it.
 		//
-		switch(ThisTree->GetType())
+		switch(ThisTree->Type)
 		{
 		case BAS_S_DATA:
 			//
@@ -520,7 +520,7 @@ static Node *ScanForLoops
 		//
 		// Look at this node, and decide what to do with it
 		//
-		switch(ThisTree->GetType())
+		switch(ThisTree->Type)
 		{
 		case BAS_S_IF:
 		case BAS_S_UNLESS:
@@ -539,7 +539,7 @@ static Node *ScanForLoops
 
 			if (ThisTree->GetDown(1) == 0)
 			{
-				IndentType[ThisLevel] = ThisTree->GetType();
+				IndentType[ThisLevel] = ThisTree->Type;
 				ThisLevel++;
 				IndentTree[ThisLevel] = 0;
 			}
@@ -553,7 +553,7 @@ static Node *ScanForLoops
 
 			assert(ThisTree->GetDown(1) == 0);
 
-			IndentType[ThisLevel] = ThisTree->GetType();
+			IndentType[ThisLevel] = ThisTree->Type;
 			ThisLevel++;
 			IndentTree[ThisLevel] = 0;
 			break;
@@ -683,7 +683,7 @@ static Node* MoveFunctionsTwo(
 		// Determine which code sequence to attach this
 		// node onto.
 		//
-		switch(ThisCode->GetType())
+		switch(ThisCode->Type)
 		{
 		case BAS_S_DEF:
 			//
