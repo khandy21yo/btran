@@ -2435,7 +2435,7 @@ std::string Node::OutputVarName(
 	//
 	if (array != 0)
 	{
-		if ((ThisVar != 0) && (ThisVar->GetClass() == VARCLASS_FUNC))
+		if ((ThisVar != 0) && (ThisVar->Class == VARCLASS_FUNC))
 		{
 			result += "(" + array->NoParen() + ")";
 		}

@@ -114,13 +114,6 @@ public:
 		return Type;
 	}
 	/**
-	 * \brief Get the class of a variable
-	 */
-	VARCLASS GetClass() 
-	{
-		return Class;
-	}
-	/**
 	 * \brief Increment the usage count
 	 */
 	void IncrUsed() 
