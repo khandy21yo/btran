@@ -114,15 +114,6 @@ public:
 		return Type;
 	}
 	/**
-	 * \brief Change the type of a variable
-	 */
-	void SetType(
-		VARTYPE tType			/**< New type */
-	) 
-	{
-		Type = tType;
-	}
-	/**
 	 * \brief Get the class of a variable
 	 */
 	VARCLASS GetClass() 
