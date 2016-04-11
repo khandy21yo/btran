@@ -130,15 +130,6 @@ public:
 		return Class;
 	}
 	/**
-	 * \brief Change the class of a variable
-	 */
-	void SetClass(
-		const VARCLASS NewClass		/**< New class */
-	) 
-	{
-		Class = NewClass;
-	}
-	/**
 	 * \brief Increment the usage count
 	 */
 	void IncrUsed() 

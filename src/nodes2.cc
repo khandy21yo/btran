@@ -175,7 +175,7 @@ void Node::VariableScanOne(
 		}
 		else
 		{
-			ThisVar->SetClass(VARCLASS_FUNC);
+			ThisVar->Class = VARCLASS_FUNC;
 		}
 		if (Tree[0] != 0)
 		{
@@ -227,7 +227,7 @@ void Node::VariableScanOne(
 		}
 		else
 		{
-			ThisVar->SetClass(VARCLASS_FUNC);
+			ThisVar->Class =VARCLASS_FUNC;
 			ThisVar->SetType(ThisType);
 		}
 
@@ -272,7 +272,7 @@ void Node::VariableScanOne(
 		}
 		else
 		{
-			ThisVar->SetClass(VARCLASS_FUNC);
+			ThisVar->Class = VARCLASS_FUNC;
 			ThisVar->SetType(ThisType);
 		}
 
@@ -675,7 +675,7 @@ void Node::ScanOneDefstar(
 	}
 	else
 	{
-		ThisVar->SetClass(VARCLASS_FUNC);
+		ThisVar->Class = VARCLASS_FUNC;
 		ThisVar->SetType(ThisType);
 	}
 
@@ -762,7 +762,7 @@ void Node::ScanVarList(
 			}
 			else
 			{
-				ThisVar->SetClass(VARCLASS_NONE);
+				ThisVar->Class =VARCLASS_NONE;
 				ThisVar->SetType(ThisType);
 			}
 		}
@@ -808,7 +808,7 @@ void Node::ScanVarList(
 			}
 			else
 			{
-				ThisVar->SetClass(VARCLASS_FUNC);
+				ThisVar->Class = VARCLASS_FUNC;
 				ThisVar->SetType(ThisType);
 			}
 		}
