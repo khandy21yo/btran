@@ -22,4 +22,12 @@ long smg$create_pasteboard(
 	long *type_of_terminal = 0,
 	std::string *device_name = 0);
 
+long smg$create_virtual_display(
+	const long *number_of_rows,
+	const long *number_of_columns,
+	long *display_id,
+	const long *display_attributes = 0,
+	const long *video_attributes = 0,
+	const long *character_set = 0);
+
 #endif
