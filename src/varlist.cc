@@ -441,7 +441,7 @@ void VariableList::Define(
 	//
 	if (TextName.substr(0,2) == "FN")
 	{
-		ThisNode->SetType(BAS_V_FUNCTION);
+		ThisNode->Type = BAS_V_FUNCTION;
 		PreDefined = true;
 	}
 
@@ -455,7 +455,7 @@ void VariableList::Define(
 		//
 		if (ThisVar->Class == VARCLASS_FUNC)
 		{
-			ThisNode->SetType(BAS_V_FUNCTION);
+			ThisNode->Type = BAS_V_FUNCTION;
 		}
 		return;
 	}
@@ -477,7 +477,7 @@ void VariableList::Define(
 		//
 		if (ThisNode->GetTree(0)->Type == BAS_N_LIST)
 		{
-			ThisNode->SetType(BAS_V_FUNCTION);
+			ThisNode->Type = BAS_V_FUNCTION;
 		}
 		else
 		{

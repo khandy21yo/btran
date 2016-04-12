@@ -310,7 +310,7 @@ nline:		linenum label statement '\n' { $$ =
 ;
 
 linenum:	/* Empty */ {$$ = 0;}
-		| BAS_V_INTEGER { $1->SetType(BAS_V_LABEL);
+		| BAS_V_INTEGER { $1->Type = BAS_V_LABEL;
 			$1->StripLeadZero(); $$ = $1; }
 ;
 
@@ -332,7 +332,7 @@ statement:	statementx
 ;
 
 statementw:	statementx
-		| BAS_V_INTEGER { $1->SetType(BAS_V_USELABEL);
+		| BAS_V_INTEGER { $1->Type = BAS_V_USELABEL;
 			$$ = (new Node(BAS_S_GOTO,
 			"", 0))->Link($1); }
 ;
@@ -368,21 +368,21 @@ formod:		BAS_S_FOR forassignment BAS_S_TO expression { delete $3;
 			delete $5;
 			$$ = $1->Link($2, $4, $6); }
 		| BAS_S_FOR forassignment BAS_S_UNTIL expression { delete $3;
-			$1->SetType(BAS_N_FORUNTIL);
+			$1->Type = BAS_N_FORUNTIL;
 			$$ = $1->Link($2, $4); }
 		| BAS_S_FOR forassignment BAS_S_STEP expression BAS_S_UNTIL expression { delete $3;
-			delete $5; $1->SetType(BAS_N_FORUNTIL);
+			delete $5; $1->Type = BAS_N_FORUNTIL;
 			$$ = $1->Link($2, $6, $4); }
 		| BAS_S_FOR forassignment BAS_S_WHILE expression { delete $3;
-			$1->SetType(BAS_N_FORWHILE);
+			$1->Type = BAS_N_FORWHILE;
 			$$ = $1->Link($2, $4); }
 ;
 
 stmtmod:	assignment
-		| BAS_S_CALL variable { $2->SetType(BAS_V_FUNCTION);
+		| BAS_S_CALL variable { $2->Type = BAS_V_FUNCTION;
 			$$ = $1->Link($2); }
 		| BAS_S_CAUSE BAS_S_ERROR expression { $$ = $1->Link($3);
-			$1->SetType(BAS_N_CAUSEERROR); delete $2;  }
+			$1->Type = BAS_N_CAUSEERROR; delete $2;  }
 		| BAS_S_CHAIN expression {$$ = $1->Link($2); }
 		| BAS_S_CHAIN expression BAS_S_LINE expression {
 			$$ = $1->Link($2, $4); delete $3; }
@@ -395,13 +395,13 @@ stmtmod:	assignment
 			NeedChannel = 1; }
 		| BAS_S_SCRATCH chnlexp { $$ = $1->Link($2);
 			NeedChannel = 1; }
-		| BAS_S_EXIT BAS_S_FUNCTION { $1->SetType(BAS_S_FUNCTIONEXIT);
+		| BAS_S_EXIT BAS_S_FUNCTION { $1->Type = BAS_S_FUNCTIONEXIT;
 			$$ = $1; delete $2; }
-		| BAS_S_EXIT BAS_S_HANDLER { $1->SetType(BAS_N_EXITHANDLER);
+		| BAS_S_EXIT BAS_S_HANDLER { $1->Type = BAS_N_EXITHANDLER;
 			$$ = $1; delete $2; }
-		| BAS_S_EXIT BAS_S_SUB { $1->SetType(BAS_S_SUBEXIT);
+		| BAS_S_EXIT BAS_S_SUB { $1->Type = BAS_S_SUBEXIT;
 			$$ = $1; delete $2; }
-		| BAS_S_EXIT lineno {$1->SetType(BAS_S_GOTO); $$ = $1->Link($2); }
+		| BAS_S_EXIT lineno {$1->Type = BAS_S_GOTO; $$ = $1->Link($2); }
 		| BAS_S_FIELD chnlexp ',' fieldlist {
 			$$ = $1->Link($2, $4); delete $3;
 			NeedChannel = 1; }
@@ -412,35 +412,35 @@ stmtmod:	assignment
 		| BAS_S_FOR forassignment BAS_S_TO expression BAS_S_STEP expression { delete $3;
 			delete $5; $$ = $1->Link($2, $4, $6); }
 		| BAS_S_FOR forassignment BAS_S_UNTIL expression { delete $3;
-			$1->SetType(BAS_N_FORUNTIL);
+			$1->Type = BAS_N_FORUNTIL;
 			$$ = $1->Link($2, $4); }
 		| BAS_S_FOR forassignment BAS_S_STEP expression BAS_S_UNTIL expression { delete $3;
-			delete $5; $1->SetType(BAS_N_FORUNTIL);
+			delete $5; $1->Type = BAS_N_FORUNTIL;
 			$$ = $1->Link($2, $6, $4); }
 		| BAS_S_FOR forassignment BAS_S_WHILE expression { delete $3;
-			$1->SetType(BAS_N_FORWHILE);
+			$1->Type = BAS_N_FORWHILE;
 			$$ = $1->Link($2, $4); }
 		| BAS_S_FNEXIT
 		| BAS_S_FREE chnlexp { $$ = $1->Link($2);
 			NeedChannel = 1; }
-		| BAS_S_FUNCTIONEXIT { $1->SetType(BAS_S_FNEXIT); $$ = $1; }
+		| BAS_S_FUNCTIONEXIT { $1->Type = BAS_S_FNEXIT; $$ = $1; }
 		| BAS_S_GET chnlexp getclause { $$ = $1->Link($2, $3);
 			NeedChannel = 1; }
 		| BAS_S_GOSUB lineno {$$ = $1->Link($2); }
 		| BAS_S_GOTO lineno {$$ = $1->Link($2); }
 		| BAS_S_CONTINUE {$$ = $1; }
 		| BAS_S_CONTINUE lineno {$$ = $1->Link($2); }
-		| BAS_S_GO BAS_S_SUB lineno { $1->SetType(BAS_S_GOSUB);
+		| BAS_S_GO BAS_S_SUB lineno { $1->Type = BAS_S_GOSUB;
 			$$ = $1->Link($3); delete $2; }
-		| BAS_S_GO BAS_S_TO lineno { $1->SetType(BAS_S_GOTO);
+		| BAS_S_GO BAS_S_TO lineno { $1->Type = BAS_S_GOTO;
 			$$ = $1->Link($3); delete $2; }
 		| BAS_S_INPUT optinput {
 			$$ = $1->Link($2); NeedIostreamH = 1; }
-		| BAS_S_INPUT BAS_S_LINE optinput { $1->SetType(BAS_S_LINPUT);
+		| BAS_S_INPUT BAS_S_LINE optinput { $1->Type = BAS_S_LINPUT;
 			$$ = $1->Link($3);
 			delete $2; NeedIostreamH = 1; }
 		| BAS_S_ITERATE
-		| BAS_S_ITERATE lineno { $1->SetType(BAS_S_GOTO);
+		| BAS_S_ITERATE lineno { $1->Type = BAS_S_GOTO;
 			$$ = $1->Link($2); }
 		| BAS_S_KILL expression {$$ = $1->Link($2); }
 		| BAS_S_LET assignment {$$ = $2; delete $1; }
@@ -460,10 +460,10 @@ stmtmod:	assignment
 			$$ = $1->Link($2, $4); }
 		| BAS_S_NEXT
 		| BAS_S_NEXT variable { $$ = $1->Link($2); }
-		| BAS_S_ON BAS_S_ERROR BAS_S_GO BAS_S_TO lineno { $1->SetType(BAS_N_ONERROR);
+		| BAS_S_ON BAS_S_ERROR BAS_S_GO BAS_S_TO lineno { $1->Type = BAS_N_ONERROR;
 			$$ = $1->Link($5); delete $2;
 			delete $3; delete $4; }
-		| BAS_S_ON BAS_S_ERROR BAS_S_GO BAS_S_TO { $1->SetType(BAS_N_ONERROR);
+		| BAS_S_ON BAS_S_ERROR BAS_S_GO BAS_S_TO { $1->Type = BAS_N_ONERROR;
 			$$ = $1; delete $2;
 			delete $3; delete $4; }
 		| BAS_N_ONERROR BAS_S_GO BAS_S_TO lineno { $$ = $1->Link($4);
@@ -471,27 +471,27 @@ stmtmod:	assignment
 		| BAS_N_ONERROR BAS_S_GO BAS_S_TO { $$ = $1;
 			delete $2; delete $3; }
 		| BAS_S_WHEN BAS_S_ERROR BAS_S_IN { delete $2; delete $3;
-			$1->SetType(BAS_N_WHENERRORIN); $$ = $1; }
-		| BAS_S_ON BAS_S_ERROR BAS_S_GOTO lineno { $1->SetType(BAS_N_ONERROR);
+			$1->Type = BAS_N_WHENERRORIN; $$ = $1; }
+		| BAS_S_ON BAS_S_ERROR BAS_S_GOTO lineno { $1->Type = BAS_N_ONERROR;
 			$$ = $1->Link($4); delete $2; delete $3; }
-		| BAS_S_ON BAS_S_ERROR BAS_S_GOTO { $1->SetType(BAS_N_ONERROR);
+		| BAS_S_ON BAS_S_ERROR BAS_S_GOTO { $1->Type = BAS_N_ONERROR;
 			$$ = $1; delete $2; delete $3; }
 		| BAS_N_ONERROR BAS_S_GOTO lineno { $$ = $1->Link($3); delete $2; }
 		| BAS_N_ONERROR BAS_S_GOTO { $$ = $1; delete $2; }
-		| BAS_S_ON BAS_S_ERROR BAS_S_GO BAS_S_BACK { $1->SetType(BAS_N_ONERROR);
+		| BAS_S_ON BAS_S_ERROR BAS_S_GO BAS_S_BACK { $1->Type = BAS_N_ONERROR;
 			$$ = $1->Link($4); delete $2; delete $3; }
 		| BAS_N_ONERROR BAS_S_GO BAS_S_BACK { $$ = $1->Link($3); delete $2; }
 		| BAS_S_ON expression BAS_S_GOTO linelist opother {
-			$1->SetType(BAS_N_ONGOTO);
+			$1->Type = BAS_N_ONGOTO;
 			$$ = $1->Link($2, $4, $5); delete $3; }
 		| BAS_S_ON expression BAS_S_GO BAS_S_TO linelist opother {
-			$1->SetType(BAS_N_ONGOTO);
+			$1->Type = BAS_N_ONGOTO;
 			$$ = $1->Link($2, $5, $6); delete $3; delete $4; }
 		| BAS_S_ON expression BAS_S_GOSUB linelist opother {
-			$1->SetType(BAS_N_ONGOSUB);
+			$1->Type = BAS_N_ONGOSUB;
 			$$ = $1->Link($2, $4, $5); delete $3; }
 		| BAS_S_ON expression BAS_S_GO BAS_S_SUB linelist opother {
-			$1->SetType(BAS_N_ONGOSUB);
+			$1->Type = BAS_N_ONGOSUB;
 			$$ = $1->Link($2, $5, $6); delete $3; delete $4; }
 		| BAS_S_OPEN expression optfor BAS_S_AS BAS_S_FILE chexpression openlist {
 			$$ = $1->Link($2, $3, $6, $7);
@@ -530,7 +530,7 @@ stmtmod:	assignment
 		| BAS_S_WHILE expression { $$ = $1->Link($2); }
 ;
 
-stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->SetType(BAS_N_CASEELSE); delete $2; }
+stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->Type = BAS_N_CASEELSE; delete $2; }
 		| BAS_S_CASE caseexprlist { $$ = $1->Link($2); }
 		| BAS_S_CASE { $$ = $1; }
 		| BAS_S_USE
@@ -541,51 +541,51 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->SetType(BAS_N_CASEELSE); delete $2; }
 			$$ = $1->Link($2); }
 		| BAS_S_DECLARE vartype BAS_S_CONSTANT constlist {
 			$4->SmoothTypes($2); delete $2; delete $3;
-			$1->SetType(BAS_V_DECLARECONSTANT);
+			$1->Type = BAS_V_DECLARECONSTANT;
 			$$ = $1->Link($4); }
 		| BAS_S_DECLARE vartype BAS_S_FUNCTION fundeflist {
 			$4->SmoothTypes($2); delete $2; delete $3;
-			$1->SetType(BAS_V_DECLAREFUN);
+			$1->Type = BAS_V_DECLAREFUN;
 			$$ = $1->Link($4); }
 		| BAS_S_DEF datatype formalname formalparam funequ {
 			$$ = $1->Link($2, $3, 0, $4);
 			$1->DownLink($5, 1); }
 		| BAS_S_DEF '*' datatype formalname formalparam funequ {
-			$1->SetType(BAS_S_DEFSTAR); delete $2;
+			$1->Type = BAS_S_DEFSTAR; delete $2;
 			$$ = $1->Link($3, $4, 0, $5);
 			$1->DownLink($6, 1); }
 		| BAS_S_DIM opchan dimplist { $3->SmoothTypes();
 			$$ = $1->Link($3, $2);
 			if ($2 != 0) { NeedVirtual = 1; }}
-		| BAS_S_END BAS_S_FUNCTION { $1->SetType(BAS_S_FUNCTIONEND);
+		| BAS_S_END BAS_S_FUNCTION { $1->Type = BAS_S_FUNCTIONEND;
 			$$ = $1; delete $2; }
-		| BAS_S_END BAS_S_SELECT { $1->SetType(BAS_N_ENDSELECT);
+		| BAS_S_END BAS_S_SELECT { $1->Type = BAS_N_ENDSELECT;
 			delete $2; $$ = $1; }
-		| BAS_S_END BAS_S_WHEN { $1->SetType(BAS_N_ENDWHEN);
+		| BAS_S_END BAS_S_WHEN { $1->Type = BAS_N_ENDWHEN;
 			delete $2; $$ = $1; }
-		| BAS_S_END BAS_S_SUB { $1->SetType(BAS_S_SUBEND);
+		| BAS_S_END BAS_S_SUB { $1->Type = BAS_S_SUBEND;
 			delete $2; }
-		| BAS_S_END BAS_S_DEF { $1->SetType(BAS_S_FNEND);
+		| BAS_S_END BAS_S_DEF { $1->Type = BAS_S_FNEND;
 			delete $2; }
-		| BAS_S_END BAS_S_RECORD {$1->SetType(BAS_N_ENDRECORD);
+		| BAS_S_END BAS_S_RECORD {$1->Type = BAS_N_ENDRECORD;
 			delete $2; $$ = $1; }
-		| BAS_S_END BAS_S_RECORD BAS_V_NAME {$1->SetType(BAS_N_ENDRECORD);
+		| BAS_S_END BAS_S_RECORD BAS_V_NAME {$1->Type = BAS_N_ENDRECORD;
 			delete $2; $$ = $1; delete $3; }
-		| BAS_S_END BAS_S_HANDLER { $1->SetType(BAS_V_ENDHANDLER);
+		| BAS_S_END BAS_S_HANDLER { $1->Type = BAS_V_ENDHANDLER;
 			delete $2; $$ = $1; }
 		| BAS_S_END
 		| BAS_S_EXTEND { delete $1; $$ = 0; }
 		| BAS_S_EXTERNAL vartype BAS_S_FUNCTION fundeflist {
 			$4->SmoothTypes($2); delete $2; delete $3;
-			$1->SetType(BAS_N_EXTERNALFUNCTION);
+			$1->Type = BAS_N_EXTERNALFUNCTION;
 			$$ = $1->Link($4); }
 		| BAS_S_EXTERNAL vartype BAS_S_CONSTANT constlist {
 			$4->SmoothTypes($2); delete $2; delete $3;
-			$1->SetType(BAS_N_EXTERNALCONSTANT);
+			$1->Type = BAS_N_EXTERNALCONSTANT;
 			$$ = $1->Link($4); }
 		| BAS_S_EXTERNAL BAS_S_SUB fundeflist {
 			$3->SmoothTypes(); delete $2;
-			$1->SetType(BAS_N_EXTERNALSUB);
+			$1->Type = BAS_N_EXTERNALSUB;
 			$$ = $1->Link($3); }
 		| BAS_S_EXTERNAL formalplist { $2->SmoothTypes();
 			$$ = $1->Link($2); }
@@ -600,11 +600,11 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->SetType(BAS_N_CASEELSE); delete $2; }
 			$1->DownLink($3->Link($4)); }
 		| BAS_S_IF expression BAS_S_GO BAS_S_TO lineno {
 			$$ = $1->Link($2);
-			$3->SetType(BAS_S_GOTO);
+			$3->Type = BAS_S_GOTO;
 			$1->DownLink($3->Link($5)); delete $4; }
 		| BAS_S_IF expression BAS_S_GO BAS_S_SUB lineno {
 			$$ = $1->Link($2);
-			$3->SetType(BAS_S_GOSUB);
+			$3->Type = BAS_S_GOSUB;
 			$1->DownLink($3->Link($5)); delete $4; }
 		| BAS_S_UNLESS expression { $$ = $1->Link($2); }
 		| BAS_S_MAP '(' BAS_V_NAME ')' formalplist { delete $2;
@@ -627,7 +627,7 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->SetType(BAS_N_CASEELSE); delete $2; }
 		| BAS_P_ABORT BAS_V_TEXTSTRING { $$ = $1->Link($2); }
 		| BAS_P_PRINT BAS_V_TEXTSTRING { $$ = $1->Link($2); }
 		| BAS_S_VARIANT
-		| BAS_S_END BAS_S_VARIANT { $2->SetType(BAS_N_ENDVARIANT);
+		| BAS_S_END BAS_S_VARIANT { $2->Type = BAS_N_ENDVARIANT;
 			delete $1; $$ = $2; }
 		| vardeflist
 ;
@@ -637,7 +637,7 @@ opchan:		/* Empty */ { $$ = 0; }
 ;
 
 vardeflist:	vardef { $$ = $1; }
-		| vardef ',' vardeflist { $2->SetType(BAS_N_LIST);
+		| vardef ',' vardeflist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
@@ -645,7 +645,7 @@ vardef:		vartype opformalname dimby opdefault funby { $$ =
 			(new Node(BAS_V_DEFINEVAR))->Link($2,
 			$1, $3, $4, $5); }
 		| BAS_V_NAME BAS_V_NAME dimby opdefault funby {
-			$1->SetType(BAS_N_VARTYPE);
+			$1->Type = BAS_N_VARTYPE;
 			$$ = (new Node(BAS_V_DEFINEVAR))->Link($2,
 			$1, $3, $4, $5); }
 
@@ -687,7 +687,7 @@ formalvardef:	vartype opformalname dimby opdefault funby { $$ =
 			(new Node(BAS_V_DEFINEVAR))->Link($2,
 			$1, $3, $4, $5); }
 		| BAS_V_NAME BAS_V_NAME dimby opdefault funby {
-			$1->SetType(BAS_N_VARTYPE);
+			$1->Type = BAS_N_VARTYPE;
 			$$ = (new Node(BAS_V_DEFINEVAR))->Link($2,
 			$1, $3, $4, $5); }
 		| BAS_V_NAME dimby opdefault funby {
@@ -706,17 +706,17 @@ constassign:	variable '=' expression { delete $2;
 		| variable { $$ = (new Node(BAS_V_DEFINEVAR))->Link($1); }
 ;
 
-assignment:	aslist '=' expression { $2->SetType(BAS_N_ASSIGN);
+assignment:	aslist '=' expression { $2->Type = BAS_N_ASSIGN;
 			$$ = $2->Link($1, $3); }
 ;
 
-aslist:		variable ',' aslist { $2->SetType(BAS_N_ASSIGNLIST);
+aslist:		variable ',' aslist { $2->Type = BAS_N_ASSIGNLIST;
 			$$ = $2->Link($1, $3); }
 		| variable
 ;
 
 
-forassignment:	variable '=' expression { $2->SetType(BAS_N_FORASSIGN);
+forassignment:	variable '=' expression { $2->Type = BAS_N_FORASSIGN;
 			$$ = $2->Link($1, $3); }
 ;
 
@@ -750,19 +750,19 @@ exp1:		exp1 BAS_S_IMP exp3 { $$ = $2->Link($1, $3); }
 ;
 
 exp3:		exp3 BAS_S_OR exp4  { if ($1->IsLogical() &&
-			$3->IsLogical()){$2->SetType(BAS_X_LOR);}
+			$3->IsLogical()){$2->Type = BAS_X_LOR;}
 			$$ = $2->Link($1, $3); }
 		| exp3 BAS_S_XOR exp4 { $$ = $2->Link($1, $3); }
 		| exp4
 ;
 
 exp4:		exp4 BAS_S_AND exp5 { if ($1->IsLogical() &&
-			$3->IsLogical()){$2->SetType(BAS_X_LAND);}
+			$3->IsLogical()){$2->Type = BAS_X_LAND;}
 			$$ = $2->Link($1, $3); }
 		| exp5
 ;
 
-exp5:		BAS_S_NOT exp5 { if($2->IsLogical()){$1->SetType(BAS_X_LNOT); }
+exp5:		BAS_S_NOT exp5 { if($2->IsLogical()){$1->Type = BAS_X_LNOT; }
 			$$ = $1->Link($2); }
 		| exp6
 ;
@@ -787,9 +787,9 @@ exp8:		exp8 '*' exp9  { $$ = $2->Link($1, $3); }
 		| exp9
 ;
 
-exp9:		'-' exp9 { $1->SetType(BAS_N_UMINUS);
+exp9:		'-' exp9 { $1->Type = BAS_N_UMINUS;
 			$$ = $1->Link($2); }
-		| '+' exp9 { $1->SetType(BAS_N_UPLUS);
+		| '+' exp9 { $1->Type = BAS_N_UPLUS;
 			$$ = $1->Link($2); }
 		| exp10
 ;
@@ -815,56 +815,56 @@ prenexprlist:	variable
 
 exprlist:	/* Empty */ { $$ = 0; }
 		| expression
-		| expression ',' exprlist { $2->SetType(BAS_N_LIST);
+		| expression ',' exprlist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
-		| nullexpr ',' exprlist { $2->SetType(BAS_N_LIST);
+		| nullexpr ',' exprlist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
 chnllist:	'#' chnllist { $$ = $2; delete $1; }
 		| expression ',' chnllist { $$ = $2->Link($1, $3);
-			$2->SetType(BAS_N_LIST); }
+			$2->Type = BAS_N_LIST; }
 		| expression
 ;
 
 datalist:	/* Empty */ { $$ = 0; }
 		| dataitem
-		| dataitem ',' datalist { $2->SetType(BAS_N_LIST);
+		| dataitem ',' datalist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
-		| nullexpr ',' datalist { $2->SetType(BAS_N_LIST);
+		| nullexpr ',' datalist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
 dataitem:	constant
-		| '-' constant { $1->SetType(BAS_N_UMINUS);
+		| '-' constant { $1->Type = BAS_N_UMINUS;
 			$$ = $1->Link($2); }
 		| BAS_V_NAME
 ;
 
 paramlist:	/* Empty */ { $$ = 0; }
 		| expressionx
-		| expressionx ',' paramlist { $2->SetType(BAS_N_LIST);
+		| expressionx ',' paramlist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
-		| nullexpr ',' paramlist { $2->SetType(BAS_N_LIST);
+		| nullexpr ',' paramlist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
 caseexprlist:	caseexpression
-		| caseexpression ',' caseexprlist { $2->SetType(BAS_N_LIST);
+		| caseexpression ',' caseexprlist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
 caseexpression: expression
 		| '=' expression { delete $1; $$=$2; }
-		| '<' expression { $1->SetType(BAS_X_UNARYLT);
+		| '<' expression { $1->Type = BAS_X_UNARYLT;
 			$$ = $1->Link($2); }
-		| BAS_X_LE expression { $1->SetType(BAS_X_UNARYLE);
+		| BAS_X_LE expression { $1->Type = BAS_X_UNARYLE;
 			$$ = $1->Link($2); }
-		| '>' expression { $1->SetType(BAS_X_UNARYGT);
+		| '>' expression { $1->Type = BAS_X_UNARYGT;
 			$$ = $1->Link($2); }
-		| BAS_X_GE expression { $1->SetType(BAS_X_UNARYGE);
+		| BAS_X_GE expression { $1->Type = BAS_X_UNARYGE;
 			$$ = $1->Link($2); }
-		| BAS_X_NEQ expression { $1->SetType(BAS_X_UNARYNEQ);
+		| BAS_X_NEQ expression { $1->Type = BAS_X_UNARYNEQ;
 			$$ = $1->Link($2); }
 		| expression BAS_S_TO expression { $$ = $2->Link($1, $3); }
 ;
@@ -878,13 +878,13 @@ nullexpr:	/* Empty */ {$$ = 0; }
 ;
 
 linelist:	lineno
-		| lineno ',' linelist { $2->SetType(BAS_N_LIST);
+		| lineno ',' linelist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
-lineno:		BAS_V_NAME { $1->SetType(BAS_V_USELABEL); $$ = $1; }
-		| BAS_V_INTEGER { $1->SetType(BAS_V_USELABEL); $$ = $1; }
-		| BAS_V_INT { $1->SetType(BAS_V_USELABEL); $$ = $1; }
+lineno:		BAS_V_NAME { $1->Type = BAS_V_USELABEL; $$ = $1; }
+		| BAS_V_INTEGER { $1->Type = BAS_V_USELABEL; $$ = $1; }
+		| BAS_V_INT { $1->Type = BAS_V_USELABEL; $$ = $1; }
 ;
 
 opother:	{ $$ = 0; } /* Empty */
@@ -923,7 +923,7 @@ dimvardef:	vartype formalname dimension opdefault { $$ =
 			(new Node(BAS_V_DEFINEVAR))->Link($2,
 			$1, $3, $4); }
 		| BAS_V_NAME BAS_V_NAME dimension opdefault {
-			$1->SetType(BAS_N_VARTYPE);
+			$1->Type = BAS_N_VARTYPE;
 			$$ = (new Node(BAS_V_DEFINEVAR))->Link($2,
 			$1, $3, $4); }
 		| BAS_V_NAME dimension opdefault {
@@ -945,7 +945,7 @@ variable:	variablex
 
 variablex:	BAS_V_NAME
 		| BAS_V_NAME '(' paramlist ')' { if ($3 == 0)
-			{ $2->SetType(BAS_N_NULL);
+			{ $2->Type = BAS_N_NULL;
 			  $$ = $1->Link($2);
 			} else
 			{ $$ = $1->Link($3);
@@ -953,10 +953,10 @@ variablex:	BAS_V_NAME
 			delete $4; }
 ;
 
-variabley:	BAS_V_NAME { $1->SetType(BAS_N_STRUCTNAME); $$ = $1; }
-		| BAS_V_NAME '(' paramlist ')' { $1->SetType(BAS_N_STRUCTNAME);
+variabley:	BAS_V_NAME { $1->Type = BAS_N_STRUCTNAME; $$ = $1; }
+		| BAS_V_NAME '(' paramlist ')' { $1->Type = BAS_N_STRUCTNAME;
 			if ($3 == 0)
-			{ $2->SetType(BAS_N_NULL);
+			{ $2->Type = BAS_N_NULL;
 			  $$ = $1->Link($2);
 			} else
 			{ $$ = $1->Link($3);
@@ -976,7 +976,7 @@ function:	BAS_V_FUNCTION '(' paramlist ')' { $$ = $1->Link($3);
 			$$ = $1->Link($3, $5);
 			delete $2; delete $4; delete $6; }
 		| vartypetwo '(' expression ',' vartypeone ')' {
-			$1->SetType(BAS_N_TYPEFUN);
+			$1->Type = BAS_N_TYPEFUN;
 			$$ = $1->Link($3, $5);
 			delete $2; delete $4; delete $6; }
 ;
@@ -1038,9 +1038,9 @@ fundeflist:	fundef
 		| fundeflist ',' fundef { $$ = $1->DownLink($3); delete $2; }
 ;
 
-fundef:		BAS_V_NAME funby { $1->SetType(BAS_V_FUNCTION);
+fundef:		BAS_V_NAME funby { $1->Type = BAS_V_FUNCTION;
 			$$ = (new Node(BAS_V_DEFINEFUN))->Link($1, 0, new Node(BAS_N_NULL), $2); }
-		| BAS_V_NAME funby '(' funparlist ')' { $1->SetType(BAS_V_FUNCTION);
+		| BAS_V_NAME funby '(' funparlist ')' { $1->Type = BAS_V_FUNCTION;
 			$$ = (new Node(BAS_V_DEFINEFUN))->Link($1, 0, $4, $2);
 			delete $3; delete $5; }
 ;
@@ -1051,7 +1051,7 @@ funby:		{ $$ = 0; } /* This stuff Ignored for now */
 
 funparlist:	{ $$ = 0; }
 		| funpar
-		| funparlist ',' funpar { $2->SetType(BAS_N_LIST);
+		| funparlist ',' funpar { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ; 
 
@@ -1064,7 +1064,7 @@ funpara:	vartype fundim funsiz { $$ = $1->Link(0, $2, $3); }
 			$$ = $1->Link($4, $3, $2); }
 		| BAS_V_NAME fundim funsiz {
 			$$ = $1->Link(0, $2, $3); }
-		| BAS_V_NAME BAS_V_NAME fundim funsiz { $1->SetType(BAS_N_VARTYPE);
+		| BAS_V_NAME BAS_V_NAME fundim funsiz { $1->Type = BAS_N_VARTYPE;
 			$$ = $1->Link($4, $3, $2); }
 ;
 
@@ -1077,9 +1077,9 @@ fundim:		/* Empty */ { $$ = 0; }
 
 fundimcom:	/* empty */ { $$ = 0; }
 		| expression { $$ = $1; }
-		| ',' fundimcom { $1->SetType(BAS_N_LIST);
+		| ',' fundimcom { $1->Type = BAS_N_LIST;
 			$$ = $1->Link(0, $2); }
-		| expression ',' fundimcom { $2->SetType(BAS_N_LIST);
+		| expression ',' fundimcom { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 
@@ -1088,37 +1088,37 @@ funsiz:		/* empty */ { $$ = 0; }
 ;
 
 funequ:		/* Empty */ { $$ = 0; }
-		| '=' expression { $1->SetType(BAS_N_ASSIGN);
+		| '=' expression { $1->Type = BAS_N_ASSIGN;
 			$$ = $1->Link(0, $2); }
 ;
 
 getclause:	/* empty */	{ $$ = 0; }
 		| ',' BAS_S_RECORD expression getclause { 
-			$1->SetType(BAS_N_LIST);
-			$2->SetType(BAS_V_RMSRECORD);
+			$1->Type = BAS_N_LIST;
+			$2->Type = BAS_V_RMSRECORD;
 			$$ = $1->Link($2->Link($3), $4); }
-		| ',' BAS_S_REGARDLESS getclause { $1->SetType(BAS_N_LIST);
+		| ',' BAS_S_REGARDLESS getclause { $1->Type = BAS_N_LIST;
 			$$ = $1->Link($2, $3); }
-		| ',' BAS_S_KEY '#' expression getclause { $1->SetType(BAS_N_LIST);
+		| ',' BAS_S_KEY '#' expression getclause { $1->Type = BAS_N_LIST;
 			delete $3;
 			$$ = $1->Link($2->Link($4), $5); }
 		| ',' BAS_S_KEY '#' expression BAS_S_EQ expression getclause
-			{ $1->SetType(BAS_N_LIST);
+			{ $1->Type = BAS_N_LIST;
 			delete $3;
 			$$ = $1->Link($2->Link($4, $5, $6), $7); }
 		| ',' BAS_S_KEY '#' expression BAS_S_GE expression getclause
-			{ $1->SetType(BAS_N_LIST);
+			{ $1->Type = BAS_N_LIST;
 			delete $3;
 			$$ = $1->Link($2->Link($4, $5, $6), $7); }
 		| ',' BAS_S_KEY '#' expression BAS_S_GT expression getclause
-			{ $1->SetType(BAS_N_LIST);
+			{ $1->Type = BAS_N_LIST;
 			delete $3;
 			$$ = $1->Link($2->Link($4, $5, $6), $7); }
-		| ',' BAS_S_RFA expression getclause { $1->SetType(BAS_N_LIST);
+		| ',' BAS_S_RFA expression getclause { $1->Type = BAS_N_LIST;
 			$$ = $1->Link($2->Link($3), $4); }
-		| ',' BAS_S_COUNT expression getclause { $1->SetType(BAS_N_LIST);
+		| ',' BAS_S_COUNT expression getclause { $1->Type = BAS_N_LIST;
 			$$ = $1->Link($2->Link($3), $4); }
-		| ',' BAS_S_BLOCK expression getclause { $1->SetType(BAS_N_LIST);
+		| ',' BAS_S_BLOCK expression getclause { $1->Type = BAS_N_LIST;
 			$$ = $1->Link($2->Link($3), $4); }
 ;
 
@@ -1133,7 +1133,7 @@ optprint1:	/* Empty */	{ $$ = 0; }
 			NeedPuse = 1; $2->Link($3);
 			$$ = (new Node(BAS_N_LIST, ";", 0))->Link($1, $2);
 			NeedChannel = 1; }
-		| BAS_S_RECORD expression { $1->SetType(BAS_N_RECORD);
+		| BAS_S_RECORD expression { $1->Type = BAS_N_RECORD;
 			$$ = $1->Link($2); }
 		| BAS_S_COUNT expression { $$ = $1->Link($2); }
 		| optprintexpr { $$ = $1; }
@@ -1158,8 +1158,8 @@ optinputexpr:	expression	{ $$ = $1; }
 			";", 0))->Link($1, $2); }
 ;
 
-hemisemi:	',' { $1->SetType(BAS_N_LIST); $$ = $1; }
-		| ';' { $1->SetType(BAS_N_LIST); $$ = $1; }
+hemisemi:	',' { $1->Type = BAS_N_LIST; $$ = $1; }
+		| ';' { $1->Type = BAS_N_LIST; $$ = $1; }
 ;
 
 passmech:	{ $$ = 0; }
@@ -1188,7 +1188,7 @@ openitem:	',' BAS_S_ORGANIZATION orgclause { $$ = $2->Link($3);
 		| ',' BAS_S_RECORDSIZE expression { $$ = $2->Link($3);
 			delete $1; }
 		| ',' BAS_S_RECORD BAS_S_SIZE expression { $$ = $2->Link($4);
-			delete $1; delete $3; $2->SetType(BAS_S_RECORDSIZE); }
+			delete $1; delete $3; $2->Type = BAS_S_RECORDSIZE; }
 		| ',' BAS_S_FILESIZE expression { $$ = $2->Link($3);
 			delete $1; }
 		| ',' BAS_S_WINDOWSIZE expression { $$ = $2->Link($3);
@@ -1263,7 +1263,7 @@ dupcha:		/* Empty */ { $$ = 0; }
 
 fieldlist:	/* Empty */ { $$ = 0; }
 		| fielditem
-		| fielditem ',' fieldlist { $2->SetType(BAS_N_LIST);
+		| fielditem ',' fieldlist { $2->Type = BAS_N_LIST;
 			$$ = $2->Link($1, $3); }
 ;
 

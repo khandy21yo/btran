@@ -87,10 +87,6 @@ public:
 	std::string ParenString();
 
 	/**
-	 * \brief Change the type of Node
-	 */
-	void SetType(int NewType) { Type = NewType; }
-	/**
 	 * \brief Change include value
 	 */
 	void SetInclude(int NewValue) { FromInclude = NewValue; }
