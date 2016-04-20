@@ -12,6 +12,32 @@
 #define _smg_routines_h_
 
 #include <string>
+#include <smgdef.h>
+
+//! \brief Special structure used by this implementation
+//!
+//! This structure is pointed to by the DISPLAY_ID variable.
+//!
+struct smg_display_struct
+{
+	WINDOW *win;			//!< Window
+	PANEL *pan;			//!< Panel
+	int border;			//!< Width of border (if exists)
+	std::string label;		//!< Window border label (for repaint)
+	long width;			//!< Width to create at
+	long height;			//!< Height to create at
+	long hpos;			//!< Horozontal position for window
+	long vpos;			//!< Vertical position of window
+};
+
+long smg$change_pbd_characteristics(
+	long *pasteboard_id,
+	const long *desired_width = 0,
+	long *width = 0,
+	const long *desired_height = 0,
+	long *height = 0,
+	long *desired_background_color = 0,
+	long *background_color = 0);
 
 long smg$create_pasteboard(
 	long *pasteboard_id,
@@ -25,9 +51,16 @@ long smg$create_pasteboard(
 long smg$create_virtual_display(
 	const long *number_of_rows,
 	const long *number_of_columns,
-	long *display_id,
+	smg_display_struct **display_id,
 	const long *display_attributes = 0,
 	const long *video_attributes = 0,
 	const long *character_set = 0);
+
+long smg$paste_virtual_display(
+	struct smg_display_struct **display_id,
+	const long *pasteboard_id,
+	const long *pasteboard_row = 0,
+	const long *pasteboard_column = 0,
+	const long top_display_id = 0);
 
 #endif

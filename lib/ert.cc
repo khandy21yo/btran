@@ -1,16 +1,11 @@
-//
-// ert.cc
+//! \file  ert.cc
+//! \brief error messages
 //
 //	Function that will return the text value for an error
 //	message.
 //
-// History
+//	This is based on RSTS/E error numbers.
 //
-//	12/12/1998 - Kevin Handy
-//		Original version
-//
-//	04/12/2000 - Kevin Handy
-//		Make BasicErrorMessage static.
 //
 #include <cstring>
 #include <cstdlib>

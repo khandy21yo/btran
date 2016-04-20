@@ -1,8 +1,12 @@
-
+//! \brief Define SMG constants
+//!
 
 #if !defined _smgdef_h_
 #define _smgdef_h_
 
+#include <panel.h>		//!< ncurses library
+
+//!
 //
 // SMG Comstants
 //

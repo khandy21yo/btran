@@ -1,10 +1,34 @@
 
 
-#include "smg$routines.h"
-#include "smgdef.h"
 
 #include <string>
 #include <panel.h>
+
+#include <smgdef.h>
+#include <smgmsg.h>
+
+#include "smg$routines.h"
+
+long smg$change_pbd_characteristics(
+	long *pasteboard_id,
+	const long *desired_width,
+	long *width,
+	const long *desired_height,
+	long *height,
+	long *desired_background_color,
+	long *background_color
+)
+{
+	if (width != 0)
+	{
+		*width  = COLS;
+	}
+	if (height != 0)
+	{
+		*height = LINES;
+	}
+	return SMG$_NORMAL;
+}
 
 long smg$create_pasteboard(
 	long *pasteboard_id,
@@ -29,38 +53,56 @@ long smg$create_pasteboard(
 		*number_of_pasteboard_columns = LINES;
 	}
 
-	return 1;
+	return SMG$_NORMAL;
 }
 
 long smg$create_virtual_display(
 	const long *number_of_rows,
 	const long *number_of_columns,
-	long *display_id,
+	smg_display_struct **display_id,
 	const long *display_attributes,
 	const long *video_attributes,
 	const long *character_set)
 {
-	WINDOW *win;			//!< Window
-	PANEL *pan;			//!< Panel
-	int width = *number_of_columns;
-	int height = *number_of_rows;
-	int border = 0;
+	smg_display_struct *dwin = new smg_display_struct;
+
+	dwin->width = *number_of_columns;
+	dwin->height = *number_of_rows;
+	dwin->border = 0;
+	dwin->hpos = 0;
+	dwin->vpos = 0;
 
 	if (display_attributes != 0 && *display_attributes & SMG$M_BORDER)
 	{
-		border = 1;
+		dwin->border = 1;
 	}
 	else
 	{
-		border = 0;
+		dwin->border = 0;
 	}
 	//
 	// Initilally created at (0,0)
 	//
-	win = newwin(height + border * 2, width + border * 2, 0, 0);
-	pan = new_panel(win);
+	dwin->win = newwin(dwin->height + dwin->border * 2,
+		dwin->width + dwin->border * 2, 0, 0);
+	dwin->pan = new_panel(dwin->win);
 
-	*display_id = pan;
+	*display_id = dwin;
 
-	return 1;
+	return SMG$_NORMAL;
 }
+
+long smg$paste_virtual_display(
+	struct smg_display_struct **display_id,
+	const long *pasteboard_id,
+	const long *pasteboard_row,
+	const long *pasteboard_column,
+	const long top_display_id)
+{
+	(*display_id)->hpos = *pasteboard_column - 1;
+	(*display_id)->vpos = *pasteboard_row - 1;
+	mvwin((*display_id)->win, (*display_id)->vpos, (*display_id)->hpos);
+
+	return SMG$_NORMAL;
+}
+
