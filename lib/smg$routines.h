@@ -18,7 +18,7 @@
 //!
 //! This structure is pointed to by the DISPLAY_ID variable.
 //!
-struct smg_display_struct
+struct ncurses_struct
 {
 	WINDOW *win;			//!< Window
 	PANEL *pan;			//!< Panel
@@ -51,13 +51,13 @@ long smg$create_pasteboard(
 long smg$create_virtual_display(
 	const long *number_of_rows,
 	const long *number_of_columns,
-	smg_display_struct **display_id,
+	ncurses_struct **display_id,
 	const long *display_attributes = 0,
 	const long *video_attributes = 0,
 	const long *character_set = 0);
 
 long smg$paste_virtual_display(
-	struct smg_display_struct **display_id,
+	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
 	const long *pasteboard_row = 0,
 	const long *pasteboard_column = 0,

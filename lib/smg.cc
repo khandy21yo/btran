@@ -59,12 +59,12 @@ long smg$create_pasteboard(
 long smg$create_virtual_display(
 	const long *number_of_rows,
 	const long *number_of_columns,
-	smg_display_struct **display_id,
+	ncurses_struct **display_id,
 	const long *display_attributes,
 	const long *video_attributes,
 	const long *character_set)
 {
-	smg_display_struct *dwin = new smg_display_struct;
+	ncurses_struct *dwin = new ncurses_struct;
 
 	dwin->width = *number_of_columns;
 	dwin->height = *number_of_rows;
@@ -93,7 +93,7 @@ long smg$create_virtual_display(
 }
 
 long smg$paste_virtual_display(
-	struct smg_display_struct **display_id,
+	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
 	const long *pasteboard_row,
 	const long *pasteboard_column,
