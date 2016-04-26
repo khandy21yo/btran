@@ -56,11 +56,22 @@ long smg$create_virtual_display(
 	const long *video_attributes = 0,
 	const long *character_set = 0);
 
+long smg$create_virtual_keyboard(
+	long *keyboard_id,
+	const std::string *input_device = 0,
+	const std::string *default_filespec = 0,
+	std::string *resultant_filespec = 0,
+	const long *recall_size = 0);
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
 	const long *pasteboard_row = 0,
 	const long *pasteboard_column = 0,
 	const long top_display_id = 0);
+
+long smg$set_cursor_mode(
+	long *pasteboard_id,
+	long *flags);
 
 #endif

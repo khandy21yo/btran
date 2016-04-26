@@ -92,6 +92,16 @@ long smg$create_virtual_display(
 	return SMG$_NORMAL;
 }
 
+long smg$create_virtual_keyboard(
+	long *keyboard_id,
+	const std::string *input_device,
+	const std::string *default_filespec,
+	std::string *resultant_filespec,
+	const long *recall_size)
+{
+	return SMG$_NORMAL;
+}
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
@@ -103,6 +113,13 @@ long smg$paste_virtual_display(
 	(*display_id)->vpos = *pasteboard_row - 1;
 	mvwin((*display_id)->win, (*display_id)->vpos, (*display_id)->hpos);
 
+	return SMG$_NORMAL;
+}
+
+long smg$set_cursor_mode(
+	long *pasteboard_id,
+	long *flags)
+{
 	return SMG$_NORMAL;
 }
 

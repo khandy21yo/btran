@@ -6,7 +6,7 @@ basicchannel.cc basicfun.cc ert.cc \
 basicchannel.h basicfun.h bstring.h datalist.h pusing.h \
 virtual.h
 
-libvms_a_SOURCES = smg.cc
+libvms_a_SOURCES = smg.cc lib.cc
 
 #libbtran_la_SOURCES = pusing.cc bstring.cc bedit.cc \
 #basicchannel.cc basicfun.cc ert.cc \
