@@ -159,6 +159,7 @@ private:
 	void OutputCaseIf(std::ostream& os, Node *Parent);
 	int CheckCaseLabel(void);
 	std::string OutputVarName(Node* array, int indefine = 0);
+	std::string OutputPName(Node* array, int indefine = 0);
 	/**
 	 * \brief Output indentation to C++ file
 	 */

@@ -532,6 +532,12 @@ void Node::OutputCodeOne(
 		os << "#message " << Tree[0]->Expression() << std::endl;
 		break;
 
+	case BAS_P_LET:
+		os << "#define " <<
+			Tree[0]->Tree[0]->Expression() << " " <<
+			Tree[0]->Tree[1]->Expression() << std::endl;
+		break;
+
 	case BAS_S_CHAIN:
 		os << Indent() << "basic::BasicChain(" <<
 			Tree[0]->NoParen() << ");" << std::endl;
@@ -2260,6 +2266,10 @@ std::string Node::Expression(void)
 		result = OutputVarName(Tree[0]);
 		break;
 
+	case BAS_P_NAME:
+		result = OutputPName(Tree[0]);
+		break;
+
 	case BAS_X_EQ:
 		result = Tree[0]->Expression() + " == " + Tree[1]->Expression();
 		break;
@@ -2448,6 +2458,39 @@ std::string Node::OutputVarName(
 			}
 		}
 	}
+
+	return result;
+}
+
+/**
+ * \brief Outputs Variable Name
+ *
+ *	Creates the full name for a %variable
+ */
+std::string Node::OutputPName(
+	Node* array,		/**< Pointer to any array references */
+	int InDefine		/**< Is this part of a definition */
+)
+{
+	std::string result;
+
+	for (int loop = 0; loop < TextValue.size(); loop++)
+	{
+		switch (TextValue[loop])
+		{
+		case '%':	// Ignore
+			break;
+
+		case '.':	// Periods not allowed
+			result += '_';
+			break;
+
+		default:
+			result += toupper(TextValue[loop]);
+			break;
+		}
+	}
+
 
 	return result;
 }

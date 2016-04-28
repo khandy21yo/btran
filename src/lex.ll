@@ -175,6 +175,7 @@ static inline void CountLine()
 "%LIBRARY"	return SetReturn(BAS_P_LIBRARY);
 "%ABORT"	return SetReturn(BAS_P_ABORT);
 "%PRINT"	return SetReturn(BAS_P_PRINT);
+"%LET"		return SetReturn(BAS_P_LET);
 
 "%CROSS" |
 "%NOCROSS" |
@@ -212,6 +213,7 @@ static inline void CountLine()
 				  int nt = node_type[test];
 				  if (nt != 0) return SetReturn(nt);
 				  else return SetReturn(BAS_V_NAME); }
+%[A-Z][A-Z0-9._$]*[%]?		{ return SetReturn(BAS_P_NAME); }
 
 	/*
 	 * End of file (try to back up one include level)

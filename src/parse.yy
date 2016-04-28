@@ -228,6 +228,8 @@
 %token BAS_P_LIBRARY
 %token BAS_P_ABORT
 %token BAS_P_PRINT
+%token BAS_P_LET
+%token BAS_P_NAME
 
 %token BAS_V_FUNCTION
 %token BAS_V_FLOAT
@@ -444,6 +446,7 @@ stmtmod:	assignment
 			$$ = $1->Link($2); }
 		| BAS_S_KILL expression {$$ = $1->Link($2); }
 		| BAS_S_LET assignment {$$ = $2; delete $1; }
+		| BAS_P_LET assignment {$$ = $1->Link($2); }
 		| BAS_S_LINPUT optinput {
 			$$ = $1->Link($2); NeedIostreamH = 1; }
 		| BAS_S_LSET assignment {$$ = $1->Link($2); }
@@ -944,6 +947,7 @@ variable:	variablex
 ;
 
 variablex:	BAS_V_NAME
+		| BAS_P_NAME
 		| BAS_V_NAME '(' paramlist ')' { if ($3 == 0)
 			{ $2->Type = BAS_N_NULL;
 			  $$ = $1->Link($2);
