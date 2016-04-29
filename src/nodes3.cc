@@ -624,6 +624,14 @@ void Node::OutputCodeOne(
 		}
 		break;
 
+	case BAS_P_ELSE:
+		os << "#else" << std::endl;
+		break;
+
+	case BAS_P_ENDIF:
+		os << "#endif" << std::endl;
+		break;
+
 	case BAS_S_ELSE:
 	case BAS_S_USE:
 	case BAS_S_END:
@@ -1048,6 +1056,12 @@ void Node::OutputCodeOne(
 
 			Block[2]->OutputBlock(os);
 		}
+		break;
+
+	case BAS_P_IF:
+		assert(Tree[0] != 0);
+
+		os << "#if (" << Tree[0]->NoParen() << ")" << std::endl;
 		break;
 
 	case BAS_N_WHENERRORIN:

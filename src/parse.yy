@@ -230,6 +230,11 @@
 %token BAS_P_PRINT
 %token BAS_P_LET
 %token BAS_P_NAME
+%token BAS_P_IF
+%token BAS_P_THEN
+%token BAS_P_ELSE
+%token BAS_P_END
+%token BAS_P_ENDIF
 
 %token BAS_V_FUNCTION
 %token BAS_V_FLOAT
@@ -327,9 +332,15 @@ statement:	statementx
 			$$ = $1->DownLink($3); }
 		| statement BAS_S_THEN statementw {
 			$$ = $1->DownLink($2->DownLink($3)); }
+		| statement BAS_P_THEN statementw {
+			$$ = $1->DownLink($3); delete $2; }
 		| statement BAS_S_ELSE statementw {
 			$$ = $1->DownLink($2->DownLink($3)); }
+		| statement BAS_P_ELSE statementw {
+			$$ = $1->DownLink($2->DownLink($3)); }
 		| statement BAS_N_ENDIF statementx {
+			$$ = $1->DownLink($2->DownLink($3)); }
+		| statement BAS_P_ENDIF statementx {
 			$$ = $1->DownLink($2->DownLink($3)); }
 ;
 
@@ -597,6 +608,7 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->Type = BAS_N_CASEELSE; delete $2; }
 			$$ = $1->Link($2, $3, $4, $5); }
 		| BAS_S_FUNCTIONEND
 		| BAS_S_IF expression { $$ = $1->Link($2); }
+		| BAS_P_IF expression { $$ = $1->Link($2); }
 		| BAS_S_IF expression BAS_S_GOTO lineno { $$ = $1->Link($2);
 			$1->DownLink($3->Link($4)); }
 		| BAS_S_IF expression BAS_S_GOSUB lineno { $$ = $1->Link($2);

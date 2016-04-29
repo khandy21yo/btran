@@ -152,6 +152,7 @@ static inline void CountLine()
 	 * Statements (usually)
 	 */
 "END"[ \t]*"IF"	return SetNullReturn(BAS_N_ENDIF);
+"%END"[ \t]*"%IF"	return SetNullReturn(BAS_P_ENDIF);
 "RANDOM"	{ NeedTimeH = 1; NeedBasicFun = 1; return SetNullReturn(BAS_S_RANDOM); }
 "RANDOMIZE"	{ NeedTimeH = 1; NeedBasicFun = 1; return SetNullReturn(BAS_S_RANDOM); }
 
@@ -176,6 +177,10 @@ static inline void CountLine()
 "%ABORT"	return SetReturn(BAS_P_ABORT);
 "%PRINT"	return SetReturn(BAS_P_PRINT);
 "%LET"		return SetReturn(BAS_P_LET);
+"%IF"		return SetReturn(BAS_P_IF);
+"%THEN"		return SetReturn(BAS_P_THEN);
+"%ELSE"		return SetReturn(BAS_P_ELSE);
+"%END"		return SetReturn(BAS_P_END);
 
 "%CROSS" |
 "%NOCROSS" |
