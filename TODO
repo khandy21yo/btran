@@ -1,9 +1,6 @@
 Things that need working on.
 
-parse.h - copy from parse.hh in makefile
-
 Clean up #include at start of generated code.
-	Lose those no longer used.
 	Make sure includes for boost are Ok.
 
 MAP,RECORD, etc.
@@ -12,15 +9,10 @@ MAP,RECORD, etc.
 Built in functions.
 	Need to use standard C++ and BOOST versions.
 
-Testing/Debugging
-
 lib routines
 	Brig current with btran sources.
 
 String and other library functions
 	Use host features where available.
 	EDIT$$(CVT$$). Handle boost routines better when multiple bits are set.
-
-CHANGE
-	Check for which side is the numeric array is too simple.
 

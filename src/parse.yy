@@ -1197,6 +1197,10 @@ openitem:	',' BAS_S_ORGANIZATION orgclause { $$ = $2->Link($3);
 			delete $1; }
 		| ',' BAS_S_ACCESS allowtype { $$ = $2->Link($3);
 			delete $1; }
+		| ',' BAS_S_SEQUENTIAL orgtype { $$ = $2->Link($3);
+			delete $1; }
+		| ',' BAS_S_INDEXED orgtype { $$ = $2->Link($3);
+			delete $1; }
 		| ',' BAS_S_CLUSTERSIZE expression { $$ = $2->Link($3);
 			delete $1; }
 		| ',' BAS_S_RECORDTYPE recordtype { $$ = $2->Link($3);

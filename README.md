@@ -7,7 +7,7 @@ to C++, which will thereafter be maintained as C++ code.
 
 Thiis project starteid many years ago to aid me in converting code from VMS and
 RSTS/E into something that would run under Linux. Several programs from the
-"101 Basic Computer Games" translated over with few problems.
+"101 Basic Computer Games" translate with few problems.
 
 There are still several areas where code is not readily translated, due to the
 differing underlying designes of Basic and C. Instead of creating wrappers

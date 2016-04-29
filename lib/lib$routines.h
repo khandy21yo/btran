@@ -12,9 +12,9 @@ long lib$find_file(
 	const std::string &filespec,
 	std::string &result,
 	long &context,
-	const std::string &deflt,
-	const std::string related,
-	long flags);
+	const std::string &deflt = "",
+	const std::string related = "",
+	long flags = 0);
 
 
 
