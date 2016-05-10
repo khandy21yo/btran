@@ -3084,6 +3084,7 @@ void Node::OutputDataValue(
 		if (Tree[0] == 0)
 		{
 			os << "\"\"";
+			DataWidth += 2;
 		}
 		else
 		{
@@ -3091,7 +3092,7 @@ void Node::OutputDataValue(
 		}
 		os << ",";
 		DataWidth++;
-		if (DataWidth > 60)
+		if (DataWidth > 65)
 		{
 			os << std::endl;
 			DataWidth = 0;
@@ -3103,6 +3104,7 @@ void Node::OutputDataValue(
 		if (Tree[1] == 0)
 		{
 			os << "\"\"";
+			DataWidth += 2;
 		}
 		else
 		{
@@ -3133,7 +3135,7 @@ void Node::OutputDataValue(
 			// Force quotes around data value
 			//
 			os << '"' << Expression() << '"';
-			DataWidth += TextValue.length() + 2;
+			DataWidth +=Expression().length() + 2;
 			break;
 		}
 	}
