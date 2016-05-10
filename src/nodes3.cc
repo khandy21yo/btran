@@ -3113,7 +3113,7 @@ void Node::OutputDataValue(
 	{
 		if (Type == BAS_V_TEXTSTRING)
 		{
-			os << Expression();
+			os << TextValue;
 			DataWidth += TextValue.length();
 		}
 		else
@@ -3121,7 +3121,7 @@ void Node::OutputDataValue(
 			//
 			// Force quotes around data value
 			//
-			os << '"' << Expression() << '"';
+			os << '"' << TextValue << '"';
 			DataWidth += TextValue.length() + 2;
 		}
 	}
