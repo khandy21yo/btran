@@ -3111,18 +3111,30 @@ void Node::OutputDataValue(
 	}
 	else
 	{
-		if (Type == BAS_V_TEXTSTRING)
+		switch(Type)
 		{
+		case BAS_V_TEXTSTRING:
+
 			os << TextValue;
 			DataWidth += TextValue.length();
-		}
-		else
-		{
+			break;
+
+		case BAS_V_NAME:
+		case BAS_V_INT:
+		case BAS_V_INTEGER:
+		case BAS_V_FLOAT:
+
+			os << '"' << TextValue << '"';
+			DataWidth += TextValue.length() + 2;
+			break;
+
+		default:
 			//
 			// Force quotes around data value
 			//
-			os << '"' << TextValue << '"';
+			os << '"' << Expression() << '"';
 			DataWidth += TextValue.length() + 2;
+			break;
 		}
 	}
 }
