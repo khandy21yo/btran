@@ -6,6 +6,9 @@
 #include "basicfun.h"
 #include <time.h>
 
+long ErrNum;		/**< \brief Error Number */
+long ErrLine;		/**< \brief Line Number */
+long Status;		/**< \brief Status flag */
 /**
  * \brief SYS function
  *

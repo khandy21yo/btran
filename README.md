@@ -40,4 +40,11 @@ Doing otherwise creates "not C++" code.
 	- No jumping over initializers.
 - DEF functions.
 	- Don't have access to local variables.
+- DATA sstatements
+	- Bare Reserved words in basic cause parsing problems. Putting quotes
+	  around the text works to fix this, and is compatable with basic.
+- %xxx preprocessor)
+	- Code exists but only thinly tested. %IF can cause problems if blocks
+	  end inside of it.
+	- %var is not allowed in VaxBasic, but btran accepts it.
 

@@ -50,9 +50,9 @@ static const double PI = 3.1415926535; /**< \brief Pi (Someone else already defi
 //
 // Error routines
 //
-extern long ErrNum;		/**< \brief Error Number */
-extern long ErrLine;		/**< \brief Line Number */
-extern long Status;		/**< \brief Status flag */
+extern long ErrNum;		/* Error Number */
+extern long ErrLine;		/* Line Number */
+extern long Status;		/* Status flag */
 
 //
 // Horrible gosub/return code, but it does work (Icky icky icky)
@@ -81,7 +81,11 @@ extern long Status;		/**< \brief Status flag */
 /**
  * \brief Die on an eror
  */
-#define OnErrorDie() std::cerr << "%Error " << ErrNum << " at " << ErrLine << std::endl; exit(EXIT_FAILURE);
+static inline void OnErrorDie()
+{
+	std::cerr << "%Error " << ErrNum << " at " << ErrLine << std::endl;
+	exit(EXIT_FAILURE);
+}
 /**
  * \brief ON ERROR GOTO 0
  */
@@ -102,6 +106,20 @@ extern long Status;		/**< \brief Status flag */
  * \brief Generate error
  */
 #define OnErrorHit(x) ErrNum = x; longjmp(ErrorStack);
+/**
+ * \brief return error line
+ */
+static inline int erl()
+{
+	return ErrLine;
+}
+/**
+ * \brief return error number
+ */
+static inline int err()
+{
+	return ErrNum;
+}
 
 /**
  * \brief Rnd (random number between 0 and 1)
