@@ -47,4 +47,14 @@ Doing otherwise creates "not C++" code.
 	- Code exists but only thinly tested. %IF can cause problems if blocks
 	  end inside of it.
 	- %var is not allowed in VaxBasic, but btran accepts it.
+TAB, POS, CCOS
+	Unix doesn't attempt to track the cursor position, to these functions
+	require a greate deal of complexity to implemet correctly. It requires
+	replacing the IO library with something else that tracks the current
+	cursoe position, and escape sequences would quickly overwhelm it.
+	Best to reqrite code so it doesn't need these.
+Variable names
+	Some words are keywords in one context, and cab be used as variable names
+	in another. For example, PROMPT is a command, but can also be used as a
+	variable in a RECORD. These will currently cause an error in btran.
 

@@ -14,6 +14,10 @@
 
 #include "bstring.h"
 
+#ifndef PI
+static const double PI = 3.1415926535; /**< \brief Pi (Someone else already defined this) */
+#endif
+
 namespace basic
 {
 //
@@ -43,9 +47,6 @@ static const char SI = 15;	/**< \brief Shift in */
 static const char ESC = 27;	/**< \brief Escape */
 static const char SP = 32;	/**< \brief Space */
 static const char DEL = 127;	/**< \brief Delete */
-#ifndef PI
-static const double PI = 3.1415926535; /**< \brief Pi (Someone else already defined this) */
-#endif
 
 //
 // Error routines
