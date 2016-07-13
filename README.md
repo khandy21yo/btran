@@ -54,7 +54,8 @@ TAB, POS, CCOS
 	cursoe position, and escape sequences would quickly overwhelm it.
 	Best to reqrite code so it doesn't need these.
 Variable names
-	Some words are keywords in one context, and cab be used as variable names
-	in another. For example, PROMPT is a command, but can also be used as a
-	variable in a RECORD. These will currently cause an error in btran.
+	Some words are keywords in one context, and cab be used as variable
+	names in another. For example, SET PROMPT is a command, but PROMPT 
+	can also be used as a variable in a RECORD. These will currently 
+	cause an error in btran.
 

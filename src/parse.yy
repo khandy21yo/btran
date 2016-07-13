@@ -960,6 +960,7 @@ variable:	variablex
 
 variablex:	BAS_V_NAME
 		| BAS_P_NAME
+		| BAS_S_PROMPT { $1->Type = BAS_V_NAME; $$ = $1; }
 		| BAS_V_NAME '(' paramlist ')' { if ($3 == 0)
 			{ $2->Type = BAS_N_NULL;
 			  $$ = $1->Link($2);
@@ -970,6 +971,7 @@ variablex:	BAS_V_NAME
 ;
 
 variabley:	BAS_V_NAME { $1->Type = BAS_N_STRUCTNAME; $$ = $1; }
+		| BAS_S_PROMPT { $1->Type = BAS_N_STRUCTNAME; $$ = $1; }
 		| BAS_V_NAME '(' paramlist ')' { $1->Type = BAS_N_STRUCTNAME;
 			if ($3 == 0)
 			{ $2->Type = BAS_N_NULL;
