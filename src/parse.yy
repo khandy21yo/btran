@@ -461,8 +461,8 @@ stmtmod:	assignment
 		| BAS_S_LINPUT optinput {
 			$$ = $1->Link($2); NeedIostreamH = 1; }
 		| BAS_S_LSET assignment {$$ = $1->Link($2); }
-		| BAS_S_MARGIN chnlexp ',' expression {
-			$$ = $1->Link($2, $4); delete $3;
+		| BAS_S_MARGIN opchan expression {
+			$$ = $1->Link($2, $3);
 			NeedChannel = 1; }
 		| BAS_S_MOVE BAS_S_TO chnlexp ',' expression {
 			$$ = $1->Link($3, $5); delete $2;

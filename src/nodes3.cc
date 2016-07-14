@@ -1162,6 +1162,15 @@ void Node::OutputCodeOne(
 		OutputMap(os);
 		break;
 
+	case BAS_S_MARGIN:
+		os << Indent() << "basic::margin(";
+		if (Tree[0] != 0)
+		{
+			os << Tree[0]->Expression();
+		}
+		os << ", " << Tree[1]->Expression() << ");" << std::endl;
+		break;
+
 	case BAS_S_MAT:
 		assert(Tree[0] != 0);
 		assert(Tree[1] != 0);
