@@ -156,6 +156,8 @@
 %token BAS_S_PRIMARY
 %token BAS_S_PRINT
 %token BAS_S_PROMPT
+%token BAS_S_PROGRAM
+%token BAS_S_PROGRAMEND
 %token BAS_S_PUT
 %token BAS_S_RANDOM
 %token BAS_S_READ
@@ -571,6 +573,8 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->Type = BAS_N_CASEELSE; delete $2; }
 		| BAS_S_DIM opchan dimplist { $3->SmoothTypes();
 			$$ = $1->Link($3, $2);
 			if ($2 != 0) { NeedVirtual = 1; }}
+		| BAS_S_END BAS_S_PROGRAM { $1->Type = BAS_S_PROGRAMEND;
+			$$ = $1; delete $2; }
 		| BAS_S_END BAS_S_FUNCTION { $1->Type = BAS_S_FUNCTIONEND;
 			$$ = $1; delete $2; }
 		| BAS_S_END BAS_S_SELECT { $1->Type = BAS_N_ENDSELECT;
@@ -644,6 +648,8 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->Type = BAS_N_CASEELSE; delete $2; }
 		| BAS_S_VARIANT
 		| BAS_S_END BAS_S_VARIANT { $2->Type = BAS_N_ENDVARIANT;
 			delete $1; $$ = $2; }
+		| BAS_S_PROGRAM variablex {
+			$$ = $1->Link(0, $2); }
 		| vardeflist
 ;
 

@@ -352,6 +352,7 @@ static Node *ScanForLoops
 			goto reloop;
 
 		case BAS_S_FUNCTIONEND:
+		case BAS_S_PROGRAMEND:
 		case BAS_S_SUBEND:
 		case BAS_V_ENDHANDLER:
 
@@ -478,6 +479,7 @@ static Node *ScanForLoops
 
 		case BAS_S_MAINFUNCTION:
 		case BAS_S_FUNCTION:
+		case BAS_S_PROGRAM:
 		case BAS_S_SUB:
 		case BAS_S_HANDLER:
 
@@ -525,6 +527,7 @@ static Node *ScanForLoops
 		case BAS_S_IF:
 		case BAS_S_UNLESS:
 		case BAS_S_FUNCTION:
+		case BAS_S_PROGRAM:
 		case BAS_S_MAINFUNCTION:
 		case BAS_S_SUB:
 		case BAS_S_FOR:

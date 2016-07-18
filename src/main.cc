@@ -515,6 +515,7 @@ static void initialize_node_type(void)
 	node_type["pi"] = BAS_V_PREDEF;
 	node_type["primary"] = BAS_S_PRIMARY;
 	node_type["print"] = BAS_S_PRINT;
+	node_type["program"] = BAS_S_PROGRAM;
 	node_type["prompt"] = BAS_S_PROMPT;
 	node_type["put"] = BAS_S_PUT;
 	node_type["read"] = BAS_S_READ;

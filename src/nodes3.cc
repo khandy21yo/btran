@@ -404,6 +404,11 @@ void Node::OutputPrototypes(
 
 		switch(ThisNode->Type)
 		{
+		case BAS_S_PROGRAM:
+//			os << "void " << Tree[0]->Expression() <<
+//				"(void)" << std::endl;
+//			break;
+//
 		case BAS_S_FUNCTION:
 		case BAS_S_SUB:
 		case BAS_S_DEF:
@@ -1592,6 +1597,7 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_SUB:
+	case BAS_S_PROGRAM:
 
 		//
 		// Empty variable list
@@ -1774,6 +1780,7 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_SUBEXIT:
+	case BAS_S_PROGRAMEND:
 		os << Indent() <<  "return;" << std::endl;
 		break;
 
@@ -3891,6 +3898,7 @@ std::string Node::OutputNewDefinition(void)
 		break;
 
 	case BAS_S_SUB:
+	case BAS_S_PROGRAM:
 		IsFunction = 1;
 		result = "void ";
 		break;
