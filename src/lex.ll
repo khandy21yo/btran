@@ -33,8 +33,7 @@ YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
 static int include_line[MAX_INCLUDE_DEPTH];
 char* include_name[MAX_INCLUDE_DEPTH] = {(char*)NULL};
 static void StartInclude(char* filename);
-static char *mangle_string(char *Text);
-static void mangle_string_value(char *ThisPart, int Base, char Type);
+static char *mangle_string(char *Text, int *type);
 static void my_fatal_error(const char* msg);
 
 #ifndef max
@@ -52,11 +51,12 @@ static inline int SetReturn(int x)
 
 static inline int SetStringReturn(int x)
 {
+	int type;
 //std::std::cerr << "Test1: Mangle '" << yytext << "'" << std::endl;
-	char* MangleValue = mangle_string(yytext);
+	char* MangleValue = mangle_string(yytext, &type);
 	yylval = new Node(x, MangleValue, include_stack_pointer, xline);
 	delete MangleValue;
-	return(x);
+	return(type);
 }
 
 static inline int SetNullReturn(int x)
@@ -95,16 +95,11 @@ static inline void CountLine()
 [\n\f]			{ CountLine(); return('\n'); }
 "&"[\n\f]		CountLine();
 [ \t]+			;
-[DBOX]?"\""([0-9A-Fa-f]*)"\""[BWLQFDGHPSTX]	return SetStringReturn(BAS_V_INTEGER);
-"A\""([^\"]*)"\""[BWLQFDGHPSTX]	return SetStringReturn(BAS_V_INTEGER);
-[DBOX]?"'"([0-9A-Fa-f]*)"'"[BWLQFDGHPSTX]	return SetStringReturn(BAS_V_INTEGER);
-"A'"([^\']*)"'"[BWLQFDGHPSTX]	return SetStringReturn(BAS_V_INTEGER);
-[DBOX]?"\""([0-9A-Fa-f]*)"\"C"	return SetStringReturn(BAS_V_TEXTSTRING);
-"A\""([^\"]*)"\"C"	return SetStringReturn(BAS_V_TEXTSTRING);
-[DBOX]?"'"([0-9A-Fa-f]*)"'C"		return SetStringReturn(BAS_V_TEXTSTRING);
-"A'"([^\']*)"'C"		return SetStringReturn(BAS_V_TEXTSTRING);
-"\""([^\"]*)"\""	return SetStringReturn(BAS_V_TEXTSTRING);
-"'"([^']*)"'"		return SetStringReturn(BAS_V_TEXTSTRING);
+	/*
+	 * Qutted Strings
+	 */
+[ADBOX]?"\""([^\"]*)"\""[BWLQFDGHPSTX]?	return SetStringReturn(BAS_V_TEXTSTRING);
+[ADBOX]?"'"([^']*)"'"[BWLQFDGHPSTX]?	return SetStringReturn(BAS_V_TEXTSTRING);
 
 "!"[^\n\f\!]*"!"	{ SetComment(BAS_S_REMARK); }
 "!"[^\n\f\!]*/"&"[\n\f]	{ SetComment(BAS_S_REMARK); }
@@ -193,13 +188,13 @@ static inline void CountLine()
 <incl>[ \t]+		;
 <incl>[\n\f]		{ BEGIN(INITIAL); CountLine(); return('\n'); }
 <incl>"%FROM"		{ BEGIN(INITIAL); return SetReturn(BAS_P_FROM); }
-<incl>"\""([^\"]*)"\""	{ char* MangleValue = mangle_string(yytext);
+<incl>"\""([^\"]*)"\""	{ char* MangleValue = mangle_string(yytext, 0);
 				yylval = new Node(BAS_V_TEXTSTRING,
 				MangleValue, include_stack_pointer);
 				StartInclude(yytext); BEGIN(INITIAL);
 				delete MangleValue;
 				return BAS_V_TEXTSTRING; }
-<incl>"'"([^']*)"'"	{ char* MangleValue = mangle_string(yytext);
+<incl>"'"([^']*)"'"	{ char* MangleValue = mangle_string(yytext, 0);
 				yylval = new Node(BAS_V_TEXTSTRING,
 				MangleValue, include_stack_pointer);
 				StartInclude(yytext); BEGIN(INITIAL);
@@ -357,12 +352,13 @@ Bugs:
 
 *******************************************************************************/
 
-static char *mangle_string(char *Text)
+static char *mangle_string(char *Text, int *type)
 {
 	char *ThisPart;
-	char *ThisPtr;
 	char qmark;
-	int Base = 10;
+	int Base = 0;
+	std::string ThisPtr;
+	int returntype = 0;
 
 	assert(Text != NULL);
 
@@ -370,8 +366,8 @@ static char *mangle_string(char *Text)
 	// Create area to work in
 	// (Probibly more than we will need)
 	//
-	ThisPart = new char[max(14, strlen(Text) * 2)];
-	ThisPtr = ThisPart;
+//	ThisPart = new char[max(14, strlen(Text) * 2)];
+//	ThisPtr = ThisPart;
 
 	//
 	// Handle any possible bases on front of string
@@ -403,18 +399,20 @@ static char *mangle_string(char *Text)
 		Base = 256;
 		Text++;
 		break;
+	default:
+		break;
 	}
 
 	//
-	// Determine quote character used (Better start with a quote
-	// or were in deep ****)
+	// Determine quote character used (Better start with a quote mark
+	// or the lexer is broken.
 	//
-	qmark = '\0';
+	qmark = *Text++;
 
 	//
 	// Process all the characters in original string
 	//
-	while (*Text)
+	while (qmark)
 	{
 		switch (*Text)
 		{
@@ -422,40 +420,35 @@ static char *mangle_string(char *Text)
 		// Slash must be doubled
 		//
 		case '\\':
-			*ThisPtr++ = '\\';
-			*ThisPtr++ = '\\';
+			ThisPtr += "\\\\";	// Two backslashes
 			break;
 
 		//
 		// Change (audible bell) character to (\a)
 		//
 		case '\a':
-			*ThisPtr++ = '\\';
-			*ThisPtr++ = 'a';
+			ThisPtr += "\\a";
 			break;
 
 		//
 		// Change (backspace) character to (\b)
 		//
 		case '\b':
-			*ThisPtr++ = '\\';
-			*ThisPtr++ = 'b';
+			ThisPtr += "\\b";
 			break;
 
 		//
 		// Change (tab) character to (\t)
 		//
 		case '\t':
-			*ThisPtr++ = '\\';
-			*ThisPtr++ = 't';
+			ThisPtr += "\\t";
 			break;
 
 		//
 		// Change (vertical tab) character to (\v)
 		//
 		case '\v':
-			*ThisPtr++ = '\\';
-			*ThisPtr++ = 'v';
+			ThisPtr += "\\v";
 			break;
 
 		//
@@ -464,16 +457,11 @@ static char *mangle_string(char *Text)
 		case '\'':
 			switch(qmark)
 			{
-			case '\'':
+			case '\'':		// End of qtoted string
 				qmark = '\0';
-				*ThisPtr++ = '"';
 				break;
-			case '\0':
-				qmark = '\'';
-				*ThisPtr++ = '"';
-				break;
-			default:
-				*ThisPtr++ = '\'';
+			default:		// Single quote in string
+				ThisPtr += '\'';
 				break;
 			}
 			break;
@@ -484,192 +472,102 @@ static char *mangle_string(char *Text)
 		case '"':
 			switch(qmark)
 			{
-			case '"':
+			case '"':		// End of quoted string
 				qmark = '\0';
-				*ThisPtr++ = '"';
 				break;
-			case '\0':
-				qmark = '"';
-				*ThisPtr++ = '"';
+			default:		// Double quote inside string
+				ThisPtr += "\\\"";
 				break;
-			default:
-				*ThisPtr++ = '\\';
-				*ThisPtr++ = '"';
-				break;
-			}
-			break;
-
-		case 'B':
-		case 'b':
-		case 'W':
-		case 'w':
-		case 'L':
-		case 'l':
-		case 'f':
-		case 'F':
-		case 'd':
-		case 'D':
-		case 'g':
-		case 'G':
-		case 'h':
-		case 'H':
-		case 'c':
-		case 'C':
-		case 'q':
-		case 'Q':
-		case 's':
-		case 'S':
-		case 't':
-		case 'T':
-		case 'x':
-		case 'X':
-			if (qmark == '\0')
-			{
-				*ThisPtr = '\0';
-				mangle_string_value(ThisPart, Base, *Text);
-				ThisPtr = ThisPart + strlen(ThisPart);
-			}
-			else
-			{
-				*ThisPtr++ = *Text;
 			}
 			break;
 
 		default:
-			*ThisPtr++ = *Text;
+			ThisPtr += *Text;
 			break;
 		}
-
 		Text++;
 	}
 
 	//
-	// Return result
+	// Last character is erither a null terminator
+	// or he result type wanted
 	//
-	*ThisPtr = '\0';
-	return (ThisPart);
-}
-
-/*******************************************************************************
-
-Local Function:
-
-	mangle_string_value()
-
-Title:
-
-	Prints out a number in a given base.
-
-Description:
-
-	This function processes a quoted string
-
-Bugs:
-
-
-*******************************************************************************/
-
-static void mangle_string_value(char *ThisPart, int Base, char Type)
-{
-	const char *bascode;
-	int len;
-	char worktext[64];
-	int StartChar = 1;
-
-
-//std::cerr << "Test: '" << ThisPart << "' base " << Base << ", type " << Type << std::endl;
-	assert(ThisPart != NULL);
-
-	//
-	// Set up format for outputing of this number
-	//
-	switch(Base)
+	if (*Text == '\0' && Base == 0)	// Simple text string
 	{
-	case 2:
-		bascode = "0b%s";
-		break;
-	case 8:
-		bascode = "0%s";
-		break;
-	case 16:
-		bascode = "x%s";
-		break;
-	case 256:
-		bascode = "'%s'";
-		break;
-	default: // 10
-		bascode = "%s";
-		break;
+		ThisPtr = std::string("\"") + ThisPtr + "\"";
+		returntype = BAS_V_TEXTSTRING;
+	}
+	else		// Numeric value
+	{
+		returntype = BAS_V_INTEGER;
+		switch(Base)
+		{
+		case 2:
+			ThisPtr = std::string("0b") + ThisPtr;
+			break;
+		case 8:
+			ThisPtr = std::string("0") + ThisPtr;
+			break;
+		case 16:
+			ThisPtr = std::string("0x") + ThisPtr;
+			break;
+		case 256:
+			ThisPtr = std::string("'") + ThisPtr + "'";
+			break;
+		default: // 10
+			break;
+		}
 	}
 
-	//
-	// Lose final quote mark
-	//
-	len = strlen(ThisPart);
-	if (len > 0)
-	{
-		ThisPart[len-1] = '\0';
-	}
-
-	/*
-	 * Skip over leading zero's
-	 */
-	while(ThisPart[StartChar] == '0')
-	{
-		StartChar++;
-	}
-	if ((isdigit(ThisPart[StartChar]) == 0) && (StartChar != 1))
-	{
-		StartChar--;
-	}
-
-	switch(Type)
+	switch(*Text)
 	{
 	case 'B':
 	case 'b':
 	case 'W':
 	case 'w':
-		sprintf(worktext, bascode, ThisPart+StartChar);
+		returntype = BAS_V_INTEGER;
 		break;
 
 	case 'L':
 	case 'l':
-		sprintf(worktext, bascode, ThisPart+StartChar);
-		strcat(worktext, "L");
+		returntype = BAS_V_INTEGER;
+		ThisPtr += "L";
 		break;
 
 	case 'C':
 	case 'c':
-		if (Base == 10)
-		{
-			long value = atoi(ThisPart + 1);
-			if (value == 0)
-			{
-				strcpy(worktext, "std::string('\\0')");
-				break;
-			}
-		}
-		worktext[0] = '"';
-		worktext[1] = '\\';
-		if (Base == 10)
-		{
-			long value = atoi(ThisPart + 1);
-			sprintf(worktext + 2, "x%x", value);
-		}
-		else
-		{
-			sprintf(worktext + 2, bascode, ThisPart + 1);
-		}
-		strcat(worktext, "\"");
+		returntype = BAS_V_INTEGER;
+		break;
+
+	case 'f':
+	case 'd':
+	case 'g':
+	case 'h':
+	case 'p':
+	case 'F':
+	case 'D':
+	case 'G':
+	case 'H':
+	case 'P':
+		returntype = BAS_V_FLOAT;
 		break;
 
 	default:
-		strcpy(worktext, ThisPart + 1);
+		returntype = BAS_V_INTEGER;
 		break;
 
 	}
 
-	strcpy(ThisPart, worktext);
+	//
+	// Return result (Yes, there is a memory leak here)
+	//
+	ThisPart = new char[ThisPtr.size() + 2];
+	strcpy(ThisPart, ThisPtr.c_str());
+	if (type != 0)
+	{
+		*type = returntype;
+	}
+	return (ThisPart);
 }
 
 //
