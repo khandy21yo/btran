@@ -98,8 +98,8 @@ static inline void CountLine()
 	/*
 	 * Qutted Strings
 	 */
-[ADBOX]?"\""([^\"]*)"\""[BWLQFDGHPSTX]?	return SetStringReturn(BAS_V_TEXTSTRING);
-[ADBOX]?"'"([^']*)"'"[BWLQFDGHPSTX]?	return SetStringReturn(BAS_V_TEXTSTRING);
+[ADBOX]?"\""([^\"]*)"\""[CBWLQFDGHPSTX]?	return SetStringReturn(BAS_V_TEXTSTRING);
+[ADBOX]?"'"([^']*)"'"[CBWLQFDGHPSTX]?	return SetStringReturn(BAS_V_TEXTSTRING);
 
 "!"[^\n\f\!]*"!"	{ SetComment(BAS_S_REMARK); }
 "!"[^\n\f\!]*/"&"[\n\f]	{ SetComment(BAS_S_REMARK); }
@@ -363,13 +363,6 @@ static char *mangle_string(char *Text, int *type)
 	assert(Text != NULL);
 
 	//
-	// Create area to work in
-	// (Probibly more than we will need)
-	//
-//	ThisPart = new char[max(14, strlen(Text) * 2)];
-//	ThisPtr = ThisPart;
-
-	//
 	// Handle any possible bases on front of string
 	//
 	switch (*Text)
@@ -553,7 +546,7 @@ static char *mangle_string(char *Text, int *type)
 		break;
 
 	default:
-		returntype = BAS_V_INTEGER;
+		returntype = BAS_V_TEXTSTRING;
 		break;
 
 	}
