@@ -825,6 +825,8 @@ exp10:		exp10 '^' exp11  { $$ = $2->Link($1, $3);
 
 exp11:		'(' expression ')' { delete $3; $$ = $1->Link($2); }
 		| expvalue
+		| vartypetwo '(' expression ')' { $1->Type = BAS_V_FUNCTION;
+			$$ = $1->Link($3); delete $2; delete $4; }
 ;
 
 expvalue:	variable
