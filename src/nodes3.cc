@@ -1015,8 +1015,11 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_FUNCTIONEXIT:
-	case BAS_S_PROGRAMEXIT:
 		os << Indent() << "return Result;" << std::endl;
+		break;
+
+	case BAS_S_PROGRAMEXIT:
+		os << Indent() << "exit(EXIT_SUCCESS);" << std::endl;
 		break;
 
 	case BAS_S_GET:
