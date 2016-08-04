@@ -158,6 +158,7 @@
 %token BAS_S_PROMPT
 %token BAS_S_PROGRAM
 %token BAS_S_PROGRAMEND
+%token BAS_S_PROGRAMEXIT
 %token BAS_S_PUT
 %token BAS_S_RANDOM
 %token BAS_S_READ
@@ -411,6 +412,8 @@ stmtmod:	assignment
 		| BAS_S_SCRATCH chnlexp { $$ = $1->Link($2);
 			NeedChannel = 1; }
 		| BAS_S_EXIT BAS_S_FUNCTION { $1->Type = BAS_S_FUNCTIONEXIT;
+			$$ = $1; delete $2; }
+		| BAS_S_EXIT BAS_S_PROGRAM { $1->Type = BAS_S_PROGRAMEXIT;
 			$$ = $1; delete $2; }
 		| BAS_S_EXIT BAS_S_HANDLER { $1->Type = BAS_N_EXITHANDLER;
 			$$ = $1; delete $2; }
