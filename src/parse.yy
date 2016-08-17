@@ -761,14 +761,15 @@ chexpression:	expression
 matexpression: BAS_S_ZER { $$ = $1; }
 		| BAS_S_CON { $$ = $1; }
 		| BAS_S_IDN { $$ = $1; }
-		| BAS_S_NAME '+' BAS_S_NAME { $$ = $2->Link($1, $3); }
-		| BAS_S_NAME '-' BAS_S_NAME { $$ = $2->Link($1, $3); }
-		| BAS_S_NAME '*' BAS_S_NAME { $$ = $2->Link($1, $3); }
+		| BAS_V_NAME { $$ = $1; }
+		| BAS_V_NAME '+' BAS_V_NAME { $$ = $2->Link($1, $3); }
+		| BAS_V_NAME '-' BAS_V_NAME { $$ = $2->Link($1, $3); }
+		| BAS_V_NAME '*' BAS_V_NAME { $$ = $2->Link($1, $3); }
 		| '(' constant ')' '*' BAS_S_NAME { $$ = $1->Link($2, $5);
 			delete $3; delete $4; }
-		| BAS_S_TRN '(' BAS_S_NAME ')' { $$ = $1->Link($3);
+		| BAS_S_TRN '(' BAS_V_NAME ')' { $$ = $1->Link($3);
 			delete $2; delete $4; }
-		| BAS_S_INV '(' BAS_S_NAME ')' { $$ = $1->Link($3);
+		| BAS_S_INV '(' BAS_V_NAME ')' { $$ = $1->Link($3);
 			delete $2; delete $4; }
 ;
 
