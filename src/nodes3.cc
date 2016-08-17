@@ -1783,9 +1783,27 @@ void Node::OutputCodeOne(
 
 		break;
 
-	case BAS_S_SUBEXIT:
 	case BAS_S_PROGRAMEND:
-		os << Indent() <<  "return;" << std::endl;
+		if (Tree[0] != 0)
+		{
+			//
+			// Only need this if exit value is given
+			//
+			os << Indent() <<  "exit(" <<
+				Tree[0]->Expression() << ");" << std::endl;
+		}
+		break;
+
+	case BAS_S_SUBEXIT:
+		if (Tree[0] == 0)
+		{
+			os << Indent() <<  "return;" << std::endl;
+		}
+		else
+		{
+			os << Indent() <<  "return " <<
+				Tree[0]->Expression() << ";" << std::endl;
+		}
 		break;
 
 	case BAS_P_TITLE:

@@ -351,8 +351,8 @@ static Node *ScanForLoops
 			delete ThisTree;
 			goto reloop;
 
+
 		case BAS_S_FUNCTIONEND:
-		case BAS_S_PROGRAMEND:
 		case BAS_S_SUBEND:
 		case BAS_V_ENDHANDLER:
 
@@ -524,6 +524,17 @@ static Node *ScanForLoops
 		//
 		switch(ThisTree->Type)
 		{
+		case BAS_S_PROGRAMEND:
+
+			//
+			// End a function/subroutine
+			//
+			// Force back to lowest level
+			//
+			ThisLevel = 0;
+
+			break;
+
 		case BAS_S_IF:
 		case BAS_S_UNLESS:
 		case BAS_S_FUNCTION:

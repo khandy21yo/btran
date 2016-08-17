@@ -515,6 +515,9 @@ stmtmod:	assignment
 		| BAS_S_OPEN expression optfor BAS_S_AS BAS_S_FILE chexpression openlist {
 			$$ = $1->Link($2, $3, $6, $7);
 			delete $4; delete $5; NeedChannel = 1; }
+		| BAS_S_OPEN expression optfor BAS_S_AS chexpression openlist {
+			$$ = $1->Link($2, $3, $5, $6);
+			delete $4; NeedChannel = 1; }
 		| BAS_S_PRINT optprint { $$ = $1->Link($2); NeedIostreamH = 1; }
 		| BAS_S_PUT chnlexp getclause { $$ = $1->Link($2, $3);
 			NeedChannel = 1; }
@@ -576,8 +579,8 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->Type = BAS_N_CASEELSE; delete $2; }
 		| BAS_S_DIM opchan dimplist { $3->SmoothTypes();
 			$$ = $1->Link($3, $2);
 			if ($2 != 0) { NeedVirtual = 1; }}
-		| BAS_S_END BAS_S_PROGRAM { $1->Type = BAS_S_PROGRAMEND;
-			$$ = $1; delete $2; }
+		| BAS_S_END BAS_S_PROGRAM opvalue { $1->Type = BAS_S_PROGRAMEND;
+			$$ = $1->Link($3); delete $2; }
 		| BAS_S_END BAS_S_FUNCTION { $1->Type = BAS_S_FUNCTIONEND;
 			$$ = $1; delete $2; }
 		| BAS_S_END BAS_S_SELECT { $1->Type = BAS_N_ENDSELECT;
@@ -658,6 +661,10 @@ stmtnomod:	BAS_S_CASE BAS_S_ELSE { $1->Type = BAS_N_CASEELSE; delete $2; }
 
 opchan:		/* Empty */ { $$ = 0; }
 		| chnlexp ',' { $$ = $1; delete $2; }
+;
+
+opvalue:	/* Empty */ { $$ = 0; }
+		| expression { $$ = $1; }
 ;
 
 vardeflist:	vardef { $$ = $1; }
