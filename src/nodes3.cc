@@ -1019,7 +1019,15 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_PROGRAMEXIT:
-		os << Indent() << "exit(EXIT_SUCCESS);" << std::endl;
+		if (Tree[0] != 0)
+		{
+			os << Indent() << "exit(" <<
+				Tree[0]->Expression() << ");" << std::endl;
+		}
+		else
+		{
+			os << Indent() << "exit(EXIT_SUCCESS);" << std::endl;
+		}
 		break;
 
 	case BAS_S_GET:

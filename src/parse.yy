@@ -413,8 +413,8 @@ stmtmod:	assignment
 			NeedChannel = 1; }
 		| BAS_S_EXIT BAS_S_FUNCTION { $1->Type = BAS_S_FUNCTIONEXIT;
 			$$ = $1; delete $2; }
-		| BAS_S_EXIT BAS_S_PROGRAM { $1->Type = BAS_S_PROGRAMEXIT;
-			$$ = $1; delete $2; }
+		| BAS_S_EXIT BAS_S_PROGRAM opvalue { $1->Type = BAS_S_PROGRAMEXIT;
+			$$ = $1->Link($3); delete $2; }
 		| BAS_S_EXIT BAS_S_HANDLER { $1->Type = BAS_N_EXITHANDLER;
 			$$ = $1; delete $2; }
 		| BAS_S_EXIT BAS_S_SUB { $1->Type = BAS_S_SUBEXIT;
