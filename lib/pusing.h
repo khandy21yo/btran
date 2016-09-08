@@ -104,6 +104,14 @@ inline std::string Format(const int Value, const std::string& Format)
 inline std::string Format(const int Value, const char* Format)
 	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
 	std::string Two = Puse.Finish(); return One + Two; }
+//! FORMAT$(int,string)
+inline std::string Format(const long Value, const std::string& Format)
+	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish(); return One + Two; }
+//! FORMAT$(int,char)
+inline std::string Format(const long Value, const char* Format)
+	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish(); return One + Two; }
 }
 #endif
 
