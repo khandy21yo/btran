@@ -8,8 +8,29 @@
 #include <glob.h>
 #include <libgen.h>
 #include <vector>
+#include <unistd.h>
 
 #include "lib$routines.h"
+
+/** \brief Delete a file
+ *
+ * This version only looks at filespec. All other parameters are ignored.
+ */
+long lib$delete_file(
+	const std::string &filespec,
+	const std::string &default_filespec,
+	const std::string &related_filespec,
+	long user_success_procedure,
+	long user_error_procedure,
+	long user_confirm_procedure,
+	long user_specified_arguement,
+	std::string *resultant_name,
+	long file_scan_contest,
+	long flags)
+{
+	unlink(filespec.c_str());
+	return 1;
+}
 
 static std::vector<std::string> files;	/**< list of files scanned */
 
