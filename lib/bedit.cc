@@ -5,22 +5,13 @@
  */
 
 //
-// History:
-//
-//	08/27/1998 - Kevin Handy
-//		Broke out of bstring.cc
-//
-//	03/16/2000 - Kevin Handy
-//		Improve documentation.
-//		Make flag (256) work for (1) and (16)
-//
 // Include files
 //
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
-#include <string.h>
 #include <cstdlib>
+#include "bstring.h"
 #include "bstring.h"
 
 /**
