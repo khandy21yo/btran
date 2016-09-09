@@ -14,32 +14,6 @@
 	Really nee to get a basic error number header file.
 	Just throowing the most common errors, without really isolating
 		the exact error that should be returned.
-*/
-// History
-//
-//	12/06/1998 - Kevin Handy
-//		Original version
-//		And things ACTUALLY work first try!
-//		And amazin (with file output) works with only a little effort
-//
-//	04/08/1999 - Kevin Handy
-//		Some improvements to code to get initial work on eof
-//		error in getline, and clean up errors so it doesn't
-//		output -1 errors.
-//
-//	04/02/2000 - Kevin Handy
-//		Handle 'KB:' in open.
-//
-//	04/03/2000 - Kevin Handy
-//		Change input routines to use ',' as separator.
-//
-//	04/11/2000 - Kevin Handy
-//		Added more error trapping
-//		Throw EOF errors.
-//
-//	04/11/2002 - Kevin Handy
-//		Change base of cpos from 1 to 0 to fix tabbing bugs.
-//		Improve calculation of cpos when an integer is output.
 
 //
 // Include files

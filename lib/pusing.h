@@ -2,16 +2,6 @@
  * \brief Header file for print using class.
  */
 
-//
-// History
-//
-//	04/26/1997 - Kevin Handy
-//		Initial version
-//
-//	03/18/2000 - Kevin Handy
-//		Added SetFormat(std::string)
-//
-
 #ifndef _pusing_h_
 #define _pusing_h_
 

@@ -10,26 +10,6 @@
  *
  *	Currently doesn't handle lower case format characters.
  */
-//
-// History:
-//
-//	04/23/1997 - Kevin Handy
-//		Initial version.
-//		String formats only.
-//
-//	04/26/1997 - Kevin Handy
-//		Changed from a bunch of functions to a class
-//		Now 'FORMAT$' and 'PRINT USING' seem to be working
-//		for strings!
-//
-//	04/28/1997 - Kevin Handy
-//		Did numeric format statement for double.
-//		Works! Not 100% compatible with BASIC, but real close.
-//
-//	12/07/1998 - Kevin Handy
-//		Make a quick and dirty hack to get integers in print
-//		using to work.
-//
 
 #include <cstdio>
 #include <string>
