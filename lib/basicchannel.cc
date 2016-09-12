@@ -18,11 +18,14 @@
 //
 // Include files
 //
+#include ,iostream>
 #include <stdlib.h>
 #include <string.h>
 #include "basicfun.h"
 #include "basicchannel.h"
 
+namespace basic
+{
 //
 // Global Variables
 //
@@ -33,7 +36,7 @@ int Recount;		/**< \brief Last count of read characters */
  *
  * Default constructor.
  */
-basic::BChannel::BChannel(void)
+BChannel::BChannel(void)
 {
 	outstream = NULL;
 	instream = NULL;
@@ -46,7 +49,7 @@ basic::BChannel::BChannel(void)
  *
  * Nothing intresting happens.
  */
-basic::BChannel::~BChannel(void)
+BChannel::~BChannel(void)
 {
 }
 
@@ -57,10 +60,10 @@ basic::BChannel::~BChannel(void)
  *
  * \return Status value
  */
-int basic::BChannel::Open(void)
+int BChannel::Open(void)
 {
 	std::cerr << "OPEN without name not yet functional" << std::endl;
-	basic::BasicError error(-1);
+	BasicError error(-1);
 	throw(error);
 	return 0;
 }
@@ -72,7 +75,7 @@ int basic::BChannel::Open(void)
  *
  * \return Status value
  */
-int basic::BChannel::Open(
+int BChannel::Open(
 	const std::string& Name		/**< File name to open */
 )
 {
@@ -89,7 +92,7 @@ int basic::BChannel::Open(
  * - nonzero = error
  * \throw error Errors
  */
-int basic::BChannel::Open(
+int BChannel::Open(
 	const char* Name	//!< File name to open
 )
 {
@@ -110,7 +113,7 @@ int basic::BChannel::Open(
 				new std::ifstream(Name, std::ios::in | std::ios::out);
 			if (inxstream->bad())
 			{
-				basic::BasicError error(5);	// Can't find file
+				BasicError error(5);	// Can't find file
 				throw(error);
 			}
 			instream = inxstream;
@@ -122,7 +125,7 @@ int basic::BChannel::Open(
 		instream = new std::ifstream(Name);
 		if (instream->bad())
 		{
-			basic::BasicError error(5);	// Can't find file
+			BasicError error(5);	// Can't find file
 			throw(error);
 		}
 		break;
@@ -131,13 +134,13 @@ int basic::BChannel::Open(
 		outstream = new std::ofstream(Name);
 		if (outstream->bad())
 		{
-			basic::BasicError error(10);	// Protection violation
+			BasicError error(10);	// Protection violation
 			throw(error);
 		}
 		break;
 	default:
 		{
-			basic::BasicError error(10);	// Protection violation
+			BasicError error(10);	// Protection violation
 			throw(error);
 		}
 	}
@@ -153,7 +156,7 @@ int basic::BChannel::Open(
  *
  * \return 0 (future status code)
  */
-int basic::BChannel::ForInput(void)
+int BChannel::ForInput(void)
 {
 	Close();
 	ioflag = BASIC_FORINPUT;
@@ -168,7 +171,7 @@ int basic::BChannel::ForInput(void)
  *
  * \return 0 (future status code)
  */
-int basic::BChannel::ForOutput(void)
+int BChannel::ForOutput(void)
 {
 	Close();
 	ioflag = BASIC_FOROUTPUT;
@@ -183,7 +186,7 @@ int basic::BChannel::ForOutput(void)
  *
  * \return 0 (future status code)
  */
-int basic::BChannel::OpenZero(void)
+int BChannel::OpenZero(void)
 {
 	outstream = &std::cout;
 	instream = &std::cin;
@@ -200,7 +203,7 @@ int basic::BChannel::OpenZero(void)
  *
  * \return 0 (future status code)
  */
-int basic::BChannel::Close(void)
+int BChannel::Close(void)
 {
 	//
 	// Close any open ostream's
@@ -230,12 +233,12 @@ int basic::BChannel::Close(void)
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-int basic::BChannel::Delete(void)
+int BChannel::Delete(void)
 {
 	std::cerr << "DELETE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return 0;
 }
@@ -246,12 +249,12 @@ int basic::BChannel::Delete(void)
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-int basic::BChannel::Find(void)
+int BChannel::Find(void)
 {
 	std::cerr << "FIND not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return 0;
 }
@@ -262,12 +265,12 @@ int basic::BChannel::Find(void)
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-int basic::BChannel::Get()
+int BChannel::Get()
 {
 	std::cerr << "GET not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return 0;
 }
@@ -278,12 +281,12 @@ int basic::BChannel::Get()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-int basic::BChannel::Put()
+int BChannel::Put()
 {
 	std::cerr << "PUT not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return 0;
 }
@@ -294,12 +297,12 @@ int basic::BChannel::Put()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-int basic::BChannel::Reset()
+int BChannel::Reset()
 {
 	std::cerr << "RESET not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return 0;
 }
@@ -310,12 +313,12 @@ int basic::BChannel::Reset()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-int basic::BChannel::Unlock()
+int BChannel::Unlock()
 {
 	std::cerr << "UNLOCK not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return 0;
 }
@@ -327,9 +330,9 @@ int basic::BChannel::Unlock()
  * Inputs a line of text.
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError when failure occurs
+ * \throw BasicError when failure occurs
  */
-int basic::BChannel::getline(
+int BChannel::getline(
 	char* Output,	//!< Buffer to fill
 	int MaxChar	//!< Maximum number of characters to read
 )
@@ -338,7 +341,7 @@ int basic::BChannel::getline(
 	instream->getline(Output, MaxChar);
 	if (instream->eof())
 	{
-		throw(basic::BasicError(11));	// End of file on device
+		throw(BasicError(11));	// End of file on device
 	}
 	return 0;
 }
@@ -350,12 +353,12 @@ int basic::BChannel::getline(
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-char* basic::BChannel::BufferLoc()
+char* BChannel::BufferLoc()
 {
 	std::cerr << "BUFFERLOC not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 	return NULL;
 }
@@ -366,12 +369,12 @@ char* basic::BChannel::BufferLoc()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetRecordSize()
+void BChannel::SetRecordSize()
 {
 	std::cerr << "SETRECORDSIZE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -381,12 +384,12 @@ void basic::BChannel::SetRecordSize()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetFileSize()
+void BChannel::SetFileSize()
 {
 	std::cerr << "SETFILESIZE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -396,12 +399,12 @@ void basic::BChannel::SetFileSize()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetExtendSize()
+void BChannel::SetExtendSize()
 {
 	std::cerr << "SETEXTENDSIZE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -411,12 +414,12 @@ void basic::BChannel::SetExtendSize()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetWindowSize()
+void BChannel::SetWindowSize()
 {
 	std::cerr << "SETWINDOWSIZE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -426,12 +429,12 @@ void basic::BChannel::SetWindowSize()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetBlockSize()
+void BChannel::SetBlockSize()
 {
 	std::cerr << "SETBLOCKSIZE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -441,12 +444,12 @@ void basic::BChannel::SetBlockSize()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetBucketSize()
+void BChannel::SetBucketSize()
 {
 	std::cerr << "SETBUCKETSIZE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -456,12 +459,12 @@ void basic::BChannel::SetBucketSize()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetMode()
+void BChannel::SetMode()
 {
 	std::cerr << "SETMODE not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -471,12 +474,12 @@ void basic::BChannel::SetMode()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetBuffer()
+void BChannel::SetBuffer()
 {
 	std::cerr << "SETBUFFER not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -486,12 +489,12 @@ void basic::BChannel::SetBuffer()
  * Not yet functional
  *
  * \return 0 (Future status code
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetDefaultName()
+void BChannel::SetDefaultName()
 {
 	std::cerr << "SETDEFAULTNAME not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -501,12 +504,12 @@ void basic::BChannel::SetDefaultName()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetKey()
+void BChannel::SetKey()
 {
 	std::cerr << "SETKEY not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -516,12 +519,12 @@ void basic::BChannel::SetKey()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetTemporary()
+void BChannel::SetTemporary()
 {
 	std::cerr << "SETTEMPORARY not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -531,12 +534,12 @@ void basic::BChannel::SetTemporary()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetContiguous()
+void BChannel::SetContiguous()
 {
 	std::cerr << "SETCONTIGUOUS not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -546,12 +549,12 @@ void basic::BChannel::SetContiguous()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetRewind()
+void BChannel::SetRewind()
 {
 	std::cerr << "SETREWIND not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -561,12 +564,12 @@ void basic::BChannel::SetRewind()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetSpan()
+void BChannel::SetSpan()
 {
 	std::cerr << "SETSPAN not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -576,12 +579,12 @@ void basic::BChannel::SetSpan()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetOrginization()
+void BChannel::SetOrginization()
 {
 	std::cerr << "SETORGANIZED not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -591,12 +594,12 @@ void basic::BChannel::SetOrginization()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetAccess()
+void BChannel::SetAccess()
 {
 	std::cerr << "SETACCESS not yet functional" << std::endl;
-//	basic::BasicError error(18);		// Illegal SYS usage
+//	BasicError error(18);		// Illegal SYS usage
 //	throw(error);
 }
 
@@ -606,12 +609,12 @@ void basic::BChannel::SetAccess()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetAllow(const int flag)
+void BChannel::SetAllow(const int flag)
 {
 	std::cerr << "SETALLOW not yet functional" << std::endl;
-//	basic::BasicError error(18);		// Illegal SYS usage
+//	BasicError error(18);		// Illegal SYS usage
 //	throw(error);
 }
 
@@ -621,12 +624,12 @@ void basic::BChannel::SetAllow(const int flag)
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetConnect()
+void BChannel::SetConnect()
 {
 	std::cerr << "SETCONNECT not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -636,12 +639,12 @@ void basic::BChannel::SetConnect()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetMap()
+void BChannel::SetMap()
 {
 	std::cerr << "SETMAP not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -651,12 +654,12 @@ void basic::BChannel::SetMap()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetRecordType()
+void BChannel::SetRecordType()
 {
 	std::cerr << "SETRECORD not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -666,12 +669,12 @@ void basic::BChannel::SetRecordType()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::GoofyOpenStuff()
+void BChannel::GoofyOpenStuff()
 {
 	std::cerr << "SETGOOFYOPENSTUFF not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -681,12 +684,12 @@ void basic::BChannel::GoofyOpenStuff()
  * Not yet functional
  *
  * \return 0 (Future status code)
- * \throw basic::BasicError Always fails
+ * \throw BasicError Always fails
  */
-void basic::BChannel::SetRecord(int)
+void BChannel::SetRecord(int)
 {
 	std::cerr << "SETRECORD not yet functional" << std::endl;
-	basic::BasicError error(18);		// Illegal SYS usage
+	BasicError error(18);		// Illegal SYS usage
 	throw(error);
 }
 
@@ -697,7 +700,7 @@ void basic::BChannel::SetRecord(int)
  *
  * \return 0 (Future status code)
  */
-int basic::BChannel::Ccpos()
+int BChannel::Ccpos()
 {
 	return cpos;
 }
@@ -710,15 +713,15 @@ int basic::BChannel::Ccpos()
  * Similiar to std::endl in C++.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  */
-basic::BChannel& basic::endl(
-	basic::BChannel& outs	/**< Channel to write to */
+BChannel& endl(
+	BChannel& outs	/**< Channel to write to */
 )
 {
 	if (&outs == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	outs.GetOstream() << std::endl;
@@ -733,17 +736,17 @@ basic::BChannel& basic::endl(
  * Attempts to track cursor position.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  * \bug Doesn't track tabs correctly.
  */
-basic::BChannel& basic::operator<< (
-	basic::BChannel& os,		/**< Channel to write to */
+BChannel& operator<< (
+	BChannel& os,		/**< Channel to write to */
 	const std::string& bs		/**< String to write */
 )
 {
 	if (&os == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	*(os.outstream) << bs;
@@ -758,17 +761,17 @@ basic::BChannel& basic::operator<< (
  * Attempts to track cursor position.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  * \bug Doesn't track tabs correctly.
  */
-basic::BChannel& basic::operator<< (
-	basic::BChannel& os,		/**< Channel to write to */
+BChannel& operator<< (
+	BChannel& os,		/**< Channel to write to */
 	const char* bs			/**< Character to write */
 )
 {
 	if (&os == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	*(os.outstream) << bs;
@@ -783,16 +786,16 @@ basic::BChannel& basic::operator<< (
  * Includes leading (for non-negitive values) and trailing spaces.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  */
-basic::BChannel& basic::operator<< (
-	basic::BChannel& os,		/**!< Channel to write to */
+BChannel& operator<< (
+	BChannel& os,		/**!< Channel to write to */
 	Dfloat bs		/**< Float value to write */
 )
 {
 	if (&os == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	if (bs >= 0.0)
@@ -813,16 +816,16 @@ basic::BChannel& basic::operator<< (
  * Leading and trailing spaces are included.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  */
-basic::BChannel& basic::operator<< (
-	basic::BChannel& os,		/**< Channel to write to */
+BChannel& operator<< (
+	BChannel& os,		/**< Channel to write to */
 	Int32 bs			/**< Value to write */
 )
 {
 	if (&os == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	if (bs >= 0)
@@ -842,16 +845,16 @@ basic::BChannel& basic::operator<< (
  * Leading and trailing spaces are included.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  */
-basic::BChannel& basic::operator<< (
-	basic::BChannel& os,		//!< Channel to write to
+BChannel& operator<< (
+	BChannel& os,		//!< Channel to write to
 	Int bs			//!< Integer to write
 )
 {
 	if (&os == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	if (bs >= 0)
@@ -871,16 +874,16 @@ basic::BChannel& basic::operator<< (
  * Leading and trailing spaces are included.
  *
  * \return Channel used
- * \throw basic::BasicError on error
+ * \throw BasicError on error
  */
-basic::BChannel& basic::operator<< (
-	basic::BChannel& os,		/**< Channel to write to */
+BChannel& operator<< (
+	BChannel& os,		/**< Channel to write to */
 	char bs				/**< Character to write */
 )
 {
 	if (&os == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	*(os.outstream) << bs;
@@ -908,11 +911,11 @@ basic::BChannel& basic::operator<< (
  *
  * Function used to generate the correct number of spaces
  * necessary to tab over to a specific column.
- * Resuires accurate basic::ccpos() values.
+ * Resuires accurate ccpos() values.
  *
  * \return String with correct number of spaces to position
  */
-std::string basic::BChannel::Tab(
+std::string BChannel::Tab(
 	int x		/**< Position to tab to */
 )
 {
@@ -933,19 +936,19 @@ std::string basic::BChannel::Tab(
  *
  * \return Channel used
  */
-basic::BChannel& basic::operator>> (
-	basic::BChannel& is,		/**< Input channel */
+BChannel& operator>> (
+	BChannel& is,		/**< Input channel */
 	std::string& bs			/**< String to save in */
 )
 {
 	if (&is == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	if (is.instream->eof())
 	{
-		basic::BasicError error(11);	// End of file on device
+		BasicError error(11);	// End of file on device
 		throw(error);
 	}
 	std::string inputstr;
@@ -981,8 +984,8 @@ basic::BChannel& basic::operator>> (
  * \return Channel used
  * \bug Bad entry is ignored.
  */
-basic::BChannel& basic::operator>> (
-	basic::BChannel& is,		/**< Channel to read from */
+BChannel& operator>> (
+	BChannel& is,		/**< Channel to read from */
 	Int32& bs			/**< Long value to read */
 )
 {
@@ -1000,8 +1003,8 @@ basic::BChannel& basic::operator>> (
  * \return Channel used
  * \bug Bad entry is ignored.
  */
-basic::BChannel& basic::operator>> (
-	basic::BChannel& is,		/**< Channel to read from */
+BChannel& operator>> (
+	BChannel& is,		/**< Channel to read from */
 	Int& bs				/**< Integer to read into */
 )
 {
@@ -1019,8 +1022,8 @@ basic::BChannel& basic::operator>> (
  * \return Channel used
  * \bug Bad entry is ignored.
  */
-basic::BChannel& basic::operator>> (
-	basic::BChannel& is,	/**< Channel to read from */
+BChannel& operator>> (
+	BChannel& is,	/**< Channel to read from */
 	double& bs		//!< Double to store value in */
 )
 {
@@ -1038,19 +1041,19 @@ basic::BChannel& basic::operator>> (
  *
  * \return Channel used
  */
-basic::BChannel& basic::operator>> (
-	basic::BChannel& is,		/**< Channel to read from */
+BChannel& operator>> (
+	BChannel& is,		/**< Channel to read from */
 	char& bs			/**< Character to read into */
 )
 {
 	if (&is == NULL)
 	{
-		basic::BasicError error(9);	// I/O channel not open
+		BasicError error(9);	// I/O channel not open
 		throw(error);
 	}
 	if (is.instream->eof())
 	{
-		basic::BasicError error(11);	// End of file on device
+		BasicError error(11);	// End of file on device
 		throw(error);
 	}
 	(is.instream)->get(bs);		// Must use get() to be able to see \n
@@ -1058,3 +1061,4 @@ basic::BChannel& basic::operator>> (
 	return is;
 }
 
+}

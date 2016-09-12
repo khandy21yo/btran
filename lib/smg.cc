@@ -102,6 +102,43 @@ long smg$create_virtual_keyboard(
 	return SMG$_NORMAL;
 }
 
+long smg$erase_display(
+	struct ncurses_struct *display_id,
+	long start_row,
+	long end_row,
+	long start_column,
+	long end_column)
+{
+	/*
+	 * If they gave us the easy way
+	 * No border, clear full window
+	 */
+	if (display_id->border == 0 &
+		start_row == 0 && end_row == 0 &&
+		start_column == 0 && end_column == 0)
+	{
+		/*
+		 * Wipe everything
+		 */
+		werase(display_id->win);
+	}
+	else
+	{
+		/*
+		 * Be selective
+		 */
+		for (long row = start_row; row <= end_row; row++)
+		{
+			for (long column = start_column; row <= end_column; column++)
+			{
+				mvwaddch(display_id->win,
+					row - 1 + display_id->border,
+					column - 1 + display_id->border, ' ');
+			}
+		}
+	}
+}
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,

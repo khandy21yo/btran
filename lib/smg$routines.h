@@ -63,6 +63,13 @@ long smg$create_virtual_keyboard(
 	std::string *resultant_filespec = 0,
 	const long *recall_size = 0);
 
+long smg$erase_display(
+	struct ncurses_struct *display_id,
+	long start_row = 0,
+	long end_row = 0,
+	long start_column = 0,
+	long end_column = 0);
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
