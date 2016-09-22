@@ -770,6 +770,7 @@ static Node* MoveFunctionsTwo(
 		case BAS_N_FORUNTIL:
 		case BAS_N_FORWHILE:
 		case BAS_S_CASE:
+		case BAS_N_CASEELSE:
 		case BAS_S_SELECT:
 
 			//

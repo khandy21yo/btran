@@ -1561,6 +1561,7 @@ void Node::OutputCodeOne(
 
 				case BAS_N_CASEELSE:
 					os << Indent() << "default:" << std::endl;
+					break;
 
 				case BAS_S_REMARK:
 					os << Indent();
