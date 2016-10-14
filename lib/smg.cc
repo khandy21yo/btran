@@ -9,6 +9,17 @@
 
 #include "smg$routines.h"
 
+int smg$begin_display_update(
+	struct ncurses_struct **display_id)
+{
+}
+
+int smg$begin_pasteboard_update(
+	long *pasteboard_id)
+{
+	return 0;
+}
+
 long smg$change_pbd_characteristics(
 	long *pasteboard_id,
 	const long *desired_width,
@@ -102,6 +113,38 @@ long smg$create_virtual_keyboard(
 	return SMG$_NORMAL;
 }
 
+/** Draw line
+ */
+int smg$draw_line(
+	struct ncurses_struct **display_id,
+	int srow,
+	int scolumn,
+	int erow,
+	int ecolumn)
+{
+	if (srow == erow)
+	{
+		mvwhline((*display_id)->win, srow, scolumn, 0, ecolumn - scolumn + 1);
+	}
+	else
+	{
+		mvwvline((*display_id)->win, srow, scolumn, 0, erow - srow + 1);
+	}
+	return 0;
+}
+
+int smg$bend_display_update(
+	struct ncurses_struct **display_id)
+{
+	wrefresh((*display_id)->win);
+}
+
+int smg$end_pasteboard_update(
+	long *pasteboard_id)
+{
+	return 0;
+}
+
 long smg$erase_display(
 	struct ncurses_struct **display_id,
 	long start_row,
@@ -139,6 +182,32 @@ long smg$erase_display(
 	}
 }
 
+int smg$erase_line(
+	struct ncurses_struct **display_id,
+	int vpos,
+	int hpos)
+{
+	wmove((*display_id)->win, vpos, hpos);
+	wclrtoeol((*display_id)->win);
+	return 0;
+}
+
+int smg$get_display_attr(
+	struct ncurses_struct **display_id,
+	long *height,
+	long *width)
+{
+	if (height != 0)
+	{
+		*height = (*display_id)->height;
+	}
+	if (width != 0)
+	{
+		*width = (*display_id)->width;
+	}
+	return 1;
+}
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
@@ -151,6 +220,32 @@ long smg$paste_virtual_display(
 	mvwin((*display_id)->win, (*display_id)->vpos, (*display_id)->hpos);
 
 	return SMG$_NORMAL;
+}
+
+/** Put characters on the screen
+ *
+ * Parameters set to match the SMG versions.
+ */
+int smg$put_chars(
+	struct ncurses_struct **display_id,
+	const std::string &str,		/**< String to disply */
+	int x,				/**< X posdition */
+	int y,				/**< Y position */
+	int flag,			/**< Flag value? */
+	int attr)			/**< Attributes */
+{
+	if (attr & SMG$M_BOLD)
+	{
+		wattron((*display_id)->win, A_STANDOUT);
+	}
+	if (attr & SMG$M_REVERSE)
+	{
+		wattron((*display_id)->win, A_REVERSE);
+	}
+
+	mvwaddstr((*display_id)->win, y + (*display_id)->border, x + (*display_id)->border, str.c_str());
+	wattrset((*display_id)->win, 0);
+	return 0;
 }
 
 long smg$set_cursor_mode(

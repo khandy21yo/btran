@@ -30,6 +30,15 @@ struct ncurses_struct
 	long vpos;			//!< Vertical position of window
 };
 
+//
+// Function prototypes
+//
+int smg$begin_display_update(
+	struct ncurses_struct *display_id);
+
+int smg$begin_pasteboard_update(
+	long *pasteboard_id);
+
 long smg$change_pbd_characteristics(
 	long *pasteboard_id,
 	const long *desired_width = 0,
@@ -63,6 +72,19 @@ long smg$create_virtual_keyboard(
 	std::string *resultant_filespec = 0,
 	const long *recall_size = 0);
 
+int smg$draw_line(
+	struct ncurses_struct *display_id,
+	int srow,
+	int scolumn,
+	int erow,
+	int ecolumn);
+
+int smg$end_display_update(
+	struct ncurses_struct *display_id);
+
+int smg$end_pasteboard_update(
+	long *pasteboard_id);
+
 long smg$erase_display(
 	struct ncurses_struct **display_id,
 	long start_row = 0,
@@ -70,12 +92,30 @@ long smg$erase_display(
 	long start_column = 0,
 	long end_column = 0);
 
+ int smg$erase_line(
+	struct ncurses_struct **display_id,
+	int vpos,
+	int hpos);
+
+int smg$get_display_attr(
+	struct ncurses_struct **display_id,
+	long *height = 0,
+	long *width = 0);
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
 	const long *pasteboard_row = 0,
 	const long *pasteboard_column = 0,
 	const long top_display_id = 0);
+
+int smg$put_chars(
+	struct ncurses_struct **display_id,
+	const std::string &str,		/**< String to disply */
+	int x,				/**< X posdition */
+	int y,				/**< Y position */
+	int flag = 0,			/**< Flag value? */
+	int attr = 0);			/**< Attributes */
 
 long smg$set_cursor_mode(
 	long *pasteboard_id,
