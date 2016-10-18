@@ -68,22 +68,22 @@ long smg$create_pasteboard(
 }
 
 long smg$create_virtual_display(
-	const long *number_of_rows,
-	const long *number_of_columns,
+	const long number_of_rows,
+	const long number_of_columns,
 	ncurses_struct **display_id,
-	const long *display_attributes,
-	const long *video_attributes,
-	const long *character_set)
+	long display_attributes,
+	long video_attributes,
+	long character_set)
 {
 	ncurses_struct *dwin = new ncurses_struct;
 
-	dwin->width = *number_of_columns;
-	dwin->height = *number_of_rows;
+	dwin->width = number_of_columns;
+	dwin->height = number_of_rows;
 	dwin->border = 0;
 	dwin->hpos = 0;
 	dwin->vpos = 0;
 
-	if (display_attributes != 0 && *display_attributes & SMG$M_BORDER)
+	if (display_attributes != 0 && display_attributes & SMG$M_BORDER)
 	{
 		dwin->border = 1;
 	}
@@ -111,6 +111,14 @@ long smg$create_virtual_keyboard(
 	const long *recall_size)
 {
 	return SMG$_NORMAL;
+}
+
+long smg$delete_virtual_display(
+	struct ncurses_struct **display_id)
+{
+	del_panel((*display_id)->pan);
+	delwin((*display_id)->win);
+	update_panels();
 }
 
 /** Draw line
@@ -192,6 +200,14 @@ int smg$erase_line(
 	return 0;
 }
 
+long smg$flush_buffer(
+	long *pasteboard_id)
+{
+	update_panels();
+	refresh();
+}
+
+
 int smg$get_display_attr(
 	struct ncurses_struct **display_id,
 	long *height,
@@ -211,15 +227,24 @@ int smg$get_display_attr(
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
-	const long *pasteboard_row,
-	const long *pasteboard_column,
-	const long top_display_id)
+	long pasteboard_row,
+	long pasteboard_column,
+	long top_display_id)
 {
-	(*display_id)->hpos = *pasteboard_column - 1;
-	(*display_id)->vpos = *pasteboard_row - 1;
+	(*display_id)->hpos = pasteboard_column - 1;
+	(*display_id)->vpos = pasteboard_row - 1;
 	mvwin((*display_id)->win, (*display_id)->vpos, (*display_id)->hpos);
 
 	return SMG$_NORMAL;
+}
+
+long smg$pop_virtual_display(
+	struct ncurses_struct **display_id,
+	const long *pasteboard_id)
+{
+	del_panel((*display_id)->pan);
+	delwin((*display_id)->win);
+	update_panels();
 }
 
 /** Put characters on the screen
@@ -248,9 +273,17 @@ int smg$put_chars(
 	return 0;
 }
 
+long smg$set_cursor_abs(
+	struct ncurses_struct **display_id,
+	long x,
+	long y)
+{
+	wmove((*display_id)->win, x, y);
+}
+
 long smg$set_cursor_mode(
 	long *pasteboard_id,
-	long *flags)
+	long flags)
 {
 	return SMG$_NORMAL;
 }

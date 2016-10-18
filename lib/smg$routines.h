@@ -58,12 +58,12 @@ long smg$create_pasteboard(
 	std::string *device_name = 0);
 
 long smg$create_virtual_display(
-	const long *number_of_rows,
-	const long *number_of_columns,
+	long number_of_rows,
+	long number_of_columns,
 	ncurses_struct **display_id,
-	const long *display_attributes = 0,
-	const long *video_attributes = 0,
-	const long *character_set = 0);
+	long display_attributes = 0,
+	long video_attributes = 0,
+	long character_set = 0);
 
 long smg$create_virtual_keyboard(
 	long *keyboard_id,
@@ -71,6 +71,9 @@ long smg$create_virtual_keyboard(
 	const std::string *default_filespec = 0,
 	std::string *resultant_filespec = 0,
 	const long *recall_size = 0);
+
+long smg$delete_virtual_display(
+	struct ncurses_struct **display_id);
 
 int smg$draw_line(
 	struct ncurses_struct *display_id,
@@ -97,6 +100,9 @@ long smg$erase_display(
 	int vpos,
 	int hpos);
 
+long smg$flush_buffer(
+	long *pasteboard_id);
+
 int smg$get_display_attr(
 	struct ncurses_struct **display_id,
 	long *height = 0,
@@ -105,9 +111,13 @@ int smg$get_display_attr(
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
-	const long *pasteboard_row = 0,
-	const long *pasteboard_column = 0,
-	const long top_display_id = 0);
+	long pasteboard_row = 0,
+	long pasteboard_column = 0,
+	long top_display_id = 0);
+
+long smg$pop_virtual_display(
+	struct ncurses_struct **display_id,
+	const long *pasteboard_id);
 
 int smg$put_chars(
 	struct ncurses_struct **display_id,
@@ -117,8 +127,13 @@ int smg$put_chars(
 	int flag = 0,			/**< Flag value? */
 	int attr = 0);			/**< Attributes */
 
+long smg$set_cursor_abs(
+	struct ncurses_struct **display_id,
+	long x,
+	long y);
+
 long smg$set_cursor_mode(
 	long *pasteboard_id,
-	long *flags);
+	long flags);
 
 #endif
