@@ -224,6 +224,14 @@ int smg$get_display_attr(
 	return 1;
 }
 
+int smg$label_border(
+	struct ncurses_struct **display_id,
+	const std::string &newlabel)
+{
+	(*display_id)->label = newlabel;
+	return 1;
+}
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,

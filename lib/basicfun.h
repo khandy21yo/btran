@@ -90,7 +90,7 @@ static inline void OnErrorDie()
 /**
  * \brief ON ERROR GOTO 0
  */
-#define OnErrorZero if (setjmp(ErrorStack) == 0) { OnErrorDie(); }
+#define OnErrorZero if (setjmp(ErrorStack) == 0) { basic::OnErrorDie(); }
 /**
  * \brief Create error return point
  */

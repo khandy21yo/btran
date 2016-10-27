@@ -108,6 +108,10 @@ int smg$get_display_attr(
 	long *height = 0,
 	long *width = 0);
 
+int smg$label_border(
+	struct ncurses_struct **display_id,
+	const std::string &newlabel);
+
 long smg$paste_virtual_display(
 	struct ncurses_struct **display_id,
 	const long *pasteboard_id,
