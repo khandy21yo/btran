@@ -759,7 +759,7 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("TIME",		"basic::Time",		VARTYPE_DOUBLE);
 	InitOneFunction("TIME$",	"basic::Qtime",		VARTYPE_DYNSTR);
 	InitOneFunction("TRM$",		"boost::trim_right_copy",	VARTYPE_DYNSTR);
-	InitOneFunction("VAL",		"boost;;lexical_cast<double>",	VARTYPE_DOUBLE);
+	InitOneFunction("VAL",		"boost::lexical_cast<double>",	VARTYPE_DOUBLE);
 	InitOneFunction("VAL%",		"boost::lexical_cast<long>",	VARTYPE_LONG);
 	InitOneFunction("XLATE",	"basic::Xlate",		VARTYPE_DYNSTR);
 	InitOneFunction("LIB$SIGNAL",	"exit",			VARTYPE_LONG);
