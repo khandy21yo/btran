@@ -1,4 +1,4 @@
-all: amazin kmaze snak snoopy revrse works
+all: amazin kmaze snak snoopy revrse works unbac
 
 #
 # A Maze genertor
@@ -51,3 +51,10 @@ revrse: revrse.bas
 works: works.bas
 	../src/btran works.bas > works.cc
 	c++ -I ../lib/ works.cc -o works
+
+#
+# A convertedprogram that was heavily modified
+#
+unbac: unbac.cc
+	g++ -o unbac -O0 -g -I ../lib  unbac.cc ../lib/libbtran.a
+
