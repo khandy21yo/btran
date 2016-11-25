@@ -606,7 +606,7 @@ static void WriteHeader(
 
 	os << "//" << std::endl;
 	os << "// Source: " << Name << std::endl;
-	os << "// Translated from Basic to C++ using btran(~tm:)" << std::endl;
+	os << "// Translated from Basic to C++ using btran" << std::endl;
 #ifdef HAVE_STRFTIME
 	os << "// on " << Text << std::endl;
 #endif
