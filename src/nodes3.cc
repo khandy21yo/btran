@@ -1329,7 +1329,7 @@ void Node::OutputCodeOne(
 		{
 				os << Indent() << "default:" << std::endl <<
 					Indent() <<
-					"std::cerr << \"ON-GOTO out of range\" << std::endl; abort();\t// Out of range" << std::endl;
+					"\tstd::cerr << \"ON-GOTO out of range\" << std::endl; abort();\t// Out of range" << std::endl;
 		}
 		os << Indent() << "}" << std::endl;
 		break;
