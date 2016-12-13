@@ -1330,7 +1330,7 @@ static std::string fnclassify_push(int stmt_V18)
 			cvtia(fnr(stmt_V18 + 1))) / scalef_);
 		if ((z_c_a.find(".", 0) + 1) == 0)
 		{
-			z_c_a = z_c_a + ".";
+			z_c_a += ".";
 		}
 		Result = z_c_a;
 		goto L_15999;
@@ -1351,7 +1351,7 @@ static std::string fnclassify_push(int stmt_V18)
 		z_c_a = boost::lexical_cast<std::string>(cvtaf(z_c_a) / scalef_);
 		if ((z_c_a.find(".", 0) + 1) == 0)
 		{
-			z_c_a = z_c_a + ".";
+			z_c_a += ".";
 		}
 		Result = z_c_a;
 		goto L_15999;
@@ -1380,12 +1380,15 @@ static std::string fnclassify_push(int stmt_V18)
 		z_c_n = z_c_n + fnw(z_c_n + spda + 2) + spst;
 		for (int loop = z_c_n; loop <= z_c_n + z_c_l; loop++)
 		{
-			z_c_a = z_c_a + std::string(1, (char)fnb(loop));
+			z_c_a += (char)fnb(loop);
 		}
-		Result = "\"" + z_c_a + "\"";
 		if ((z_c_a.find("\"", 0) + 1))
 		{
 			Result = "'" + z_c_a + "'";
+		}
+		else
+		{
+			Result = "\"" + z_c_a + "\"";
 		}
 		goto L_15999;
 	}
@@ -1486,7 +1489,6 @@ static std::string fnvar(int a)
 	{
 		z_v_a = "";
 	}
-//	if (z_v_a[0] > 224)
 	if (z_v_a[0] >= 'a')
 	{
 		z_v_a = "FN" + basic::edit(z_v_a, 32);
@@ -1527,7 +1529,7 @@ static std::string fnindent(void)
 	}
 	if (f_for == 0)
 	{
-		z_i_i = z_i_i + f_ind;
+		z_i_i += f_ind;
 	}
 	return basic::Qstring(1 + z_i_i, 9);
 }
@@ -1585,7 +1587,7 @@ static void fnformat(std::string b_V26)
 				{
 					z_p_l_s = z_p_k;
 				}
-				z_p_p = z_p_p + z_p_i;
+				z_p_p += z_p_i;
 			}
 			outfile << z_p_a;
 			z_p_a = "";
@@ -1850,14 +1852,14 @@ L_2300:;
 		e = a + boost::lexical_cast<std::string>(fnw(t + 22)) + "%";
 		if (fnw(t + 24))
 		{
-			e = e + "," + boost::lexical_cast<std::string>(fnw(t + 24)) + "%";
+			e += "," + boost::lexical_cast<std::string>(fnw(t + 24)) + "%";
 		}
 		e = e + ")";
 		if (fnb(t + 28) & 4)
 		{
 			if (c)
 			{
-				e = e + "=" + boost::lexical_cast<std::string>(2 * fnw(t + 20)) + "%";
+				e += "=" + boost::lexical_cast<std::string>(2 * fnw(t + 20)) + "%";
 			}
 		}
 		if (Ccpos(2) + e.size() >= width)
@@ -2923,7 +2925,4 @@ L_13900:;
 		term = term1 = ";";
 	}
 	BReturn;
-
-
-	return EXIT_SUCCESS;
 }
