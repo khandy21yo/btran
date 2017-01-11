@@ -461,6 +461,10 @@ static void initialize_node_type(void)
 	node_type["ge"] = BAS_S_GE;
 	node_type["get"] = BAS_S_GET;
 	node_type["gfloat"] = BAS_S_GFLOAT;
+	node_type["sfloat"] = BAS_S_GFLOAT;
+	node_type["tfloat"] = BAS_S_GFLOAT;
+	node_type["xfloat"] = BAS_S_GFLOAT;
+	node_type["dfloat"] = BAS_S_GFLOAT;
 	node_type["go"] = BAS_S_GO;
 	node_type["gosub"] = BAS_S_GOSUB;
 	node_type["goto"] = BAS_S_GOTO;
@@ -486,6 +490,7 @@ static void initialize_node_type(void)
 	node_type["list"] = BAS_S_LIST;
 	node_type["long"] = BAS_S_LONG;
 	node_type["basic$quadword"] = BAS_S_LONG;
+	node_type["quad"] = BAS_S_LONG;
 	node_type["lset"] = BAS_S_LSET;
 	node_type["map"] = BAS_S_MAP;
 	node_type["margin"] = BAS_S_MARGIN;
