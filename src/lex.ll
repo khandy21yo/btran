@@ -527,6 +527,12 @@ static char *mangle_string(char *Text, int *type)
 		ThisPtr += "L";
 		break;
 
+	case 'q':
+	case 'Q':
+		returntype = BAS_V_INTEGER;
+		ThisPtr += "LL";
+		break;
+
 	case 'C':
 	case 'c':
 		returntype = BAS_V_INTEGER;
@@ -537,11 +543,17 @@ static char *mangle_string(char *Text, int *type)
 	case 'g':
 	case 'h':
 	case 'p':
+	case 's':
+	case 't':
+	case 'x':
 	case 'F':
 	case 'D':
 	case 'G':
 	case 'H':
 	case 'P':
+	case 'S':
+	case 'T':
+	case 'X':
 		returntype = BAS_V_FLOAT;
 		break;
 
