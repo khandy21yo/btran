@@ -359,6 +359,7 @@ static char *mangle_string(char *Text, int *type)
 	int Base = 0;
 	std::string ThisPtr;
 	int returntype = 0;
+	int decimalseen = 0;
 
 	assert(Text != NULL);
 
@@ -367,27 +368,27 @@ static char *mangle_string(char *Text, int *type)
 	//
 	switch (*Text)
 	{
-	case 'd':
+	case 'd':	// Decimal
 	case 'D':
 		Base = 10;
 		Text++;
 		break;
-	case 'b':
+	case 'b':	// Binary
 	case 'B':
 		Base = 2;
 		Text++;
 		break;
-	case 'o':
+	case 'o':	// Octal
 	case 'O':
 		Base = 8;
 		Text++;
 		break;
-	case 'x':
+	case 'x':	// Hexidecimal
 	case 'X':
 		Base = 16;
 		Text++;
 		break;
-	case 'a':
+	case 'a':	// ASCII
 	case 'A':
 		Base = 256;
 		Text++;
@@ -474,6 +475,13 @@ static char *mangle_string(char *Text, int *type)
 			}
 			break;
 
+		case '.':
+		case 'e':
+		case 'E':
+			decimalseen = 1;
+			ThisPtr += *Text;
+			break;
+
 		default:
 			ThisPtr += *Text;
 			break;
@@ -514,50 +522,62 @@ static char *mangle_string(char *Text, int *type)
 
 	switch(*Text)
 	{
-	case 'B':
+	case 'B':	// Byte
 	case 'b':
-	case 'W':
+	case 'W':	// Word
 	case 'w':
 		returntype = BAS_V_INTEGER;
 		break;
 
-	case 'L':
+	case 'L':	// Long
 	case 'l':
 		returntype = BAS_V_INTEGER;
 		ThisPtr += "L";
 		break;
 
-	case 'q':
+	case 'q':	// Quad
 	case 'Q':
 		returntype = BAS_V_INTEGER;
 		ThisPtr += "LL";
 		break;
 
-	case 'C':
+	case 'C':	// character constant
 	case 'c':
 		returntype = BAS_V_INTEGER;
 		break;
 
-	case 'f':
-	case 'd':
-	case 'g':
-	case 'h':
-	case 'p':
-	case 's':
-	case 't':
-	case 'x':
+	case 'f':	// float
+	case 'd':	// d-float
+	case 'p':	// packed decimal
 	case 'F':
 	case 'D':
+	case 'P':
+		returntype = BAS_V_FLOAT;
+		if (decimalseen == 0)
+		{
+			ThisPtr += ".0";
+		}
+		break;
+
+	case 'g':	// g-float
+	case 'h':	// h-float
+	case 's':	// s-float
+	case 't':	// t-float
+	case 'x':	// x-float
 	case 'G':
 	case 'H':
-	case 'P':
 	case 'S':
 	case 'T':
 	case 'X':
 		returntype = BAS_V_FLOAT;
+		if (decimalseen == 0)
+		{
+			ThisPtr += ".0";
+		}
+		ThisPtr += "L";
 		break;
 
-	default:
+	default:	// Probably a bug
 		returntype = BAS_V_TEXTSTRING;
 		break;
 
