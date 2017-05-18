@@ -64,7 +64,7 @@ static std::string IncrString(const std::string &orig, long increment)
 	 */
 	if (*endptr == 0)
 	{
-		sprintf(buffer, "%d", value + increment);
+		sprintf(buffer, "%ld", value + increment);
 		return buffer;
 	}
 	else
@@ -72,12 +72,12 @@ static std::string IncrString(const std::string &orig, long increment)
 		std::string Result = orig;
 		if (increment >= 0)
 		{
-			sprintf(buffer, "%d", increment);
+			sprintf(buffer, "%ld", increment);
 			Result = Result + " + " + buffer;
 		}
 		else
 		{
-			sprintf(buffer, "%d", -increment);
+			sprintf(buffer, "%ld", -increment);
 			Result = Result + " - " + buffer;
 		}
 		return Result;

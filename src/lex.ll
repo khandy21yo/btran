@@ -560,13 +560,22 @@ static char *mangle_string(char *Text, int *type)
 		break;
 
 	case 'g':	// g-float
-	case 'h':	// h-float
+	case 'G':
 	case 's':	// s-float
+	case 'S':
+		returntype = BAS_V_FLOAT;
+		if (decimalseen == 0)
+		{
+			ThisPtr += ".0";
+		}
+//             ThisPtr += "";	// Double (the default)
+		break;
+
+
+	case 'h':	// h-float
 	case 't':	// t-float
 	case 'x':	// x-float
-	case 'G':
 	case 'H':
-	case 'S':
 	case 'T':
 	case 'X':
 		returntype = BAS_V_FLOAT;
