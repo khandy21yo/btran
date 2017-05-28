@@ -661,11 +661,11 @@ static Node* MoveFunctionsOne(
 	// attach then to the programs code.
 	//
 	Program->UnDownLink(1);
-	Node* FinalProgram = LocalData->DownLink(
-		LocalFunctions->DownLink(
-		Program->DownLink(LocalVars, 1)));
-	Program->DownLink(LocalDefstar, 2);
-	Program->DownLink(LocalCode, 1);
+	Node* FinalProgram = DownLink(LocalData,
+		DownLink(LocalFunctions,
+		DownLink(Program, LocalVars, 1)));
+	DownLink(Program, LocalDefstar, 2);
+	DownLink(Program, LocalCode, 1);
 
 	//
 	// Return back restructured code

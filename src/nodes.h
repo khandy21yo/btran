@@ -196,4 +196,6 @@ private:
 	std::string OutputNodeVarType();
 };
 
+Node *DownLink(Node* node1, Node *Node0 = 0, int Ptr = 0);
+
 #endif

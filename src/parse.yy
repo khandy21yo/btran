@@ -311,11 +311,11 @@ program:	doprogram { DoProgram($1); }
 ;
 
 doprogram:	/* Empty */ { $$ = 0; }
-		| nline doprogram { $$ = $1->DownLink($2); }
+		| nline doprogram { $$ = DownLink($1, $2); }
 ;
 
 nline:		linenum label statement '\n' { $$ =
-			CommentList->DownLink($1->DownLink($2->DownLink($3)));
+			DownLink(CommentList, DownLink($1, DownLink($2, $3)));
 			CommentList = 0; }
 ;
 
@@ -330,21 +330,21 @@ label:		/* Empty */ {$$ = 0;}
 
 statement:	statementx
 		| statement '\\' statementx { delete $2;
-			$$ = $1->DownLink($3); }
+			$$ = DownLink($1, $3); }
 		| statement ':' statementx { delete $2;
-			$$ = $1->DownLink($3); }
+			$$ = DownLink($1, $3); }
 		| statement BAS_S_THEN statementw {
-			$$ = $1->DownLink($2->DownLink($3)); }
+			$$ = DownLink($1, $2->DownLink($3)); }
 		| statement BAS_P_THEN statementw {
-			$$ = $1->DownLink($3); delete $2; }
+			$$ = DownLink($1, $3); delete $2; }
 		| statement BAS_S_ELSE statementw {
-			$$ = $1->DownLink($2->DownLink($3)); }
+			$$ = DownLink($1, $2->DownLink($3)); }
 		| statement BAS_P_ELSE statementw {
-			$$ = $1->DownLink($2->DownLink($3)); }
+			$$ = DownLink($1, $2->DownLink($3)); }
 		| statement BAS_N_ENDIF statementx {
-			$$ = $1->DownLink($2->DownLink($3)); }
+			$$ = DownLink($1, $2->DownLink($3)); }
 		| statement BAS_P_ENDIF statementx {
-			$$ = $1->DownLink($2->DownLink($3)); }
+			$$ = DownLink($1, $2->DownLink($3)); }
 ;
 
 statementw:	statementx

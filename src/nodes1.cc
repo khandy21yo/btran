@@ -619,3 +619,47 @@ int Node::CountParam(void)
 	return Counter;
 }
 
+/**
+ * \brief Link two nodes together at same level.
+ *
+ *	This function will link two parent nodes together at the same
+ *	tree level. If one or the other node doesn't exist, it will
+ *	make whichever node exists the main node.
+ *
+ * This versions differs slightly from the class function of the same name.
+ * It is necessary because the stupid optimizers don't think it is possible
+ * to call a class function with a null class.
+ *
+ *	\return the top node.
+ *
+ */
+Node *DownLink
+(
+ 	Node *Node1,	/**< Main node to link */
+	Node *Node0,	/**< Node to link in */
+	int Ptr		/**< Slot to link it into */
+)
+{
+	//
+	// If root node is non-existant, go to 2ndnode
+	//
+	if (Node1 == 0)
+	{
+		return Node0;
+	}
+
+	//
+	// Link them together
+	//
+	if (Node1->Block[Ptr] == 0)
+	{
+		Node1->Block[Ptr] = Node0;
+	}
+	else
+	{
+		DownLink(Node1->Block[Ptr], Node0, 0);
+	}
+
+	return Node1;
+}
+

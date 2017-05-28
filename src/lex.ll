@@ -557,6 +557,7 @@ static char *mangle_string(char *Text, int *type)
 		{
 			ThisPtr += ".0";
 		}
+		ThisPtr = "F" + ThisPtr;	// float instead of double
 		break;
 
 	case 'g':	// g-float
@@ -583,7 +584,7 @@ static char *mangle_string(char *Text, int *type)
 		{
 			ThisPtr += ".0";
 		}
-		ThisPtr += "L";
+		ThisPtr += "L";	// Long float. Is this standard?
 		break;
 
 	default:	// Probably a bug
