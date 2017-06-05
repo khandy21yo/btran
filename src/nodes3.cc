@@ -606,15 +606,15 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_DELETE:
-		os << Indent() << "BasicChannel[" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Delete();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Tree[0], 0) <<
+			".Delete();" << std::endl;
 		break;
 
 	case BAS_S_SCRATCH:
-		os << Indent() << "BasicChannel[" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Scratch();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Tree[0], 0) <<
+			".Scratch();" << std::endl;
 		break;
 
 	case BAS_S_DIM:
@@ -693,8 +693,8 @@ void Node::OutputCodeOne(
 		{
 			Tree[1]->OutputGetPutOptions(Tree[0], os);
 		}
-		os << Indent() << "BasicChannel[" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
+		os << Indent() <<
+			GetIPChannel(Tree[0], 0) <<
 			"].Find()" << std::endl;
 		break;
 
@@ -1035,9 +1035,9 @@ void Node::OutputCodeOne(
 		{
 			Tree[1]->OutputGetPutOptions(Tree[0], os);
 		}
-		os << Indent() << "BasicChannel[" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Get();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Tree[0], 0) <<
+			".Get();" << std::endl;
 
 		break;
 
@@ -1360,8 +1360,8 @@ void Node::OutputCodeOne(
 		//
 		if (Tree[1] != 0)
 		{
-			os << Indent() << "BasicChannel[" <<
-				Tree[2]->OutputForcedType(VARTYPE_INTEGER) << "].";
+			os << Indent() <<
+				GetIPChannel(Tree[2], 0) << ".";
 			if (Tree[1]->Type == BAS_S_INPUT)
 			{
 				os << "ForInput();" << std::endl;
@@ -1381,9 +1381,9 @@ void Node::OutputCodeOne(
 			Tree[3]->OutputOpenStuff(os, Tree[2]);
 		}
 
-		os << Indent() << "BasicChannel[" <<
-			Tree[2]->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Open(";
+		os << Indent() <<
+			GetIPChannel(Tree[2], 0) <<
+			".Open(";
 		if (Tree[0] != 0)
 		{
 			os << Tree[0]->Expression();
@@ -1400,9 +1400,9 @@ void Node::OutputCodeOne(
 		{
 			Tree[1]->OutputGetPutOptions(Tree[0], os);
 		}
-		os << Indent() << "BasicChannel[" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Put();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Tree[0], 0) <<
+			".Put();" << std::endl;
 		break;
 
 	case BAS_S_RANDOM:
@@ -1440,9 +1440,8 @@ void Node::OutputCodeOne(
 			{
 				Tree[1]->OutputGetPutOptions(Tree[0], os);
 			}
-			os << Indent() << "BasicChannel[" <<
-				Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-				"].Reset();" << std::endl;
+			os << Indent() << GetIPChannel(Tree[0], 0) <<
+				"].seekg(0, std::ios::beg);" << std::endl;
 		}
 		break;
 
@@ -1891,9 +1890,9 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_UNLOCK:
-		os << Indent() << "BasicChannel[" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Unlock();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Tree[0], 0) <<
+			".Unlock();" << std::endl;
 		break;
 
 	case BAS_S_UNTIL:
@@ -4360,152 +4359,163 @@ void Node::OutputOpenStuff(
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetRecordSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetRecordSize(" << Tree[0]->Expression() << ");" << std::endl;
 		break;
 
 	case BAS_S_CLUSTERSIZE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetClusterSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetClusterSize(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_FILESIZE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER);
-		os << "].SetFileSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetFileSize(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_EXTENDSIZE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetExtendSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetExtendSize(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_WINDOWSIZE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetWindowSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetWindowSize(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_BLOCKSIZE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetBlockSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetBlockSize(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_BUCKETSIZE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetBucketSize(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetBucketSize(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_MODE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetMode(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0)<<
+			".SetMode(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_BUFFER:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetBuffer(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetBuffer(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_DEFAULTNAME:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetDefaultName(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetDefaultName(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_PRIMARY:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetKey(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetKey(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_ALTERNATE:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetKey(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetKey(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_TEMPORARY:
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetTemporary(True);" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetTemporary(True);" << std::endl;
 		break;
 
 	case BAS_S_CONTIGUOUS:
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetContiguous(True);" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetContiguous(True);" << std::endl;
 		break;
 
 	case BAS_S_NOREWIND:
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetRewind(False);" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetRewind(False);" << std::endl;
 		break;
 
 	case BAS_S_NOSPAN:
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetSpan(False);" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetSpan(False);" << std::endl;
 		break;
 
 	case BAS_S_SPAN:
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetSpan(True);" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetSpan(True);" << std::endl;
 		break;
 
 	case BAS_S_ORGANIZATION:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetOrginization(" << Tree[0]->TextValue;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetOrginization(" << Tree[0]->TextValue;
 		if (Tree[0]->Tree[0] != 0)
 		{
 			os << ", " << Tree[0]->Tree[0]->TextValue;
@@ -4517,27 +4527,29 @@ void Node::OutputOpenStuff(
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetAccess(" << Tree[0]->TextValue << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetAccess(" << Tree[0]->TextValue << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_ALLOW:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetAllow(" << Tree[0]->TextValue << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetAllow(" << Tree[0]->TextValue << ");" <<
+			std::endl;
 		break;
 
 	case BAS_S_CONNECT:
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetConnect(BasicChannel[" << Tree[0]->Expression() << "]);" <<
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetConnect(BasicChannel[" << Tree[0]->Expression() << "]);" <<
 			std::endl;
 		break;
 
@@ -4545,9 +4557,9 @@ void Node::OutputOpenStuff(
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetMap(" << Tree[0]->Expression() << ", sizeof(" <<
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetMap(" << Tree[0]->Expression() << ", sizeof(" <<
 			Tree[0]->Expression() <<
 			"));" << std::endl;
 		break;
@@ -4556,9 +4568,9 @@ void Node::OutputOpenStuff(
 
 		assert(Tree[0] != 0);
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetRecordType(" << Tree[0]->TextValue <<
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetRecordType(" << Tree[0]->TextValue <<
 			");" << std::endl;
 		break;
 
@@ -4567,9 +4579,10 @@ void Node::OutputOpenStuff(
 
 	default:
 
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].GoofyOpenStuff(" << Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".GoofyOpenStuff(" << Expression() << ");" <<
+			std::endl;
 		break;
 
 	}
@@ -4601,9 +4614,9 @@ void Node::OutputClose(
 		break;
 
 	default:
-		os << Indent() << "BasicChannel[" <<
-			OutputForcedType(VARTYPE_INTEGER) <<
-			"].Close();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(this, 0) <<
+			".Close();" << std::endl;
 		break;
 	}
 }
@@ -4751,27 +4764,28 @@ void Node::OutputGetPutOptions(
 	case BAS_V_RMSRECORD:
 	case BAS_S_RECORD:
 	case BAS_S_BLOCK:
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetRecord(" <<
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetRecord(" <<
 			Tree[0]->Expression() << ");" << std::endl;
 		break;
 
 	case BAS_S_REGARDLESS:
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetRegardless();" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetRegardless();" << std::endl;
 		break;
 
 	case BAS_S_KEY:
-		os << Indent() << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetKey(" << Tree[0]->Expression() << ");" << std::endl;
+		os << Indent() <<
+			GetIPChannel(Channel, 0) <<
+			".SetKey(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		if (Tree[1] != 0)
 		{
-			os << Indent() << "BasicChannel[" <<
-				Channel->OutputForcedType(VARTYPE_INTEGER) <<
-				"].SetKeyMode(";
+			os << Indent() <<
+				GetIPChannel(Channel, 0) <<
+				".SetKeyMode(";
 			switch(Tree[1]->Type)
 			{
 			case BAS_S_EQ:
@@ -4786,28 +4800,29 @@ void Node::OutputGetPutOptions(
 
 			}
 			os << ");" << std::endl <<
-				Indent() << "BasicChannel[" <<
-				Channel->OutputForcedType(VARTYPE_INTEGER) <<
-				"].SetKeyValue(" << Tree[2]->Expression() << ");" << std::endl;
+				Indent() <<
+				GetIPChannel(Channel, 0) <<
+				".SetKeyValue(" << Tree[2]->Expression() << ");" << std::endl;
 		}
 		break;
 
 	case BAS_S_RFA:
-		os << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetRfaValue(" <<
+		os <<
+			GetIPChannel(Channel, 0) <<
+			".SetRfaValue(" <<
 			Tree[0]->Expression() << ");" << std::endl;
 		break;
 
 	case BAS_S_COUNT:
-		os << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].SetCount(" << Tree[0]->Expression() << ");" << std::endl;
+		os <<
+			GetIPChannel(Channel, 0) <<
+			".SetCount(" << Tree[0]->Expression() << ");" <<
+			std::endl;
 		break;
 	default:
-		os << "BasicChannel[" <<
-			Channel->OutputForcedType(VARTYPE_INTEGER) <<
-			"].Goofy(" << Expression() << ");" << std::endl;
+		os <<
+			GetIPChannel(Channel, 0) <<
+			".Goofy(" << Expression() << ");" << std::endl;
 	}
 }
 
