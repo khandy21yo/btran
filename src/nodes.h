@@ -197,5 +197,6 @@ private:
 };
 
 Node *DownLink(Node* node1, Node *Node0 = 0, int Ptr = 0);
+std::string GetIPChannel( Node *IOChannel, int InputFlag);
 
 #endif

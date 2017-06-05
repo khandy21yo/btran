@@ -2659,33 +2659,43 @@ void Node::OutputIPChannel(
 	//
 	if (IOChPrinted == 0)
 	{
-		os << Indent();
-
-		//
-		// Use default if no channel specified, else use
-		// whatever is given
-		//
-		if (IOChannel == 0)
-		{
-			if (InputFlag == 0)
-			{
-				os << "std::cout";
-			}
-			else
-			{
-				os << "std::cin";
-			}
-		}
-		else
-		{
-			os << "BasicChannel[" << IOChannel->Expression() << "]";
-		}
+		os << Indent() << GetIPChannel(IOChannel, InputFlag);
 
 		//
 		// Flag that we have printed the channel
 		//
 		IOChPrinted = 1;
 	}
+}
+
+/**
+ * \brief Output IO channel information
+ */
+std::string GetIPChannel(
+	Node *IOChannel,	/**< IOChannel. May be zero */
+	int InputFlag		/**< INPUT/PRINT flag */
+)
+{
+	//
+	// Use default if no channel specified, else use
+	// whatever is given
+	//
+	if (IOChannel == 0)
+	{
+		if (InputFlag == 0)
+		{
+			return "std::cout";
+		}
+		else
+		{
+			return "std::cin";
+		}
+	}
+	else
+	{
+		return "BasicChannel[" + IOChannel->Expression() + "]";
+	}
+
 }
 
 /**
@@ -3049,10 +3059,10 @@ if (0)
 else
 {
 			os << Indent() <<
+				"getline(" <<
+				GetIPChannel(IOChannel, InputFlag) <<
+				", " <<
 				Expression() <<
-				".getline(";
-			OutputIPChannel(os, InputFlag);
-			os <<
 				");" << std::endl;
 
 			IOChPrinted = 0;
