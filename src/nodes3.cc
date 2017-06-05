@@ -2679,7 +2679,7 @@ std::string GetIPChannel(
 	// Use default if no channel specified, else use
 	// whatever is given
 	//
-	if (IOChannel == 0)
+	if ((IOChannel == 0) || (IOChannel->NoParen() == "0"))
 	{
 		if (InputFlag == 0)
 		{
