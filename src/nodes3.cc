@@ -3032,6 +3032,8 @@ int Node::OutputInputData(
 		// LINPUT/INPUT LINE
 		//
 		case 2:
+if (0)
+{
 			os << Indent() << "{" << std::endl;
 			Level++;
 			os << Indent() << "char TmpInput[MAX_INPUT];" << std::endl;
@@ -3043,6 +3045,19 @@ int Node::OutputInputData(
 			IOChPrinted = 0;
 			ReturnFlag = 2;
 			break;
+}
+else
+{
+			os << Indent() <<
+				Expression() <<
+				".getline(";
+			OutputIPChannel(os, InputFlag);
+			os <<
+				");" << std::endl;
+
+			IOChPrinted = 0;
+			ReturnFlag = 2;
+}
 		}
 
 		break;
