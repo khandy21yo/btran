@@ -1,0 +1,60 @@
+src2 is for an updated version of the basic to C++ trabslator.
+
+This is preliminary work, and currently does not do anything yet.
+
+Requirements
+
+	G++ or clang
+	automake
+	autoconf
+	libtool
+	make
+	libboost
+	ncurses
+
+Reason for new version
+
+	Clean up the code.
+
+		The original version is a heavily modified trial and error
+		version. Some things are done in a very odd way because of
+		historical reasons.
+
+		There is also a lot of things neing done in very inconsistant
+		ways. The "Nde" structure is overcomplex.
+
+		The parser uses the Node structure for too many things. Every
+		token starts out as a node, and many have to be deleted. There
+		is probably a latge number f memory leaks.
+
+	Handle parsing better
+
+		Current version will parse a lot of code that it shuld not.
+		Errors are handled poorly. Maps and records are barely handled
+		at al.
+
+	Better variable tables.
+
+		Variable tables are a mess in the original. Handling them
+		properly will greatly simplify things.
+		Variable types are also a mess (var/function, data type,
+		parameters, etc.)
+
+	Handle local functions (DEF FN) better.
+
+		These functions need to be levereged up into the function
+		that they are contained in.
+
+		Calls outside of the functions will probably still be a
+		problem.
+
+	Use newer tols
+
+		Flexc++ and bisonc++.
+
+	Learn newer C++ standards.
+
+		I want to learn more current C++ functionality that has been
+		added to the standards over the years.
+
+	Hopefully this newer version will be able to handle
