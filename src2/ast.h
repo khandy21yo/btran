@@ -37,6 +37,19 @@ public:
 	{
 	}
 
+	//!\brief accessor function for code
+	inline int get_code() const
+	{
+		return d_code;
+	}
+
+	//!\brief accessor function for text
+	const inline std::string &get_text() const
+	{
+		return d_text;
+	}
+
+	virtual void dump(void) const;
 };
 
 //**********************************************************************
@@ -64,6 +77,7 @@ public:
 	{
 	}
 
+	virtual void dump(void) const;
 };
 
 //**********************************************************************
@@ -93,6 +107,7 @@ public:
 	{
 	}
 
+	virtual void dump(void) const;
 };
 
 //**********************************************************************
@@ -123,6 +138,7 @@ public:
 	}
 
 
+	virtual void dump(void) const;
 };
 
 //**********************************************************************
@@ -152,6 +168,55 @@ public:
 	{
 	}
 
+	virtual void dump(void) const;
+};
+
+//**********************************************************************
+//! \brief Variable list element
+//!
+//! Contains one variable list element.
+//!
+class varlistelement
+{
+private:
+	astexprvar d_vardef;	//!< Comtains the variable name and context
+	int d_vartype;		//!< Type of variable
+	bool d_static;		//!< DOes it need to be made static
+	bool d_used;		//!< Has it beed refered to outside of a
+				//   definition.
+	bool d_defined;		//!< Does it have a definition statement.
+
+public:
+	virtual void dump(void) const;
+};
+
+
+//**********************************************************************
+//! \brief Variable list
+//!
+//! List of variables
+//!
+class varlist : public std::vector<varlistelement>
+{
+private:
+	varlist *d_previous;	//!< Link to previous variable list
+
+public:
+	virtual void dump(void) const;
+};
+
+//**********************************************************************
+//! \brief AST procedure class
+//!
+//! Class used for a procedure block
+//!
+class astprocedure : public aststmt
+{
+private:
+	varlist d_varlist;		//!< Variables local to block
+
+public:
+	virtual void dump(void) const;
 };
 
 #endif
