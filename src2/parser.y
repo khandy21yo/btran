@@ -10,5 +10,43 @@
 //!
 //! \author Kevin Handy, June 2017
 //!
+%filenames parser
+%scanner scanner.h
 
+
+%
+
+// Entire program file
+program :
+	lines
+;
+
+// Line in the program file.
+// May contain multiple statements
+line :
+	line '/' statement
+|	statement
+|	'\n'
+;
+
+// Individual statement
+statement:
+	statementnomod
+|	statementmod
+ ;
+
+// Statement that cannot take a modifier
+statementnomod:
+;
+
+// Statement that can take a modifier
+statementmod:
+	statementmodone statementmodifiers
+;
+
+statementmodone:
+;
+
+statement modifiers:
+;
 
