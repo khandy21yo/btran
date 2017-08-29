@@ -261,16 +261,27 @@ inline void MatZer_n(
 class BasicError
 {
 public:
-	int ErrorNo;		/**< \brief Basc error number */
+	int err;		/**< \brief Basc error number */
+	int erl;		/**< Line number for error */
+
 public:
 	/**
 	 * \brief Empty constructor
 	 */
-	BasicError() { ErrorNo = 0; }
+	BasicError()
+	{
+		err = 0;
+		erl = 0;
+	}
 	/**
 	 * \brief Constructor
 	 */
-	BasicError(int x) { ErrorNo = x; ErrNum = x; }
+	BasicError(int newerr, int newerl = 0)
+	{
+		err = newerr;
+		erl = newerl;
+	}
+
 };
 
 std::string sys(const std::string& Source);

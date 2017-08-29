@@ -699,9 +699,9 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("DIF$",		"basic::Dif",		VARTYPE_DYNSTR);
 	InitOneFunction("ECHO",		"basic::Echo",		VARTYPE_LONG);
 	InitOneFunction("EDIT$",	"basic::edit",		VARTYPE_DYNSTR);
-	InitOneFunction("ERR",		"basic::err()",		VARTYPE_LONG, VARCLASS_NONE);
-	InitOneFunction("ERL",		"basic::erl()",		VARTYPE_LONG, VARCLASS_NONE);
-	InitOneFunction("ERT$",		"basic::ert",		VARTYPE_DYNSTR);
+	InitOneFunction("ERR",		"Be.err",		VARTYPE_LONG, VARCLASS_NONE);
+	InitOneFunction("ERL",		"Be.erl",		VARTYPE_LONG, VARCLASS_NONE);
+	InitOneFunction("ERT$",		"Basic::ert",		VARTYPE_DYNSTR);
 	InitOneFunction("EXP",		"basic::exp",		VARTYPE_DOUBLE);
 	InitOneFunction("FIX",		"fix",			VARTYPE_DOUBLE);
 	InitOneFunction("FORMAT$",	"basic::Format",	VARTYPE_DYNSTR);
