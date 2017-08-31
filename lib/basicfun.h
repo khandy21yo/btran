@@ -263,6 +263,7 @@ class BasicError
 public:
 	int err;		/**< \brief Basc error number */
 	int erl;		/**< Line number for error */
+	std::string ern;	/**< Function name of error */
 
 public:
 	/**
@@ -276,10 +277,11 @@ public:
 	/**
 	 * \brief Constructor
 	 */
-	BasicError(int newerr, int newerl = 0)
+	BasicError(int newerr, int newerl = 0, std::string newern = "")
 	{
 		err = newerr;
 		erl = newerl;
+		ern = newern;
 	}
 
 };

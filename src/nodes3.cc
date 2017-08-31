@@ -1088,7 +1088,7 @@ void Node::OutputCodeOne(
 
 		if (Block[2] != 0)
 		{
-			os << Indent() << "catch(basic::BasicError Be)" << std::endl;
+			os << Indent() << "catch(basic::BasicError &Be)" << std::endl;
 
 			Block[2]->OutputBlock(os);
 		}

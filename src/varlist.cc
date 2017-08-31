@@ -701,6 +701,7 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("EDIT$",	"basic::edit",		VARTYPE_DYNSTR);
 	InitOneFunction("ERR",		"Be.err",		VARTYPE_LONG, VARCLASS_NONE);
 	InitOneFunction("ERL",		"Be.erl",		VARTYPE_LONG, VARCLASS_NONE);
+	InitOneFunction("ERN$",		"Be.ern",		VARTYPE_DYNSTR, VARCLASS_NONE);
 	InitOneFunction("ERT$",		"Basic::ert",		VARTYPE_DYNSTR);
 	InitOneFunction("EXP",		"basic::exp",		VARTYPE_DOUBLE);
 	InitOneFunction("FIX",		"fix",			VARTYPE_DOUBLE);
