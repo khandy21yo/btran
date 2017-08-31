@@ -69,7 +69,9 @@ std::string genname(
  */
 VariableList::VariableList()
 {
-	insert(begin(), *(new ListOfVariables));
+	ListOfVariables newlist;
+
+	insert(begin(), newlist);
 	vcount = 1;
 
 	//
@@ -86,7 +88,9 @@ VariableList::VariableList()
  */
 void VariableList::NewLevel(void)
 {
-	insert(end(), *(new ListOfVariables));
+	ListOfVariables newlist;
+
+	insert(end(), newlist);
 }
 
 /**
