@@ -3041,22 +3041,25 @@ int Node::OutputInputData(
 		// LINPUT/INPUT LINE
 		//
 		case 2:
-if (0)
-{
-			os << Indent() << "{" << std::endl;
-			Level++;
-			os << Indent() << "char TmpInput[MAX_INPUT];" << std::endl;
-			OutputIPChannel(os, InputFlag);
-			os << ".getline(TmpInput, MAX_INPUT);" << std::endl <<
-				Indent() << Expression() << " = TmpInput;" << std::endl;
-			Level--;
-			os << Indent() << "}" << std::endl;
-			IOChPrinted = 0;
-			ReturnFlag = 2;
-			break;
-}
-else
-{
+			if (IOChannel != 0)
+			{
+				//
+				// If we are on an IO channel, then
+				// throw an error if we are at an eof
+				//
+				os << Indent() <<
+					"if (" <<
+					GetIPChannel(IOChannel, InputFlag) <<
+					".eof()) { throw BasicError(11); }" <<
+					"\t// End of file on device" <<
+					std::endl;
+				os << Indent() <<
+					"if (" <<
+					GetIPChannel(IOChannel, InputFlag) <<
+					".bad()) { throw BasicError(12); }" <<
+					"\t// Fatal system I/O failure" <<
+					std::endl;
+			}
 			os << Indent() <<
 				"getline(" <<
 				GetIPChannel(IOChannel, InputFlag) <<
@@ -3066,7 +3069,6 @@ else
 
 			IOChPrinted = 0;
 			ReturnFlag = 2;
-}
 		}
 
 		break;
