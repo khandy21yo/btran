@@ -55,7 +55,7 @@ static inline int SetStringReturn(int x)
 //std::std::cerr << "Test1: Mangle '" << yytext << "'" << std::endl;
 	char* MangleValue = mangle_string(yytext, &type);
 	yylval = new Node(x, MangleValue, include_stack_pointer, xline);
-	delete MangleValue;
+	delete[] MangleValue;
 	return(type);
 }
 
