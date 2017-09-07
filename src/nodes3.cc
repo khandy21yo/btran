@@ -1065,7 +1065,15 @@ void Node::OutputCodeOne(
 
 		os << Indent() << "if (" << Tree[0]->NoParen() << ")" << std::endl;
 
-		Block[1]->OutputBlock(os);
+		if (Block[1] != 0)
+		{
+			Block[1]->OutputBlock(os);
+		}
+		else
+		{
+			os << Indent() << "{" <<std::endl;
+			os << Indent() << "{" <<std::endl;
+		}
 
 		if (Block[2] != 0)
 		{
