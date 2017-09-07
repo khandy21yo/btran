@@ -192,13 +192,13 @@ static inline void CountLine()
 				yylval = new Node(BAS_V_TEXTSTRING,
 				MangleValue, include_stack_pointer);
 				StartInclude(yytext); BEGIN(INITIAL);
-				delete MangleValue;
+				delete[] MangleValue;
 				return BAS_V_TEXTSTRING; }
 <incl>"'"([^']*)"'"	{ char* MangleValue = mangle_string(yytext, 0);
 				yylval = new Node(BAS_V_TEXTSTRING,
 				MangleValue, include_stack_pointer);
 				StartInclude(yytext); BEGIN(INITIAL);
-				delete MangleValue;
+				delete[] MangleValue;
 				return BAS_V_TEXTSTRING; }
 
 	/*
