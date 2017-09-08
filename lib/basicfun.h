@@ -283,6 +283,15 @@ public:
 		erl = newerl;
 		ern = newern;
 	}
+	/**
+	 * Copy constructor
+	 */
+	BasicError(const BasicError &be)
+	{
+		err = be.err;
+		erl = be.erl;
+		ern = be.ern;
+	}
 
 };
 
