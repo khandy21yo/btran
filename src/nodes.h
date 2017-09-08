@@ -59,8 +59,9 @@ public:
 	 *
 	 * Deletes all attached nodes
 	 */
-	~Node() { delete Tree[0]; delete Tree[1]; delete Tree[2]; delete Tree[3];
-		delete Tree[4]; delete Block[0]; delete Block[1]; }
+	~Node() { delete Tree[0]; delete Tree[1]; delete Tree[2];
+		delete Tree[3]; delete Tree[4];
+		delete Block[0]; delete Block[1]; delete Block[2]; }
 
 	/**
 	 * \brief Get next downlink
