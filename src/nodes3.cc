@@ -1613,7 +1613,7 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_STOP:
-		os << Indent() << "exit(0);" << std::endl;
+		os << Indent() << "abort(EXIT_FAILURE);" << std::endl;
 		break;
 
 	case BAS_S_SUB:
