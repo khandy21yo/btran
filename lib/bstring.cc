@@ -47,7 +47,7 @@ std::string basic::Qnum(
 	long Number	/**< Number to convert */
 )
 {
-	return boost::lexical_cast<std::string>(Number) + " ";
+	return std::to_string(Number) + " ";
 }
 
 /**
@@ -61,7 +61,7 @@ std::string basic::Qnum(
 	double Number	/**< Value to convert */
 )
 {
-	return boost::lexical_cast<std::string>(Number);
+	return std::to_string(Number);
 }
 
 /**
@@ -76,7 +76,7 @@ std::string basic::Qnum1(
 	long Number	/**< Number to convert */
 )
 {
-	return boost::lexical_cast<std::string>(Number);
+	return std::to_string(Number);
 }
 
 /**
@@ -91,7 +91,7 @@ std::string basic::Qnum1(
 	double Number	/**< Number to convert */
 )
 {
-	return boost::lexical_cast<std::string>(Number);
+	return std::to_string(Number);
 }
 
 /**

@@ -731,7 +731,7 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("NUM",		"basic::num()",		VARTYPE_DOUBLE, VARCLASS_NONE);
 	InitOneFunction("NUM2",		"basic::num2()",	VARTYPE_DOUBLE, VARCLASS_NONE);
 	InitOneFunction("NUM$",		"basic::Qnum",		VARTYPE_DYNSTR);
-	InitOneFunction("NUM1$",	"boost::lexical_cast<std::string>",		VARTYPE_DYNSTR);
+	InitOneFunction("NUM1$",	"std::to_string",	VARTYPE_DYNSTR);
 	InitOneFunction("ONECHR",	"basic::OneChr",	VARTYPE_LONG);
 	InitOneFunction("PLACE$",	"basic::Place",		VARTYPE_DYNSTR);
 	InitOneFunction("POS",		"basic::Ccpos",		VARTYPE_LONG);
@@ -764,8 +764,8 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("TIME",		"basic::Time",		VARTYPE_DOUBLE);
 	InitOneFunction("TIME$",	"basic::Qtime",		VARTYPE_DYNSTR);
 	InitOneFunction("TRM$",		"boost::trim_right_copy",	VARTYPE_DYNSTR);
-	InitOneFunction("VAL",		"boost::lexical_cast<double>",	VARTYPE_DOUBLE);
-	InitOneFunction("VAL%",		"boost::lexical_cast<long>",	VARTYPE_LONG);
+	InitOneFunction("VAL",		"std::stod",		VARTYPE_DOUBLE);
+	InitOneFunction("VAL%",		"std::stol",		VARTYPE_LONG);
 	InitOneFunction("XLATE",	"basic::Xlate",		VARTYPE_DYNSTR);
 	InitOneFunction("LIB$SIGNAL",	"exit",			VARTYPE_LONG);
 }

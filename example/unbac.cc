@@ -32,7 +32,6 @@
 #include <fcntl.h>		// For mmap
 #include <sys/mman.h>		// For mmap
 
-#include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -505,7 +504,7 @@ static int fnn(std::string &a)
 	{
 		i1 = a.size() + 1;
 	}
-	Result = boost::lexical_cast<long>(basic::mid(a, i + 3, i1 - 4));
+	Result = std::stoi(basic::mid(a, i + 3, i1 - 4));
 
 	a = a.substr(0, i - 1) + basic::right(a, i1);
 	return Result;
@@ -674,7 +673,7 @@ int fd, pagesize;
 		<< basic::Qtime(0) << std::endl;
 	std::cout << std::endl;
 	std::cout << "Type \"?\" for help." << std::endl;
-	job = basic::right(boost::lexical_cast<std::string>(100 + e[0] / 2), 2);
+	job = basic::right(std::to_string(100 + e[0] / 2), 2);
 L_1010:;
 	std::cout << "[]";
 	getline(std::cin, a);
@@ -740,12 +739,12 @@ L_1030:;
 	if (q < 1 || q > 4)
 	{
 		std::cout << "?Version # out of range (" <<
-			boost::lexical_cast<std::string>(q) << ")!" <<
+			std::to_string(q) << ")!" <<
 			std::endl;
 		goto L_1010;
 	}
 
-	f1 = boost::lexical_cast<double>(opcode[65].dsc);
+	f1 = std::stoi(opcode[65].dsc);
 	spda = fnw(sp + 28);
 	flen = fnb(sp + 38);
 	vtbl = spda + 1214;
@@ -767,7 +766,7 @@ L_1030:;
 			i = fnw(x);
 		}
 	}
-	a_V2 = boost::lexical_cast<double>(opcode[l - 26].dsc);
+	a_V2 = std::stod(opcode[l - 26].dsc);
 	f1 = f1 ^ a_V2;
 	fnist(-24, "DET");
 	fnist(-60, "ERL");
@@ -954,7 +953,7 @@ static void fnnew_line(void)
 				"  ! Program name: " +
 				c_fil.substr(0, (c_fil.find(".", 0) + 1) - 1) + "\t\t" +
 				"Compiled with SCALE " +
-				boost::lexical_cast<std::string>(scalef) +
+				std::to_string(scalef) +
 				" on V" + std::string(1, (char)fnb(sp + 2)) +
 				std::string(1, (char)fnb(sp + 3)) + "." +
 				std::string(1, (char)fnb(sp)) + c_trm + "\t" +
@@ -969,7 +968,7 @@ static void fnnew_line(void)
 	//
 	// Output line number
 	//
-	fnprint(boost::lexical_cast<std::string>(l) +
+	fnprint(std::to_string(l) +
 		basic::Qstring(f_ind + i_ind + 1 + (t == 3), 9) + "  ");
 }
 
@@ -1320,13 +1319,13 @@ static std::string fnclassify_push(int stmt_V18)
 	if (z_c_t1 == 1)
 	{
 		// Integer immediate.
-		Result = boost::lexical_cast<std::string>(fnr(stmt_V18 + 1)) + "%";
+		Result = std::to_string(fnr(stmt_V18 + 1)) + "%";
 		goto L_15999;
 	}
 	if (z_c_t1 == 2)
 	{
 		// Short-Floating immediate.
-		z_c_a = boost::lexical_cast<std::string>(cvtaf(ffil +
+		z_c_a = std::to_string(cvtaf(ffil +
 			cvtia(fnr(stmt_V18 + 1))) / scalef_);
 		if ((z_c_a.find(".", 0) + 1) == 0)
 		{
@@ -1348,7 +1347,7 @@ static std::string fnclassify_push(int stmt_V18)
 		{
 			z_c_a = cvtia(fnw(loop)) + z_c_a;
 		}
-		z_c_a = boost::lexical_cast<std::string>(cvtaf(z_c_a) / scalef_);
+		z_c_a = std::to_string(cvtaf(z_c_a) / scalef_);
 		if ((z_c_a.find(".", 0) + 1) == 0)
 		{
 			z_c_a += ".";
@@ -1364,7 +1363,7 @@ static std::string fnclassify_push(int stmt_V18)
 		{
 			goto L_15999;
 		}
-		Result = boost::lexical_cast<std::string>(fnw(fnr(stmt_V18 + 1) + spda)) + "%";
+		Result = std::to_string(fnw(fnr(stmt_V18 + 1) + spda)) + "%";
 		goto L_15999;
 	}
 	if (z_c_t1 == 5)
@@ -1839,7 +1838,7 @@ L_2300:;
 			if (i_V6)
 			{
 				outfile << std::string("#") +
-					boost::lexical_cast<std::string>(i_V6 / 2) + "%";
+					std::to_string(i_V6 / 2) + "%";
 			}
 			c = i_V6;
 			l_state = INLINE;
@@ -1849,17 +1848,17 @@ L_2300:;
 			outfile << ", ";
 		}
 		l_state = INLINE;
-		e = a + boost::lexical_cast<std::string>(fnw(t + 22)) + "%";
+		e = a + std::to_string(fnw(t + 22)) + "%";
 		if (fnw(t + 24))
 		{
-			e += "," + boost::lexical_cast<std::string>(fnw(t + 24)) + "%";
+			e += "," + std::to_string(fnw(t + 24)) + "%";
 		}
 		e = e + ")";
 		if (fnb(t + 28) & 4)
 		{
 			if (c)
 			{
-				e += "=" + boost::lexical_cast<std::string>(2 * fnw(t + 20)) + "%";
+				e += "=" + std::to_string(2 * fnw(t + 20)) + "%";
 			}
 		}
 		if (Ccpos(2) + e.size() >= width)
@@ -2508,7 +2507,7 @@ L_10200:;
 	e = "";
 	if (op != 21 | l)
 	{
-		e = boost::lexical_cast<std::string>(l);
+		e = std::to_string(l);
 	}
 	fnprint(opcode[op].dsc + e);
 	goto L_2500;
@@ -2535,10 +2534,10 @@ L_10500:;
 	BGosub(L_13000);
 	l = fnb(stmt + 1);
 	fnprint(std::string("ON ") + a + " " +
-		opcode[op].dsc + boost::lexical_cast<std::string>(fnw(spta + 10 + fnr(l + stmt))));
+		opcode[op].dsc + std::to_string(fnw(spta + 10 + fnr(l + stmt))));
 	for (i_V6 = l - 2; i_V6 >= 2; i_V6 -= 2)
 	{
-		fnprint("," + boost::lexical_cast<std::string>(fnw(spta + 10 + fnr(i_V6 + stmt))));
+		fnprint("," + std::to_string(fnw(spta + 10 + fnr(i_V6 + stmt))));
 	}
 	bcod = bcod + l + 2;
 	goto L_2500;
