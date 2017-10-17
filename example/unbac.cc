@@ -32,11 +32,6 @@
 #include <fcntl.h>		// For mmap
 #include <sys/mman.h>		// For mmap
 
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/replace.hpp>
-
-
 #include <cmath>
 
 #define INLINE 2
