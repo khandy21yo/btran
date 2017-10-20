@@ -3058,13 +3058,13 @@ int Node::OutputInputData(
 				os << Indent() <<
 					"if (" <<
 					GetIPChannel(IOChannel, InputFlag) <<
-					".eof()) { throw BasicError(11); }" <<
+					".eof()) { throw basic::BasicError(11); }" <<
 					"\t// End of file on device" <<
 					std::endl;
 				os << Indent() <<
 					"if (" <<
 					GetIPChannel(IOChannel, InputFlag) <<
-					".bad()) { throw BasicError(12); }" <<
+					".bad()) { throw basic::BasicError(12); }" <<
 					"\t// Fatal system I/O failure" <<
 					std::endl;
 			}
