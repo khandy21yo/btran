@@ -708,7 +708,7 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("ERN$",		"Be.ern",		VARTYPE_DYNSTR, VARCLASS_NONE);
 	InitOneFunction("ERT$",		"Basic::ert",		VARTYPE_DYNSTR);
 	InitOneFunction("EXP",		"basic::exp",		VARTYPE_DOUBLE);
-	InitOneFunction("FIX",		"fix",			VARTYPE_DOUBLE);
+	InitOneFunction("FIX",		"trunc",		VARTYPE_DOUBLE);
 	InitOneFunction("FORMAT$",	"basic::Format",	VARTYPE_DYNSTR);
 	InitOneFunction("FSP$",		"basic::Fsp",		VARTYPE_DYNSTR);
 	InitOneFunction("FSS$",		"basic::Fss",		VARTYPE_DYNSTR);
