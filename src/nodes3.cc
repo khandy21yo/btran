@@ -1391,7 +1391,7 @@ void Node::OutputCodeOne(
 
 		os << Indent() <<
 			GetIPChannel(Tree[2], 0) <<
-			".Open(";
+			".open(";
 		if (Tree[0] != 0)
 		{
 			os << Tree[0]->Expression();
@@ -4626,7 +4626,7 @@ void Node::OutputClose(
 	default:
 		os << Indent() <<
 			GetIPChannel(this, 0) <<
-			".Close();" << std::endl;
+			".close();" << std::endl;
 		break;
 	}
 }
