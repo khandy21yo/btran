@@ -1397,6 +1397,12 @@ void Node::OutputCodeOne(
 			os << Tree[0]->Expression();
 		}
 		os << ");" << std::endl;
+
+		os << Indent() <<
+			"if (!" <<
+			GetIPChannel(Tree[2], 0) <<
+			".is_open() { throw BasicError(5); }" <<
+			std::endl;;
 		break;
 
 	case BAS_S_PRINT:
@@ -3071,7 +3077,7 @@ int Node::OutputInputData(
 				os << Indent() <<
 					"if (" <<
 					GetIPChannel(IOChannel, InputFlag) <<
-					".bad()) { throw basic::BasicError(12); }" <<
+					".fail()) { throw basic::BasicError(12); }" <<
 					"\t// Fatal system I/O failure" <<
 					std::endl;
 			}
