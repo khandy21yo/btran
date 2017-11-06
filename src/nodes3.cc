@@ -3049,6 +3049,13 @@ int Node::OutputInputData(
 		// LINPUT/INPUT LINE
 		//
 		case 2:
+			os << Indent() <<
+				"getline(" <<
+				GetIPChannel(IOChannel, InputFlag) <<
+				", " <<
+				Expression() <<
+				");" << std::endl;
+
 			if (IOChannel != 0)
 			{
 				//
@@ -3068,12 +3075,6 @@ int Node::OutputInputData(
 					"\t// Fatal system I/O failure" <<
 					std::endl;
 			}
-			os << Indent() <<
-				"getline(" <<
-				GetIPChannel(IOChannel, InputFlag) <<
-				", " <<
-				Expression() <<
-				");" << std::endl;
 
 			IOChPrinted = 0;
 			ReturnFlag = 2;
