@@ -37,12 +37,12 @@
  *
  *	\note Also used by CVT$$ code.
  */
-std::string &basic::edit(
+std::string basic::edit(
 	const std::string& Source,	/**< String to be converted */
 	const int Code			/**< Flag for conversion */
 )
 {
-	std::string* NewString = new std::string;
+	std::string NewString;
 	unsigned int Length;
 	const char* Address;
 	int ResultPtr = 0;
@@ -200,7 +200,8 @@ std::string &basic::edit(
 	//
 	// Return the final answer
 	//
-	*NewString = Result;
-	return *NewString;
+	NewString = Result;
+	delete[] Result;
+	return NewString;
 }
 

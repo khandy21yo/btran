@@ -128,7 +128,7 @@ inline std::string trm(const std::string& Source)
 // Various string type functions
 //
 int instr(unsigned long Start, char* Base, char* Search);
-std::string &edit(const std::string& Source, const int Code);
+std::string edit(const std::string& Source, const int Code);
 std::string sys(const std::string& Source);
 long cvtai(std::string x);
 std::string cvtia(int x);
