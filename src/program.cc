@@ -699,6 +699,8 @@ static Node* MoveFunctionsTwo(
 		//
 		switch(ThisCode->Type)
 		{
+#if 0	// Leave them be where they are since we now generate
+	// lambda functions.
 		case BAS_S_DEF:
 			//
 			// Attach local functions to the function tree
@@ -726,6 +728,7 @@ static Node* MoveFunctionsTwo(
 				LocalDefstar->DownLink(ThisCode);
 			}
 			break;
+#endif
 
 		case BAS_S_DATA:
 			//

@@ -405,14 +405,8 @@ void Node::OutputPrototypes(
 		switch(ThisNode->Type)
 		{
 		case BAS_S_PROGRAM:
-//			os << "void " << Tree[0]->Expression() <<
-//				"(void)" << std::endl;
-//			break;
-//
 		case BAS_S_FUNCTION:
 		case BAS_S_SUB:
-		case BAS_S_DEF:
-		case BAS_S_DEFSTAR:
 		case BAS_S_HANDLER:
 
 			//
@@ -859,7 +853,8 @@ void Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		os << std::endl << OutputNewDefinition() << std::endl;
+		os << std::endl <<
+			Indent() << OutputNewDefinition() << std::endl;
 
 		//
 		// Braces starting function
@@ -913,7 +908,14 @@ void Node::OutputCodeOne(
 		os << Indent() << "return Result;" << std::endl;
 
 		Level--;
-		os << Indent() << "}" << std::endl;
+		if (Type == BAS_S_DEF || Type ==BAS_S_DEFSTAR)
+		{
+			os << Indent() << "};" << std::endl;
+		}
+		else
+		{
+			os << Indent() << "}" << std::endl;
+		}
 
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
@@ -3953,15 +3955,7 @@ std::string Node::OutputNewDefinition(void)
 	case BAS_S_DEF:
 	case BAS_S_DEFSTAR:
 		IsFunction = 1;
-		result = "static ";
-		if (Tree[0] != 0)
-		{
-			result += Tree[0]->OutputNodeVarType() + " ";
-		}
-		else
-		{
-			result += OutputVarType(GuessVarType(Tree[1]->TextValue)) + " ";
-		}
+		result += "auto ";
 		break;
 
 	case BAS_N_EXTERNALCONSTANT:
@@ -3987,7 +3981,7 @@ std::string Node::OutputNewDefinition(void)
 	ThisVar = Variables->Lookup(Tree[1]->TextValue, Tree[3]);
 
 	//
-	// Make up a good name to print for this variable
+	// Make up a good name to print for this variable/function
 	//
 	if (ThisVar != 0)
 	{
@@ -3996,6 +3990,17 @@ std::string Node::OutputNewDefinition(void)
 	else
 	{
 		result += "?" + Tree[1]->TextValue + "?";
+	}
+
+	//
+	// Lambda function for DEF
+	//
+	switch(Type)
+	{
+	case BAS_S_DEF:
+	case BAS_S_DEFSTAR:
+		result += " = [&]";
+		break;
 	}
 
 	if (Tree[3] != 0)
