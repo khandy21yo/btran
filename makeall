@@ -43,5 +43,7 @@ cd ..
 # example
 #
 cd example
+touch *.bas
+touch unbac.cc
 make
 cd ..
