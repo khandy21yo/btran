@@ -5,7 +5,7 @@
 	! It is not meant as a useful program, it just gives
 	! a sample of some of the features that seem to work
 	! completely, and to show that some fairly complex
-	! programs can be compiled using this.
+	! programs can be compiled using btran.
 	!
 	option size = integer long
 
@@ -153,7 +153,8 @@
 2000	!
 	! Test simple DEF functions
 	!
-	DEF FNTEST1(A, B) = A + B
+	C = 1
+	DEF FNTEST1(A, B) = A + B + C
 
 	PRINT
 	PRINT "Testing DEF Functions"

@@ -192,16 +192,27 @@ void Node::VariableScanOne(
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_FUNC, true);
 		break;
 
-	case BAS_S_FUNCTION:
 	case BAS_S_DEF:
 	case BAS_S_DEFSTAR:
+		break;
+
+	case BAS_S_FUNCTION:
 	case BAS_S_SUB:
 
 		//
 		// Function Definition
+		//   0 = Return type
+		//   1 - Function name
+		//   2 -
+		//   3 - Calling Parameters
+		//
+		// must have a name
 		//
 		assert(Tree[1] != 0);
 
+		//
+		// Functions return type
+		//
 		if (Tree[0] != 0)
 		{
 			ThisType = Tree[0]->ScanType();
@@ -211,6 +222,9 @@ void Node::VariableScanOne(
 			ThisType = VARTYPE_VOID;
 		}
 
+		//
+		// This functions name
+		//
 		ThisVar = Variables->Lookup(Tree[1]->TextValue, this);
 		if (ThisVar == 0)
 		{
@@ -606,93 +620,6 @@ void Node::VariableScanOne(
 			Block[2]->VariableScan(InDefineFlag);
 		}
 		break;
-	}
-}
-
-/**
- * \brief Are there any DEF*'s inside of the function/program
- */
-void Node::ScanForDefstar(
-	int InDefineFlag	/**< Are we in a definition */
-)
-{
-	if (Type == BAS_S_DEFSTAR)
-	{
-		ScanOneDefstar(InDefineFlag);
-		if (Block[0] != NULL)
-		{
-			Block[0]->ScanForDefstar(InDefineFlag);
-		}
-	}
-}
-
-/**
- * \brief Are there any DEF*'s inside of the function/program
- */
-void Node::ScanOneDefstar(
-	int InDefineFlag	/**< Are we in a definition */
-)
-{
-	VariableStruct *ThisVar;
-	VARTYPE ThisType = VARTYPE_NONE;
-
-	//
-	// Function Definition
-	//
-	assert(Tree[1] != 0);
-
-	//
-	// Try to determine data type of this def
-	//
-	if (Tree[0] != 0)
-	{
-		//
-		// DEF type name
-		//
-		ThisType = Tree[0]->ScanType();
-	}
-	else
-	{
-		//
-		// DEF name
-		//
-		ThisType = GuessVarType(Tree[1]->TextValue);
-	}
-
-	ThisVar = Variables->Lookup(Tree[1]->TextValue, this);
-	if (ThisVar == 0)
-	{
-		//
-		// Create variable
-		//
-		VariableStruct NewVar(Tree[1]->TextValue,
-			ThisType, VARCLASS_FUNC, InDefineFlag);
-
-		//
-		// Add to variable table
-		//
-		Variables->Append(NewVar, 1);		// Forced global
-	}
-	else
-	{
-		ThisVar->Class = VARCLASS_FUNC;
-		ThisVar->Type = ThisType;
-	}
-
-	//
-	// Scan calling parameters
-	//
-	if (Tree[3] != 0)
-	{
-		Tree[3]->VariableScan(1);
-	}
-
-	//
-	// Scan source code
-	//
-	if (Block[1] != 0)
-	{
-		Block[1]->VariableScan(0);
 	}
 }
 

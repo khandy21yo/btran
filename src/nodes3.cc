@@ -469,6 +469,7 @@ void Node::OutputCodeOne(
 	Node* LookDown;
 	int KeepGosubFlag;
 	int KeepOnErrorFlag;
+	VARTYPE ThisType = VARTYPE_NONE;
 
 	assert(this != 0);
 	assert(Type != BAS_S_CHANGE);
@@ -817,16 +818,53 @@ void Node::OutputCodeOne(
 		Variables->NewLevel();
 
 		//
-		// Scan the call parameters
+		// Functions return type
 		//
-		VariableScanOne(1);
+		if (Tree[0] != 0)
+		{
+			ThisType = Tree[0]->ScanType();
+		}
+		else
+		{
+			ThisType = VARTYPE_VOID;
+		}
+
+		//
+		// This functions name
+		//
+		ThisVar = Variables->Lookup(Tree[1]->TextValue, this);
+		if (ThisVar == 0)
+		{
+			//
+			// Create variable
+			//
+			VariableStruct NewVar(Tree[1]->TextValue,
+				ThisType, VARCLASS_FUNC, 1);
+
+			//
+			// Add to variable table
+			//
+			Variables->Append(NewVar, true);	// Forced global
+		}
+		else
+		{
+			ThisVar->Class =VARCLASS_FUNC;
+			ThisVar->Type = ThisType;
+		}
+
+		//
+		// Scan calling parameters
+		//
+		if (Tree[3] != 0)
+		{
+			Tree[3]->VariableScan(1);
+		}
 
 		//
 		// Scan local code
 		//
 		if (Block[1] != 0)
 		{
-			Block[1]->ScanForDefstar(0);
 			Block[1]->VariableScan(0);
 		}
 		Variables->Fixup();
@@ -943,7 +981,6 @@ void Node::OutputCodeOne(
 		VariableScanOne(1);
 		if (Block[1] != 0)
 		{
-			Block[1]->ScanForDefstar(0);
 			Block[1]->VariableScan(0);
 		}
 		Variables->Fixup();
@@ -1649,7 +1686,6 @@ void Node::OutputCodeOne(
 		//
 		if (Block[1] != 0)
 		{
-			Block[1]->ScanForDefstar(0);
 			Block[1]->VariableScan(0);
 		}
 		Variables->Fixup();
@@ -1740,7 +1776,6 @@ void Node::OutputCodeOne(
 		//
 		if (Block[1] != 0)
 		{
-			Block[1]->ScanForDefstar(0);
 			Block[1]->VariableScan(0);
 		}
 		Variables->Fixup();

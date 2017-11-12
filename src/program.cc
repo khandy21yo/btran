@@ -42,7 +42,6 @@ static Node* MoveFunctionsTwo(Node* Program);
 
 static Node* LocalFunctions;	//!< Holds local functions
 static Node* LocalData;		//!< Holds local DATA statements
-static Node* LocalDefstar;	//!< Holds DEF functions
 static Node* LocalVars;		//!< Holds local variables
 
 
@@ -651,7 +650,6 @@ static Node* MoveFunctionsOne(
 {
 	LocalFunctions = 0;
 	LocalData = 0;
-	LocalDefstar = 0;
 	LocalVars = 0;
 
 	Node* LocalCode = MoveFunctionsTwo(Program->GetDown(1));
@@ -664,7 +662,6 @@ static Node* MoveFunctionsOne(
 	Node* FinalProgram = DownLink(LocalData,
 		DownLink(LocalFunctions,
 		DownLink(Program, LocalVars, 1)));
-	DownLink(Program, LocalDefstar, 2);
 	DownLink(Program, LocalCode, 1);
 
 	//
@@ -699,37 +696,6 @@ static Node* MoveFunctionsTwo(
 		//
 		switch(ThisCode->Type)
 		{
-#if 0	// Leave them be where they are since we now generate
-	// lambda functions.
-		case BAS_S_DEF:
-			//
-			// Attach local functions to the function tree
-			//
-			if (LocalFunctions == 0)
-			{
-				LocalFunctions = ThisCode;
-			}
-			else
-			{
-				LocalFunctions->DownLink(ThisCode);
-			}
-			break;
-
-		case BAS_S_DEFSTAR:
-			//
-			// Attach local functions to the function tree
-			//
-			if (LocalDefstar == 0)
-			{
-				LocalDefstar = ThisCode;
-			}
-			else
-			{
-				LocalDefstar->DownLink(ThisCode);
-			}
-			break;
-#endif
-
 		case BAS_S_DATA:
 			//
 			// Attach data statements to the data tree

@@ -191,8 +191,6 @@ private:
 	VARTYPE GetNodeVarType();
 	std::string OutputForcedType(VARTYPE VarType);
 	void OutputPrototypes(std::ostream& os);
-	void ScanForDefstar(int);
-	void ScanOneDefstar(int);
 	std::string OutputPassmech(int FunctionFlag);
 	std::string OutputNodeVarType();
 };
