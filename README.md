@@ -9,6 +9,12 @@ Thiis project starteid many years ago to aid me in converting code from VMS and
 RSTS/E into something that would run under Linux. Several programs from the
 "101 Basic Computer Games" translate with few problems.
 
+Requires Flex and Bison programs.
+
+It makes use of several BOOST library functions (libboost).
+These functions are available to be installed in most Linux distributions, but
+not usually installed by default.
+
 There are still several areas where code is not readily translated, due to the
 differing underlying designes of Basic and C. Instead of creating wrappers
 around this code, it is left as an exercise to the user to fix these.
@@ -37,16 +43,20 @@ Doing otherwise creates "not C++" code.
 	- Zero length strings can cause odd problems. text.rbegin() for
 	  example does not return a 0.
 - GOSUB. Actually works, but has the same limitations in C++ as goto.
-	- No jumping over initializers.
-- DEF functions.
-	- Don't have access to local variables.
+	- No jumping over initializers. No calling from inside user defined
+	  functions.
+- DEF and DEF* functions.
+	- GOSUB insode DEF functions isn't likely to work.
+	- DEF and DEF* are treated identically.
 - DATA sstatements
 	- Bare Reserved words in basic cause parsing problems. Putting quotes
 	  around the text works to fix this, and is compatable with basic.
+	  Data statements are not easily handled in Flex/Bison grammers.
 - %xxx preprocessor)
 	- Code exists but only thinly tested. %IF can cause problems if blocks
-	  end inside of it.
-	- %var is not allowed in VaxBasic, but btran accepts it.
+	  start or end inside of it.
+	- %var is not allowed in normal VaxBasic statements, but btran accepts
+	  it.
 TAB, POS, CCOS
 	Unix doesn't attempt to track the cursor position, to these functions
 	require a greate deal of complexity to implemet correctly. It requires
