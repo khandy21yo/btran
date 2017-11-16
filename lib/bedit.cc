@@ -38,25 +38,20 @@
  *	\note Also used by CVT$$ code.
  */
 std::string basic::edit(
-	const std::string& Source,	/**< String to be converted */
+	const std::string &Source,	/**< String to be converted */
 	const int Code			/**< Flag for conversion */
 )
 {
-	std::string NewString;
 	unsigned int Length;
-	const char* Address;
-	int ResultPtr = 0;
 	int LeadSpace = 0;
 	int MultiSpace = 0;
 	int QuoteMark = 0;
 
-	Length = Source.length();
-	Address = Source.data();
-	char* Result = new char[Length + 1];
+	std::string Result;
 
-	while (Length--)
+	for (Length = 0; Length < Source.size(); Length++)
 	{
-		unsigned char OneCh = *Address++;
+		unsigned char OneCh = Source[Length];
 
 		//
 		// 1 - Discard parity bit
@@ -176,7 +171,7 @@ std::string basic::edit(
 		//
 		// If we get here, we want to keep the character
 		//
-		Result[ResultPtr++] = OneCh;
+		Result += OneCh;
 	}
 
 	//
@@ -184,24 +179,16 @@ std::string basic::edit(
 	//
 	if ((Code & 128) && (QuoteMark == 0))
 	{
-		while ((ResultPtr > 0) &&
-			((Result[ResultPtr - 1] == ' ') ||
-			(Result[ResultPtr - 1] == '\t')))
+		while ((Result.size() > 0) &&
+			((Result.back() == ' ') ||
+			(Result.back() == '\t')))
 		{
-			ResultPtr--;
+			Result.erase(Result.back(), 1);
 		}
 	}
 
 	//
-	// Terminate the string
-	//
-	Result[ResultPtr] = '\0';
-
-	//
 	// Return the final answer
 	//
-	NewString = Result;
-	delete[] Result;
-	return NewString;
+	return Result;
 }
-
