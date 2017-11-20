@@ -48,6 +48,7 @@ std::string basic::edit(
 	int QuoteMark = 0;
 
 	std::string Result;
+	Result.reserve(Source.size());
 
 	for (Length = 0; Length < Source.size(); Length++)
 	{
