@@ -1,0 +1,48 @@
+Some notes to help translating code
+
+GOSUB/RETURN
+
+	If the translated code has BGossub/BReturn in it, then there are
+	some caveats that need to be watched.
+
+	- Class varibles defined at places other than the start of a
+	function may suffer from memory corruption probems. C++ gets
+	confused and may to off things with the destructors, like  try
+	to free the memory multiple times.
+
+	- Debuggers seem to get terribly confused by the BGosub/BReturn,
+	and may lose their place in the source.
+
+	If possible, eliminate the gosub/return by converting it to
+	inline code, or make a proper function out of it.
+
+IO Channels
+
+	BASIC defines IO using channel numbers, while C++ wants a
+	class variable. Btran converts the IO channels to a reference
+	to BasciChannel[], but it really doesn't work well.
+
+	If the IO channel is defined as a variable, redefine it as
+	an 'ifstream' or 'ofstream' and eliminate the BasicChannel[]
+	code.
+
+FILE BUFFERS
+
+	BASIC creates "buffers" for the file IO, which is used by
+	such language features as FIELD, GET, etc. The size of these
+	buffers are determined by the OPEN statement, and can vary
+	widely depending on what device is being opened.
+
+	C++ files are based on character streams, and you do not
+	usually concern yourself with the buffer size, but it requires
+	recoding buffer references.
+
+RMS
+
+	VAX BASIC has RMS functions avaiable to it, but C++ doesn't
+	have anything avaiable that resembles the features of RMS.
+
+FIELD
+
+	FIELD statements do not have an equivelent C++ feature.
+

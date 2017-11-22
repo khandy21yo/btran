@@ -68,7 +68,7 @@ inline std::string right(
 	{
 		Length = 1;
 	}
-	if (Length > 0 && Length <= Source.size())
+	if (Length <= Source.size())
 	{
 		return std::string(Source, Length - 1);
 	}
