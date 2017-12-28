@@ -1440,7 +1440,7 @@ void Node::OutputCodeOne(
 		os << Indent() <<
 			"if (!" <<
 			GetIPChannel(Tree[2], 0) <<
-			".is_open() { throw BasicError(5); }" <<
+			".is_open()) { throw basic::BasicError(5); }" <<
 			std::endl;;
 		break;
 
