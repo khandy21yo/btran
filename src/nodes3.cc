@@ -1579,6 +1579,14 @@ void Node::OutputCodeOne(
 				{
 					LookDown->Block[1]->OutputBlock(os);
 				}
+				else
+				{
+					//
+					// Empty case, Create a block anyway.
+					//
+					os << Indent() << "{" << std::endl;
+					os << Indent() << "}" << std::endl;
+				}
 				LookDown = LookDown->Block[0];
 			}
 		}
