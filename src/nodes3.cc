@@ -1579,7 +1579,7 @@ void Node::OutputCodeOne(
 				{
 					LookDown->Block[1]->OutputBlock(os);
 				}
-				else
+				else if (LookDown->Type != BAS_S_REMARK)
 				{
 					//
 					// Empty case, Create a block anyway.
