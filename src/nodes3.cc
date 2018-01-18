@@ -1541,7 +1541,20 @@ void Node::OutputCodeOne(
 
 		if (Block[1]->CheckCaseLabel())
 		{
-			os << Indent() << "// ** Converted from a select statement **" << std::endl;
+			os << Indent() <<
+				"// ** Converted from a select statement **" <<
+				std::endl;
+
+			//
+			// We create a new variable for the tests so that we
+			// don't recalculate the expression multiple times,
+			// which can cause problems for function calls with
+			// side effects.
+			//
+			os << Indent() << "{" << std::endl;
+			Level++;
+			os << Indent() << "auto TempS = " <<
+				Tree[0]->Expression() << std::endl;
 
 			LookDown = Block[1];
 			int ifelse = 0;
@@ -1589,6 +1602,8 @@ void Node::OutputCodeOne(
 				}
 				LookDown = LookDown->Block[0];
 			}
+			Level--;
+			os << Indent() << "}" << std::endl;
 		}
 		else
 		{
@@ -3350,39 +3365,39 @@ void Node::OutputCaseIf(
 		break;
 
 	case BAS_X_UNARYLT:
-		os << Parent->Expression() << " < " <<
+		os << "TempS" << " < " <<
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYLE:
-		os << Parent->Expression() << " <= " <<
+		os << "TempS" << " <= " <<
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYGT:
-		os << Parent->Expression() << " > " <<
+		os << "TempS" << " > " <<
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYGE:
-		os << Parent->Expression() << " >= " <<
+		os << "TempS" << " >= " <<
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYNEQ:
-		os << Parent->Expression() << " != " <<
+		os << "TempS" << " != " <<
 			Tree[0]->Expression();
 		break;
 
 	case BAS_S_TO:
-		os << Parent->Expression() << " >= " <<
+		os << "TempS" << " >= " <<
 			Tree[0]->Expression() << " && " <<
-			Parent->Expression() << " <= " <<
+			"TempS" << " <= " <<
 			Tree[1]->Expression();
 		break;
 
 	default:
-		os << Parent->Expression() << " == " <<
+		os << "TempS" << " == " <<
 			Expression();
 		break;
 	}
