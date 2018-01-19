@@ -581,7 +581,7 @@ void Node::OutputCodeOne(
 		os << ", NULL};" << std::endl;
 		Level--;
 		os << Indent() <<
-			"basic::DataListClass DataList(DataValue);" <<
+			"static basic::DataListClass DataList(DataValue);" <<
 			std::endl;
 		break;
 
