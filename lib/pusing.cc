@@ -144,7 +144,7 @@ std::string basic::PUsing::Output(
 	// Generate BString for output
 	//
 	std::string* Result = new std::string(Outdata, (long)(OutdataPtr - Outdata));
-	delete Outdata;
+	delete[] Outdata;
 
 	return *Result;
 }
@@ -173,7 +173,7 @@ std::string basic::PUsing::Finish()
 	// Generate output string
 	//
 	std::string* Result = new std::string(Outdata, (long)(OutdataPtr - Outdata));
-	delete Outdata;
+	delete[] Outdata;
 
 	return *Result;
 }
