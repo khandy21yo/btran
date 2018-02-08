@@ -77,7 +77,7 @@ basic::PUsing::PUsing(
 	const std::string &Format	/**< Print using format string */
 )
 {
-	BaseFormat = strdup(Format.c_str());
+	BaseFormat = Format.c_str();
 	BaseLength = Format.size();
 	BasePtr = 0;
 	Outdata = NULL;
@@ -993,6 +993,7 @@ std::string basic::PUsing::Output(
 	//
 	*OutdataPtr = '\0';
 	std::string Result(Outdata);
+	delete[] Outdata;
 	return Result;
 }
 

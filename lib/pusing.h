@@ -28,22 +28,20 @@ public:
 	PUsing();			// Constructor
 	PUsing(const char* Format);	// Constructor with a base format
 	PUsing(const std::string& Format);	// Constructor with a base format
-	~PUsing(void)
-	{
-		if (Outdata)
-		{
-			delete[] Outdata;
-		}
-	}
-
 	//! Set format string
 	void SetFormat(const char* Format)
-		{ BaseFormat = Format; BaseLength = strlen(Format);
-		BasePtr = 0; }
+	{
+		BaseFormat = Format;
+		BaseLength = strlen(Format);
+		BasePtr = 0;
+	}
 	//! Set format string
 	void SetFormat(const std::string& Format)
-		{ BaseFormat = Format.c_str(); BaseLength = Format.length();
-		BasePtr = 0; }
+	{
+		BaseFormat = Format.c_str();
+		BaseLength = Format.length();
+		BasePtr = 0;
+	}
 
 	//
 	// Various output commands
@@ -51,7 +49,9 @@ public:
 	std::string Output(const char* Value, int ValueLength);
 	//! Output character string value
 	inline std::string Output(const char* Value)
-		{ return Output(Value, strlen(Value)); }
+	{
+		return Output(Value, strlen(Value));
+	}
 	std::string Output(const std::string& Value);
 	std::string Output(const double Value);
 	std::string Output(const int Value);
@@ -71,44 +71,85 @@ private:
 //
 //! FORMAT$(string,string)
 inline std::string Format(const std::string& Value, const std::string& Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(string,char)
 inline std::string Format(const std::string& Value, const char* Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(char,char)
 inline std::string Format(const char* Value, const char* Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(char,string)
 inline std::string Format(const char* Value, const std::string& Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(double,string)
 inline std::string Format(const double Value, const std::string& Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(double,char)
 inline std::string Format(const double Value, const char* Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(int,string)
 inline std::string Format(const int Value, const std::string& Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(int,char)
 inline std::string Format(const int Value, const char* Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(int,string)
 inline std::string Format(const long Value, const std::string& Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
 //! FORMAT$(int,char)
 inline std::string Format(const long Value, const char* Format)
-	{ PUsing Puse(Format); std::string One = Puse.Output(Value);
-	std::string Two = Puse.Finish(); return One + Two; }
+{
+	PUsing Puse(Format);
+	std::string One = Puse.Output(Value);
+	std::string Two = Puse.Finish();
+	return One + Two;
+}
+
 }
 #endif
 
