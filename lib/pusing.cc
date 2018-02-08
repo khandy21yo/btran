@@ -68,7 +68,6 @@ basic::PUsing::PUsing(
 	OutdataPtr = NULL;
 }
 
-static char *fstr = 0;	/**< Temp format string holder */
 /**
  * \brief Constructor
  *
@@ -78,14 +77,8 @@ basic::PUsing::PUsing(
 	const std::string &Format	/**< Print using format string */
 )
 {
-	if (fstr)
-	{
-		free(fstr);
-		fstr = 0;
-	}
-	fstr = strdup(Format.c_str());
-	BaseFormat = fstr;
-	BaseLength = strlen(fstr);
+	BaseFormat = strdup(Format.c_str());
+	BaseLength = Format.size();
 	BasePtr = 0;
 	Outdata = NULL;
 	OutdataPtr = NULL;
@@ -143,10 +136,11 @@ std::string basic::PUsing::Output(
 	//
 	// Generate BString for output
 	//
-	std::string* Result = new std::string(Outdata, (long)(OutdataPtr - Outdata));
+	std::string Result(Outdata, (long)(OutdataPtr - Outdata));
 	delete[] Outdata;
+	Outdata = 0;
 
-	return *Result;
+	return Result;
 }
 
 /**
@@ -172,10 +166,11 @@ std::string basic::PUsing::Finish()
 	//
 	// Generate output string
 	//
-	std::string* Result = new std::string(Outdata, (long)(OutdataPtr - Outdata));
+	std::string Result(Outdata, (long)(OutdataPtr - Outdata));
 	delete[] Outdata;
+	Outdata = 0;
 
-	return *Result;
+	return Result;
 }
 
 /**
@@ -997,8 +992,8 @@ std::string basic::PUsing::Output(
 	// Send out the result
 	//
 	*OutdataPtr = '\0';
-	std::string *Result = new std::string(Outdata);
-	return *Result;
+	std::string Result(Outdata);
+	return Result;
 }
 
 /**

@@ -28,6 +28,13 @@ public:
 	PUsing();			// Constructor
 	PUsing(const char* Format);	// Constructor with a base format
 	PUsing(const std::string& Format);	// Constructor with a base format
+	~PUsing(void)
+	{
+		if (Outdata)
+		{
+			delete[] Outdata;
+		}
+	}
 
 	//! Set format string
 	void SetFormat(const char* Format)
