@@ -1539,7 +1539,7 @@ void Node::OutputCodeOne(
 	case BAS_S_SELECT:
 		assert(Tree[0] != 0);
 
-		if (Block[1]->CheckCaseLabel())
+		if (Block[1] != 0 && Block[1]->CheckCaseLabel())
 		{
 			os << Indent() <<
 				"// ** Converted from a select statement **" <<
@@ -1554,7 +1554,7 @@ void Node::OutputCodeOne(
 			os << Indent() << "{" << std::endl;
 			Level++;
 			os << Indent() << "auto TempS = " <<
-				Tree[0]->Expression() << std::endl;
+				Tree[0]->Expression() << ";" << std::endl;
 
 			LookDown = Block[1];
 			int ifelse = 0;
