@@ -99,5 +99,6 @@ long lib_find_file_end(
 		files.clear();
 		context = 0;
 	}
+	return 1;
 }
 

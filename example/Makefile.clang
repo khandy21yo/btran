@@ -23,7 +23,7 @@ clean:
 #
 amazin: amazin.bas
 	../src/b1filter amazin.bas  | ../src/btran -i > amazin.cc
-	c++ -I ../lib/ amazin.cc -o amazin
+	clang++ -std=c++11 -I ../lib/ amazin.cc -o amazin
 
 #
 # A Maze generator
@@ -31,7 +31,7 @@ amazin: amazin.bas
 #
 kmaze: kmaze.bas
 	../src/btran < kmaze.bas > kmaze.cc
-	c++ -I ../lib/ kmaze.cc -o kmaze
+	clang++ -std=c++11 -I ../lib/ kmaze.cc -o kmaze
 
 #
 # A Maze generator
@@ -39,7 +39,7 @@ kmaze: kmaze.bas
 #
 snak: snak.bas
 	../src/b1filter snak.bas  | ../src/btran > snak.cc
-	c++ -I ../lib/ snak.cc -o snak
+	clang++ -std=c++11 -I ../lib/ snak.cc -o snak
 
 #
 # A Poster
@@ -48,7 +48,7 @@ snak: snak.bas
 #
 snoopy: snoopy.bas
 	../src/btran snoopy.bas > snoopy.cc
-	c++ -I ../lib/ snoopy.cc -o snoopy
+	clang++ -std=c++11 -I ../lib/ snoopy.cc -o snoopy
 
 #
 # A Poster
@@ -57,7 +57,7 @@ snoopy: snoopy.bas
 #
 revrse: revrse.bas
 	../src/btran -i < revrse.bas > revrse.cc
-	c++ -I ../lib/ revrse.cc -o revrse
+	clang++ -std=c++11 -I ../lib/ revrse.cc -o revrse
 
 #
 # Test code. Does nothing useful.
@@ -66,7 +66,7 @@ revrse: revrse.bas
 #
 works: works.bas
 	../src/btran works.bas > works.cc
-	c++ -I ../lib/ works.cc -o works
+	clang++ -std=c++11 -I ../lib/ works.cc -o works
 
 #
 # A convertedprogram that was heavily modified

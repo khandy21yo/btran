@@ -12,6 +12,7 @@
 int smg$begin_display_update(
 	struct ncurses_struct **display_id)
 {
+	return 1;
 }
 
 int smg$begin_pasteboard_update(
@@ -119,6 +120,7 @@ long smg$delete_virtual_display(
 	del_panel((*display_id)->pan);
 	delwin((*display_id)->win);
 	update_panels();
+	return 1;
 }
 
 /** Draw line
@@ -145,6 +147,7 @@ int smg$bend_display_update(
 	struct ncurses_struct **display_id)
 {
 	wrefresh((*display_id)->win);
+	return 1;
 }
 
 int smg$end_pasteboard_update(
@@ -188,6 +191,7 @@ long smg$erase_display(
 			}
 		}
 	}
+	return 1;
 }
 
 int smg$erase_line(
@@ -205,6 +209,7 @@ long smg$flush_buffer(
 {
 	update_panels();
 	refresh();
+	return 1;
 }
 
 
@@ -253,6 +258,7 @@ long smg$pop_virtual_display(
 	del_panel((*display_id)->pan);
 	delwin((*display_id)->win);
 	update_panels();
+	return 1;
 }
 
 /** Put characters on the screen
@@ -278,7 +284,7 @@ int smg$put_chars(
 
 	mvwaddstr((*display_id)->win, y + (*display_id)->border, x + (*display_id)->border, str.c_str());
 	wattrset((*display_id)->win, 0);
-	return 0;
+	return 1;
 }
 
 long smg$set_cursor_abs(
@@ -287,6 +293,7 @@ long smg$set_cursor_abs(
 	long y)
 {
 	wmove((*display_id)->win, x, y);
+	return 1;
 }
 
 long smg$set_cursor_mode(
