@@ -7,6 +7,10 @@
 #ifndef _BASICFUN_H_
 #define _BASICFUN_H_
 
+#define GOSUB2		//!< Defined to enable 2nd version of GOSUB/RETURN
+			//! Version 2 uses GCC extensions allowing labels to
+			//! be refered to by void* variables.
+
 #include <stdlib.h>
 #include <math.h>
 #include <setjmp.h>
@@ -59,6 +63,22 @@ extern long Status;		/* Status flag */
 // Horrible gosub/return code, but it does work (Icky icky icky)
 //
 
+#ifdef GOSUB2
+#define __C(a, b) a ## b
+#define __U(p, q) __C(p, q)
+/** 
+ * \brief Initiaize gosub/return stack
+ */
+#define BStack(x) void *BGoStack[x]; int BGoCount = 0;
+/**
+ * \brief Execute a GOSUB
+ */
+#define BGosub(x) { BGoStack[BGoCount++] = && __U(Brp, __LINE__); goto x; __U(Brp, __LINE__):; }
+/**
+ * \brief execute a RETURN
+ */
+#define BReturn goto *BGoStack[--BGoCount];
+#else
 /** 
  * \brief Initiaize gosub/return stack
  */
@@ -71,6 +91,7 @@ extern long Status;		/* Status flag */
  * \brief execute a RETURN
  */
 #define BReturn longjmp(BGoStack[--BGoCount], 1);
+#endif
 
 //
 // Now for some nasty on-error-goto code.
