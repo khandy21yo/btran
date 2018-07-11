@@ -72,10 +72,20 @@ extern long Status;		/* Status flag */
 #define BStack(x) void *BGoStack[x]; int BGoCount = 0;
 /**
  * \brief Execute a GOSUB
+ *
+ * Do to the generation of 'return labels' in this version,
+ * you must place each BGosub on seperate lines.
+ * i.e. You cannot use 'BGosub(line1); BGosub(line2);'
+ *
+ * Be careful not to exceed the stack size created in the BStack reference.
+ * there isn't any testing for overflow.
  */
 #define BGosub(x) { BGoStack[BGoCount++] = && __U(Brp, __LINE__); goto x; __U(Brp, __LINE__):; }
 /**
  * \brief execute a RETURN
+ *
+ * Be careful not to return more than you gosub;ed.
+ * There is no test for stack underflow.
  */
 #define BReturn goto *BGoStack[--BGoCount];
 #else
