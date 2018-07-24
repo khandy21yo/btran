@@ -1,4 +1,4 @@
-Tools you will need to install
+Tools you will need to build
 
 	automake
 	autoconf
@@ -7,23 +7,11 @@ Tools you will need to install
 	bison
 	libboost
 
-Configure src
+Configure and build from base drectory
 
-	cd src
-	libtoolize
-	aclocal
-	automake --add-missing
-	autoheader
-	automake
-	autoconf
-	./configure
-	make
-
-	<error about parse.h>
-	cp parse.hh parse.h
-	make
+	./makeall
 
 Translate code
 
-	btran < test.bas > test.cc
-
+	~/btran/src/btran < test.bas > test.cc
+	g++ -I ~/btran/lib test.cc ~/btran/lin/libtran.a

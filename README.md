@@ -69,3 +69,9 @@ Variable names
 	can also be used as a variable in a RECORD. These will currently 
 	cause an error in btran.
 
+
+Several packages are required to use this code.
+The debian command to install thse ackages include
+
+	apt-get install gcc g++ automake autoconf libtool
+	apt-get install libboost-dev bison flex
