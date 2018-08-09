@@ -785,7 +785,7 @@ void VariableList::InitOneFunction(
 )
 {
 	VariableStruct ThisVar(BasName, Type, Class, 1);
-	ThisVar.SetCName(CeeName);
+	ThisVar.CName = CeeName;
 	Append(ThisVar, true);
 }
 

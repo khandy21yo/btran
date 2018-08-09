@@ -100,13 +100,6 @@ public:
 			return BasicName;
 	}
 	/**
-	 * \brief Change the C version of a variable name
-	 */
-	void SetCName(
-		const char* NewName		/**< New C name */
-	) 
-	{ CName = NewName; }
-	/**
 	 * \brief Increment the usage count
 	 */
 	void IncrUsed() 
