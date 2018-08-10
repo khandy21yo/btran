@@ -107,15 +107,7 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_S_COMMON:
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
-
-		{
-			VariableStruct NewVar(Tree[0]->TextValue,
-				VARTYPE_STRUCT, VARCLASS_NONE, true);
-			Variables->Append(NewVar);
-			Variables->Fixup();
-		}
+		ScanMap();
 		break;
 
 	case BAS_S_DATA:
