@@ -1192,7 +1192,7 @@ void Node::OutputCodeOne(
 		ThisVar = Variables->Lookup(TextValue, 0);
 		if (ThisVar != 0)
 		{
-			if ((ThisVar->GetEverUsed() != 0) || (KeepAllLines == true))
+			if ((ThisVar->EverUsed != 0) || (KeepAllLines == true))
 			{
 				os << ThisVar->GetName() << ":;" << std::endl;
 			}

@@ -99,29 +99,24 @@ public:
 		else
 			return BasicName;
 	}
-	/**
-	 * \brief Increment the usage count
-	 */
-	void IncrUsed() 
-	{ EverUsed++; }
-	/**
-	 * \brief Is this variable ever used for anything
-	 */
-	int GetEverUsed() 
-	{ return EverUsed; }
 
 	/**
 	 * \brief Assignment operator
 	 *
-	 * Copies the most important data over, but does not copy trees or blocks
+	 * Copies the most important data over,
+	 * but does not copy trees or blocks
 	 */
 	VariableStruct& operator = (
 		const VariableStruct &OldStruct		/**< Version to copy from */
 	)
-	{ Type = OldStruct.Type; Class = OldStruct.Class;
-	  Output = OldStruct.Output; ParCount = OldStruct.ParCount;
-	  EverUsed = OldStruct.EverUsed; BasicName = OldStruct.BasicName;
-	  CName = OldStruct.CName; return *this; }
+	{
+		Type = OldStruct.Type; Class = OldStruct.Class;
+		Output = OldStruct.Output; ParCount = OldStruct.ParCount;
+		EverUsed = OldStruct.EverUsed;
+		BasicName = OldStruct.BasicName;
+		CName = OldStruct.CName;
+		return *this;
+	}
 
 };
 

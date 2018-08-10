@@ -316,12 +316,12 @@ void Node::VariableScanOne(
 		{
 			VariableStruct NewVar(TextValue,
 				VARTYPE_LABEL, VARCLASS_LABEL, true);
-			NewVar.IncrUsed();
+			NewVar.EverUsed++;
 			Variables->Append(NewVar);
 		}
 		else
 		{
-			ThisVar->IncrUsed();
+			ThisVar->EverUsed++;
 		}
 		break;
 
