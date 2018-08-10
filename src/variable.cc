@@ -72,6 +72,11 @@ void VariableStruct::Dump(void) const
 		break;
 	}
 
+	if (Prefix.length() != 0)
+	{
+		std::cout << ", Prefix " << Prefix;
+	}
+
 	if (CName.length() != 0)
 	{
 		std::cout << ", CName " << CName;
@@ -116,6 +121,14 @@ std::string VariableStruct::OutputDef(void)
 
 	result += OutputVarType(ActualType);
 	result += " ";
+
+	//
+	// Pick a good name
+	//
+	if (Prefix.length() != 0)
+	{
+		result += Prefix + ".";
+	}
 
 	//
 	// Pick a good name

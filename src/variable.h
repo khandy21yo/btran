@@ -94,11 +94,13 @@ public:
 	/**
 	 * \brief Get the C version of the variable name
 	 */
-	std::string GetName()
+	std::string GetName(
+		int flags = 0)	//!< Usage flags. 0 = normal.
+				//!< 1 = fon't output any prefix.
 	{
 		if (CName.length() != 0 )
 		{
-			if (Prefix.size())
+			if ((Prefix.size() != 0) && ((flags & 1) == 0))
 			{
 				return Prefix + "." + CName;
 			}
@@ -128,6 +130,7 @@ public:
 		EverUsed = OldStruct.EverUsed;
 		BasicName = OldStruct.BasicName;
 		CName = OldStruct.CName;
+		Prefix = OldStruct.Prefix;
 		return *this;
 	}
 

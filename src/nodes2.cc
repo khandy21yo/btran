@@ -143,7 +143,6 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_S_MAP:
-
 		ScanMap();
 		break;
 
@@ -933,6 +932,23 @@ void Node::ScanMap(void)
  
 	VariableStruct ThisVar(Tree[0]->TextValue,
 		VARTYPE_STRUCT, VARCLASS_NONE, true);
+
+	//
+	// We need to name the map so we can use the nasme as a prefix.
+	// This will likely cause problems with ocerlapping MAP/COMMON
+	// statements, but it's better than nothing.
+	//
+	std::string tempname = genname(ThisVar.BasicName);
+	if (Variables->LookupReserved(tempname) == false)
+	{
+		//tempName = tempname;
+	}
+	else
+	{
+		tempname += "_V" + std::to_string(Variables->vcount++);
+	}
+	ThisVar.CName = tempname;
+
 	Variables->Append(ThisVar);
 	Variables->Fixup();
  
@@ -940,7 +956,7 @@ void Node::ScanMap(void)
 	{
 		Tree[1]->ScanOneMap(&ThisVar);
 	}
-}                                                                               
+}
 
 /** 
  * \brief Scans a map or common statement.
@@ -971,6 +987,7 @@ void Node::ScanMap(void)
 		{
 			VariableStruct NewVar(TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
+			NewVar.Prefix = MapVar->CName;
 			Variables->Append(NewVar);
 		}
 		break;
@@ -993,6 +1010,7 @@ void Node::ScanMap(void)
 		{
 			VariableStruct NewVar(Tree[1]->TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
+			NewVar.Prefix = MapVar->CName;
 			Variables->Append(NewVar);
 		}
 		break;
@@ -1005,6 +1023,7 @@ void Node::ScanMap(void)
 		{
 			VariableStruct NewVar(Tree[0]->TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
+			NewVar.Prefix = MapVar->CName;
 			Variables->Append(NewVar);
 		}
 		break;

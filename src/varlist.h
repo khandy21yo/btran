@@ -55,7 +55,7 @@ public:
  */
 class VariableList : public std::vector<ListOfVariables>
 {
-private:
+public:
 	int vcount;			/**< \brief Variable sequence counter */
 
 public:

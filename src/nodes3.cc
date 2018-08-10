@@ -1194,7 +1194,7 @@ void Node::OutputCodeOne(
 		{
 			if ((ThisVar->EverUsed != 0) || (KeepAllLines == true))
 			{
-				os << ThisVar->GetName() << ":;" << std::endl;
+				os << ThisVar->GetName(1) << ":;" << std::endl;
 			}
 		}
 		else
@@ -2548,6 +2548,17 @@ std::string Node::OutputVarName(
 	int InDefine		/**< Is this part of a definition */
 )
 {
+	int flags = 0;		// GetName flags
+
+	if (InDefine)
+	{
+		//
+		// We don't want the prefix on the definition, since the
+		// class name is already handled by the 'class' definition.
+		//
+		flags |= 1;
+	}
+
 	//
 	// Local Variables
 	//
@@ -2566,7 +2577,7 @@ std::string Node::OutputVarName(
 	//
 	if (ThisVar != 0)
 	{
-		result = ThisVar->GetName();
+		result = ThisVar->GetName(flags);
 	}
 	else
 	{
@@ -2597,9 +2608,12 @@ std::string Node::OutputVarName(
 }
 
 /**
- * \brief Outputs Variable Name
+ * \brief Outputs preprocessor Variable Name
  *
- *	Creates the full name for a %variable
+ *	Creates the full name for a %variable defined by the
+ *	preprocessor routines.
+ *	These variables start with a '%' in BASIC, and are only used
+ *	in the preprocessor statements, lile '%LET', '%IF', etc.
  */
 std::string Node::OutputPName(
 	Node* array,		/**< Pointer to any array references */
@@ -3304,14 +3318,27 @@ void Node::OutputMap(
 	VariableStruct* ThisVar = Variables->Lookup(Tree[0]->TextValue, 0);
 	assert(ThisVar != 0);
 
-	os << "// #pragma psect static_rw " << ThisVar->GetName() <<
-		",gbl,ovr" << std::endl;
+//	os << "// #pragma psect static_rw " << ThisVar->GetName() <<
+//		",gbl,ovr" << std::endl;
+//
+	os << Indent() << std::endl <<
+		Indent() << "class " << ThisVar->GetName() << std::endl <<
+		Indent() << "{" << std::endl <<
+		Indent() << "public:" << std::endl;
+
+	Level++;
 
 	if (Tree[1] != 0)
 	{
 		Tree[1]->OutputDefinitionList(os, 0, 0);
 	}
-	os << "// #pragma psect end " << ThisVar->GetName() << std::endl;
+
+	Level--;
+	std::cout <<
+		Indent() << "} " << ThisVar->GetName() << ";" << std::endl <<
+		std::endl;
+
+//	os << "// #pragma psect end " << ThisVar->GetName() << std::endl;
 }
 
 /**
@@ -3736,7 +3763,7 @@ void Node::OutputDefinitionList(
 		{
 			os << Tree[3]->OutputPassmech(1);
 		}
-		os << Tree[0]->OutputVarName(Tree[2]);
+		os << Tree[0]->OutputVarName(Tree[2], 1);
 		if (Tree[4] != 0)
 		{
 			os << " = ";
@@ -3922,7 +3949,7 @@ std::string Node::OutputDefinitionParams(
 		{
 			result += Tree[3]->OutputPassmech(1);
 		}
-		result += Tree[0]->OutputVarName(Tree[2]);
+		result += Tree[0]->OutputVarName(Tree[2], 1);
 		if (Tree[4] != 0)
 		{
 			result += " = " + Tree[4]->Expression();
