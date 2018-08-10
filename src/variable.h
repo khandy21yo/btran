@@ -34,6 +34,7 @@ public:
 	VARTYPE Type;			/**< \brief Type (integer, real, ...) */
 	VARCLASS Class;			/**< \brief Variable Class (function, array, ...) */
 	std::string CName;		/**< \brief Name to be used in C */
+	std::string Prefix;		/**< Previx for variable name */
 	int Output;			/**< \brief Definition Already output to source? */
 	int EverUsed;			/**< \brief Is it ever used (Label) */
 	int ParCount;			/**< \brief Parameter count */
@@ -80,6 +81,7 @@ public:
 		EverUsed = OldStruct.EverUsed;
 		BasicName = OldStruct.BasicName;
 		CName = OldStruct.CName;
+		Prefix = OldStruct.Prefix;
 		GlobalFlag = OldStruct.GlobalFlag;
 		ParList = OldStruct.ParList;
 		Original = OldStruct.Original;
@@ -95,9 +97,20 @@ public:
 	std::string GetName()
 	{
 		if (CName.length() != 0 )
-			return CName;
+		{
+			if (Prefix.size())
+			{
+				return Prefix + "." + CName;
+			}
+			else
+			{
+				return CName;
+			}
+		}
 		else
+		{
 			return BasicName;
+		}
 	}
 
 	/**
