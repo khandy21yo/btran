@@ -57,17 +57,29 @@ Doing otherwise creates "not C++" code.
 	  start or end inside of it.
 	- %var is not allowed in normal VaxBasic statements, but btran accepts
 	  it.
-TAB, POS, CCOS
+  TAB, POS, CCOS
 	Unix doesn't attempt to track the cursor position, to these functions
 	require a greate deal of complexity to implemet correctly. It requires
 	replacing the IO library with something else that tracks the current
 	cursoe position, and escape sequences would quickly overwhelm it.
 	Best to reqrite code so it doesn't need these.
-Variable names
+  Variable names
 	Some words are keywords in one context, and cab be used as variable
 	names in another. For example, SET PROMPT is a command, but PROMPT 
 	can also be used as a variable in a RECORD. These will currently 
 	cause an error in btran.
+  COMMON
+	COMMON is freqiently used to overlap memory so that a common data
+	area can be seen in different ways, i,e, as a STRING in one COMMON,
+	and an array of integers in another.  Under C++ this would be handled
+	as a 'union'. Due to the complesity of figuring out what is going on,
+	they are just being converted to 'class' for now, and you are left
+	to clean up the code.
+  MAP
+	MAP is being handled exactly the same as COMMON.
+	MAP's are usually used for RMS I/O, which doesn't exist in any standard
+	way in C++. The code needs to be cleaned up after processing, So it is
+	being converted into a simple 'class' for now.
 
 
 Several packages are required to use this code.
