@@ -20,6 +20,23 @@ differing underlying designes of Basic and C. Instead of creating wrappers
 around this code, it is left as an exercise to the user to fix these.
 Doing otherwise creates "not C++" code.
 
+  Variable names
+	- Basic can use appended characters to define the variable type, such as
+	  '%', '$', etc. Also subscripted variables can overlap non-subscripted
+	  variables. To handle the multiple name collisions, a postfix is
+	  appended as necessary, of the form "_V<x>", where the <x> is a unique
+	  number.
+	- Some words are keywords in one context, and cab be used as variable
+	  names in another. For example, SET PROMPT is a command, but PROMPT 
+	  can also be used as a variable in a RECORD. These will currently 
+	  cause an error in btran. Rename these variables in the source to
+	  get btran to parse them correctly.
+  Value widths
+	- Much code exists that assumes the number of bits in varouus value
+	  types, such as in COMMON and MAP statements, SWAP%, etc.
+	  Also the original code expects some strings to be fixes length
+	  instead of the variable C++ std::string lengths. Handling this is
+	  extremely complex, and is left to post-editing to deal with it.
 - File I/O.
 	- Basic uses an integer channel number, with a limited number of
 	  channels available. C++ uses a data structure to refer to the open
@@ -58,28 +75,23 @@ Doing otherwise creates "not C++" code.
 	- %var is not allowed in normal VaxBasic statements, but btran accepts
 	  it.
   TAB, POS, CCOS
-	Unix doesn't attempt to track the cursor position, to these functions
-	require a greate deal of complexity to implemet correctly. It requires
-	replacing the IO library with something else that tracks the current
-	cursoe position, and escape sequences would quickly overwhelm it.
-	Best to reqrite code so it doesn't need these.
-  Variable names
-	Some words are keywords in one context, and cab be used as variable
-	names in another. For example, SET PROMPT is a command, but PROMPT 
-	can also be used as a variable in a RECORD. These will currently 
-	cause an error in btran.
+	- Unix doesn't attempt to track the cursor position, to these functions
+	  require a greate deal of complexity to implemet correctly. It requires
+	  replacing the IO library with something else that tracks the current
+	  cursoe position, and escape sequences would quickly overwhelm it.
+	  Best to rewrite code so it doesn't need these.
   COMMON
-	COMMON is freqiently used to overlap memory so that a common data
-	area can be seen in different ways, i,e, as a STRING in one COMMON,
-	and an array of integers in another.  Under C++ this would be handled
-	as a 'union'. Due to the complesity of figuring out what is going on,
-	they are just being converted to 'class' for now, and you are left
-	to clean up the code.
+	- COMMON is freqiently used to overlap memory so that a common data
+	  area can be seen in different ways, i,e, as a STRING in one COMMON,
+	  and an array of integers in another.  Under C++ this would be handled
+	  as a 'union'. Due to the complesity of figuring out what is going on,
+	  they are just being converted to 'class' for now, and you are left
+	  to clean up the code.
   MAP
-	MAP is being handled exactly the same as COMMON.
-	MAP's are usually used for RMS I/O, which doesn't exist in any standard
-	way in C++. The code needs to be cleaned up after processing, So it is
-	being converted into a simple 'class' for now.
+	- MAP is being handled exactly the same as COMMON.
+	  MAP's are usually used for RMS I/O, which doesn't exist in any
+	  standard way in C++. The code needs to be cleaned up after
+	  processing, So it is being converted into a simple 'class' for now.
 
 
 Several packages are required to use this code.

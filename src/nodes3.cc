@@ -595,6 +595,11 @@ void Node::OutputCodeOne(
 		Tree[0]->OutputDefinitionList(os, 0, 0, 1);
 		break;
 
+	case BAS_V_DEFINEVAR:
+		assert(Tree[0] != 0);
+		OutputDefinitionList(os, 0, 0, 0);
+		break;
+
 	case BAS_V_DECLAREFUN:
 		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
@@ -2002,7 +2007,8 @@ void Node::OutputCodeOne(
 		break;
 
 	default:
-		os << "??%" << Type << "@" << lineno << ":" << TextValue << "(";
+		os << "??%" << Type << " @" << lineno << ":" <<
+			TextValue << "(";
 		if (Tree[0] != 0)
 		{
 			os << Tree[0];
@@ -3736,10 +3742,15 @@ void Node::OutputDefinitionList(
 
 		os << ";" << std::endl;
 
-		if (Block[0] != 0)
-		{
-			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
-		}
+//
+// For these definitions, a downlink points to the next variable 
+// not to internal structures of this variable.
+// So, is this needed by anything?
+//
+//		if (Block[0] != 0)
+//		{
+//			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+//		}
 		break;
 
 	case BAS_V_DEFINEFUN:

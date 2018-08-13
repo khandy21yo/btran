@@ -12,26 +12,8 @@ simple program, so watch them.
 you may have to do some hand editing afterwards (yuck)
 */
 //
-// History
+// \author 03/13/2000 - Kevin Handy
 //
-//	03/13/2000 - Kevin Handy
-//		Original version
-//
-//	03/17/2000 - Kevin Handy
-//		Make compiler handle missing semicolons in print
-//		statements, so I killed my poor hack that tried to fix
-//		the problem here (and didn't work anyway).
-//
-//	03/31/2000 - Kevin Handy
-//		Fix IsQuoted function to return the quote character
-//		instead of bool.
-//		Close quotes at the end of a line if they remain open.
-//
-//	07/25/2000 - Kevin Handy
-//		More keywords added
-//
-//	05/31/2002 - Kevin Handy
-//		Close OutFile.
 
 #include "config.h"
 #include <iostream>

@@ -721,6 +721,7 @@ static Node* MoveFunctionsTwo(
 		case BAS_S_EXTERNAL:
 		case BAS_S_MAP:
 		case BAS_S_VARIANT:
+		case BAS_V_DEFINEVAR:
 			//
 			// Attach local functions to the function tree
 			//
