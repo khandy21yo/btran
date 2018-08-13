@@ -716,6 +716,7 @@ static Node* MoveFunctionsTwo(
 			break;
 
 		case BAS_S_COMMON:
+		case BAS_S_RECORD:
 		case BAS_S_DECLARE:
 		case BAS_S_DIM:
 		case BAS_S_EXTERNAL:
