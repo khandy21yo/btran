@@ -673,12 +673,14 @@ vardeflist:	vardef { $$ = $1; }
 ;
 
 vardef:		vartype opformalname dimby opdefault funby { $$ =
+			$$ = (new Node(BAS_S_DECLARE))->Link(
 			(new Node(BAS_V_DEFINEVAR))->Link($2,
-			$1, $3, $4, $5); }
+			$1, $3, $4, $5)); }
 		| BAS_V_NAME BAS_V_NAME dimby opdefault funby {
 			$1->Type = BAS_N_VARTYPE;
-			$$ = (new Node(BAS_V_DEFINEVAR))->Link($2,
-			$1, $3, $4, $5); }
+			$$ = (new Node(BAS_S_DECLARE))->Link(
+			(new Node(BAS_V_DEFINEVAR))->Link($2,
+			$1, $3, $4, $5)); }
 
 dimby:		{ $$ = NULL; }
 		| BAS_S_DIM '(' dimcomma ')' { $$ = $3; delete $1; delete $2; delete $4; }

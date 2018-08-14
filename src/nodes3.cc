@@ -595,10 +595,10 @@ void Node::OutputCodeOne(
 		Tree[0]->OutputDefinitionList(os, 0, 0, 1);
 		break;
 
-	case BAS_V_DEFINEVAR:
-		assert(Tree[0] != 0);
-		OutputDefinitionList(os, 0, 0, 0);
-		break;
+//	case BAS_V_DEFINEVAR:
+//		assert(Tree[0] != 0);
+//		Tree[0]->OutputDefinitionList(os, 0, 0, 0);
+//		break;
 
 	case BAS_V_DECLAREFUN:
 		assert(Tree[0] != 0);
