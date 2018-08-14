@@ -3746,11 +3746,14 @@ void Node::OutputDefinitionList(
 // For these definitions, a downlink points to the next variable 
 // not to internal structures of this variable.
 // So, is this needed by anything?
+// 
+// This is apparently used by DIM statements when multu=iplw variables
+// are dimensioned.
 //
-//		if (Block[0] != 0)
-//		{
-//			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
-//		}
+		if (Block[0] != 0)
+		{
+			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+		}
 		break;
 
 	case BAS_V_DEFINEFUN:
