@@ -3328,7 +3328,7 @@ void Node::OutputMap(
 //		",gbl,ovr" << std::endl;
 //
 	os << Indent() << std::endl <<
-		Indent() << "class " << ThisVar->GetName() <<
+		Indent() << "class " << ThisVar->GetName(1) <<
 			"_C" << std::endl <<
 		Indent() << "{" << std::endl <<
 		Indent() << "public:" << std::endl;
