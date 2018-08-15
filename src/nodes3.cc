@@ -3705,6 +3705,11 @@ void Node::OutputDefinitionList(
 
 	switch(Type)
 	{
+	case BAS_S_DECLARE:
+		Tree[0]->OutputDefinitionList(os,
+			MainType, ExtType, GlobalStat);
+		break;
+
 	case BAS_V_DEFINEVAR:
 		os << Indent();
 
