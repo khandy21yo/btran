@@ -3324,10 +3324,11 @@ void Node::OutputMap(
 	VariableStruct* ThisVar = Variables->Lookup(Tree[0]->TextValue, 0);
 	assert(ThisVar != 0);
 
-//	os << "// #pragma psect static_rw " << ThisVar->GetName() <<
-//		",gbl,ovr" << std::endl;
-//
-	os << Indent() << std::endl <<
+	os << std::endl << Indent() <<
+		"// #pragma psect static_rw " << ThisVar->GetName(1) <<
+		",gbl,ovr" << std::endl;
+
+	os <<
 		Indent() << "class " << ThisVar->GetName(1) <<
 			"_C" << std::endl <<
 		Indent() << "{" << std::endl <<
@@ -3708,6 +3709,11 @@ void Node::OutputDefinitionList(
 	case BAS_S_DECLARE:
 		Tree[0]->OutputDefinitionList(os,
 			MainType, ExtType, GlobalStat);
+		if (Block[0] != 0)
+		{
+			Block[0]->OutputDefinitionList(os,
+				MainType, ExtType, GlobalStat);
+		}
 		break;
 
 	case BAS_V_DEFINEVAR:
