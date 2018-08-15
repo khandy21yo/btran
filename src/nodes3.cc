@@ -3342,7 +3342,7 @@ void Node::OutputMap(
 
 	Level--;
 	std::cout <<
-		Indent() << "} " << ThisVar->GetName() << ";" << std::endl <<
+		Indent() << "} " << ThisVar->GetName(1) << ";" << std::endl <<
 		std::endl;
 
 //	os << "// #pragma psect end " << ThisVar->GetName() << std::endl;
