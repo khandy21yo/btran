@@ -2,8 +2,8 @@ btran
 
 This is a VAX Basic (and Basic+2) to C++ Translator.
 
-Is is NOT a compiler. It is meant to be used as a tool to convert Basic Code
-to C++, which will thereafter be maintained as C++ code.
+Is is NOT a compiler. It is meant to be used as a tool to help convert
+Basic Code into C++, which will thereafter be maintained as C++ code.
 
 Thiis project starteid many years ago to aid me in converting code from VMS and
 RSTS/E into something that would run under Linux. Several programs from the
@@ -18,7 +18,7 @@ not usually installed by default.
 There are still several areas where code is not readily translated, due to the
 differing underlying designes of Basic and C. Instead of creating wrappers
 around this code, it is left as an exercise to the user to fix these.
-Doing otherwise creates "not C++" code.
+Doing otherwise creates very ugly "not C++" code.
 
   Variable names
 	- Basic can use appended characters to define the variable type, such as
@@ -40,38 +40,53 @@ Doing otherwise creates "not C++" code.
 - File I/O.
 	- Basic uses an integer channel number, with a limited number of
 	  channels available. C++ uses a data structure to refer to the open
-	  files. This can cause several translation problems. You cannot add
+	  files. This causes several translation problems. You cannot add
 	  or subtract channel numbers, for example.
 	- FIELD statements a;so have no equivelent C++ translation.
 	- RMS operations have no equivelent in C++.
-	- MAP et. al. translation is buggy.
 - Error handling
 	- ON ERROR GOTO, RESUME, etc. are not easily translated. It is somewhat
 	  lige a subroutine, but not closely enoug to translate well.
 	- ERR C++ error references are not enumerated with the same values.
 	- ERL line numbers are not kept current in C++.
 	- C++ functions do not usually throw errors, they return a status.
-- Strings. std::string is similiar, but there are still many difficulties.
-	- "Foe example, A$=RIGHT(B$,LEN(B$))" translated to 
-	  "a=b.substr(b.length*(-1))" which causes a segfault when "B$" is
-	  empty. Editing this to be "a=b.rbegin()" works better, but it
-	  returnes a "char" instead of a "std::string".
-	- RIGHT off the end of a string is Ok in bsic, but will crash C++.
-	- Zero length strings can cause odd problems. text.rbegin() for
-	  example does not return a 0.
+	- To handle errors like BASIC would require generating huge amounts
+	  of validating code around any statement that coule possibly cause
+	  an error, when most of it is probably going to be unnecessary in
+	  most programs. 
+	- 'catch/try' does not handle the same errors as 'ON ERROR' does, so
+	  it would help very little.
+  Strings
+-	- std::string is similiar but still very different from BASIC strings.
+	  BASIC strings are actually nultiple entities.
+	  There are regular variable length strings, fixed length strings,
+	  fixed position strings, etc. Strings in RECORDS/MAPS/COMMON should
+	  be handled as 'char[]', and strings in FIELD statements should be
+	  'char*'s pointing into file buffers, then using assorted 'str*'
+	  functions to do the work on these type of strings.
+	  All this stuff gets extremely complicated and would generate
+	  extremely ugly C++ code, therefor
+	- all strings are translated as regular 'std::string's, and the
+	  comples stuff is left for the user to fix since it is likely
+	  doing something that needs to be handled different;y in C++
+	  anyway.. 
 - GOSUB. Actually works, but has the same limitations in C++ as goto.
 	- No jumping over initializers. No calling from inside user defined
 	  functions.
 - DEF and DEF* functions.
 	- GOSUB insode DEF functions isn't likely to work.
 	- DEF and DEF* are treated identically.
+	- These functions are translated using C++ 'lambda's, instead of the
+	  g++ extensions, but requires cxx-11 capabilities.
 - DATA sstatements
 	- Bare Reserved words in basic cause parsing problems. Putting quotes
 	  around the text works to fix this, and is compatable with basic.
 	  Data statements are not easily handled in Flex/Bison grammers.
 - %xxx preprocessor)
 	- Code exists but only thinly tested. %IF can cause problems if blocks
-	  start or end inside of it.
+	  start or end inside of it (IF, FOR, etc.).
+	- They are parsed as if they were regular BASIC code, but generate
+	  C++ marco's instead of regular C++ code.
 	- %var is not allowed in normal VaxBasic statements, but btran accepts
 	  it.
   TAB, POS, CCOS
