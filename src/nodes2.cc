@@ -954,7 +954,9 @@ void Node::ScanMap(void)
  
 	if (Tree[1] != 0)
 	{
-		Tree[1]->ScanOneMap(&ThisVar);
+		Tree[1]->ScanOneMap(&ThisVar,
+			Tree[1]->Type = BAS_V_DEFINEVAR &&
+			Tree[1]->Block[0] == 0);
 	}
 }
 
@@ -964,7 +966,8 @@ void Node::ScanMap(void)
  *	This function will mangle a map or common statement.
  */ 
  void Node::ScanOneMap(
-	VariableStruct* MapVar	/**< Main map variable */
+	VariableStruct* MapVar,	/**< Main map variable */
+	int skipprefix
 )
 {
 	assert(this != 0);
@@ -975,11 +978,11 @@ void Node::ScanMap(void)
  
 		if (Tree[0] != 0)
 		{
-			Tree[0]->ScanOneMap(MapVar);
+			Tree[0]->ScanOneMap(MapVar, skipprefix);
 		}
 		if (Tree[1] != 0)
 		{
-			Tree[1]->ScanOneMap(MapVar);
+			Tree[1]->ScanOneMap(MapVar, skipprefix);
 		}
 		break;                                                                   
 	case BAS_V_NAME:
@@ -987,7 +990,10 @@ void Node::ScanMap(void)
 		{
 			VariableStruct NewVar(TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
-			NewVar.Prefix = MapVar->CName;
+			if (!skipprefix)
+			{
+				NewVar.Prefix = MapVar->CName;
+			}
 			Variables->Append(NewVar);
 		}
 		break;
@@ -1010,7 +1016,10 @@ void Node::ScanMap(void)
 		{
 			VariableStruct NewVar(Tree[1]->TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
-			NewVar.Prefix = MapVar->CName;
+			if (!skipprefix)
+			{
+				NewVar.Prefix = MapVar->CName;
+			}
 			Variables->Append(NewVar);
 		}
 		break;
@@ -1023,7 +1032,10 @@ void Node::ScanMap(void)
 		{
 			VariableStruct NewVar(Tree[0]->TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
-			NewVar.Prefix = MapVar->CName;
+			if (!skipprefix)
+			{
+				NewVar.Prefix = MapVar->CName;
+			}
 			Variables->Append(NewVar);
 		}
 		break;
@@ -1035,6 +1047,6 @@ void Node::ScanMap(void)
  
 	if (Block[0] != 0)
 	{
-		Block[0]->ScanOneMap(MapVar);
+		Block[0]->ScanOneMap(MapVar, skipprefix);
 	}
 }

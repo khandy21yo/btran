@@ -155,7 +155,7 @@ private:
 	void OutputDataValue(std::ostream& os);
 	void OutputMap(std::ostream& os);
 	void ScanMap();
-	void ScanOneMap(VariableStruct* MapVar);
+	void ScanOneMap(VariableStruct* MapVar, int skipprefix);
 	void OutputCaseLabel(std::ostream& os);
 	void OutputCaseIf(std::ostream& os, Node *Parent);
 	int CheckCaseLabel(void);

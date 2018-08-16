@@ -3328,23 +3328,54 @@ void Node::OutputMap(
 		"// #pragma psect static_rw " << ThisVar->GetName(1) <<
 		",gbl,ovr" << std::endl;
 
-	os <<
-		Indent() << "class " << ThisVar->GetName(1) <<
-			"_C" << std::endl <<
-		Indent() << "{" << std::endl <<
-		Indent() << "public:" << std::endl;
-
-	Level++;
-
-	if (Tree[1] != 0)
+	//
+	// We implement MAP and COMMON as classes because dealing with
+	// their weirdness will be easier by creating methods in a base
+	// class than putting stuff in the actual source. It should also
+	// make putting everything in a common place simpler.
+	//
+	// Here we try to 'roll up' a MAP statement of the form
+	//	MAP (my_map) my_regord my_var
+	// into a shorder form than more comples MAPs. It means we can
+	// rever to the values as 'my_var.value' instead of
+	// 'my_map.my_var.value'.
+	// Similiar code must exist in program.cc arount the prefix
+	// generating code
+	//
+	if (Tree[1]->Type = BAS_V_DEFINEVAR && Tree[1]->Block[0] == 0)
 	{
-		Tree[1]->OutputDefinitionList(os, 0, 0);
-	}
+		os <<
+			Indent() << "class " << ThisVar->GetName(1) <<
+				"_C : public " <<
+				Tree[1]->Tree[1]->OutputNodeVarType() <<
+				std::endl <<
+			Indent() << "{" << std::endl;
 
-	Level--;
-	std::cout <<
-		Indent() << "} " << ThisVar->GetName(1) << ";" << std::endl <<
-		std::endl;
+		std::cout <<
+			Indent() << "} " << Tree[1]->Tree[0]->Expression() <<
+				";" << std::endl <<
+			std::endl;
+	}
+	else
+	{
+		os <<
+			Indent() << "class " << ThisVar->GetName(1) <<
+				"_C" << std::endl <<
+			Indent() << "{" << std::endl <<
+			Indent() << "public:" << std::endl;
+
+		Level++;
+
+		if (Tree[1] != 0)
+		{
+			Tree[1]->OutputDefinitionList(os, 0, 0);
+		}
+
+		Level--;
+		std::cout <<
+			Indent() << "} " << ThisVar->GetName(1) << ";" << std::endl <<
+			std::endl;
+	}
 
 //	os << "// #pragma psect end " << ThisVar->GetName() << std::endl;
 }
