@@ -595,11 +595,6 @@ void Node::OutputCodeOne(
 		Tree[0]->OutputDefinitionList(os, 0, 0, 1);
 		break;
 
-//	case BAS_V_DEFINEVAR:
-//		assert(Tree[0] != 0);
-//		Tree[0]->OutputDefinitionList(os, 0, 0, 0);
-//		break;
-
 	case BAS_V_DECLAREFUN:
 		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
@@ -2272,7 +2267,18 @@ std::string Node::Expression(void)
 		break;
 
 	case BAS_X_STRREF:
-		result = Tree[0]->Expression() + "." + Tree[1]->Expression();
+		ThisVar = Variables->Lookup(TextValue, Tree[0]);
+		if (ThisVar != 0 && ThisVar->Prefix != "")
+		{
+			result = ThisVar->Prefix + "." +
+				Tree[0]->Expression() + "." +
+				Tree[1]->Expression();
+		}
+		else
+		{
+			result = Tree[0]->Expression() + "." +
+				Tree[1]->Expression();
+		}
 		break;
 
 	case BAS_N_STRUCTNAME:
