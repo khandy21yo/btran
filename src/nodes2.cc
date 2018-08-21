@@ -955,7 +955,7 @@ void Node::ScanMap(void)
 	if (Tree[1] != 0)
 	{
 		Tree[1]->ScanOneMap(&ThisVar,
-			Tree[1]->Type = BAS_V_DEFINEVAR &&
+			Tree[1]->Type == BAS_V_DEFINEVAR &&
 			Tree[1]->Block[0] == 0);
 	}
 }

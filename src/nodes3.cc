@@ -3342,7 +3342,7 @@ void Node::OutputMap(
 	// Similiar code must exist in program.cc arount the prefix
 	// generating code
 	//
-	if (Tree[1]->Type = BAS_V_DEFINEVAR && Tree[1]->Block[0] == 0)
+	if ((Tree[1]->Type == BAS_V_DEFINEVAR) && (Tree[1]->Block[0] == 0))
 	{
 		os <<
 			Indent() << "class " << ThisVar->GetName(1) <<
