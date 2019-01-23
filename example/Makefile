@@ -1,4 +1,4 @@
-all: amazin kmaze snak snoopy revrse works unbac
+all: amazin kmaze snak snoopy revrse works unbac trek
 
 clean:
 	-rm *.o
@@ -15,6 +15,7 @@ clean:
 	-rm works.cc
 	-rm works
 	-rm unbac
+	-rm trek
 
 #
 # A Maze genertor
@@ -32,6 +33,13 @@ amazin: amazin.bas
 kmaze: kmaze.bas
 	../src/btran < kmaze.bas > kmaze.cc
 	c++ -I ../lib/ kmaze.cc -o kmaze
+
+#
+# Star trek
+#
+kmaze: trek.bas
+	../src/b1filter trek.bas  | ../src/btran > trek.cc
+	c++ -g -I ../lib/ trek.cc -o trek ../lib/libbtran.a
 
 #
 # A Maze generator

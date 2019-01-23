@@ -1681,7 +1681,7 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_STOP:
-		os << Indent() << "abort(EXIT_FAILURE);" << std::endl;
+		os << Indent() << "abort();" << std::endl;
 		break;
 
 	case BAS_S_SUB:
@@ -3787,6 +3787,10 @@ void Node::OutputDefinitionList(
 		{
 			os << " = " << Tree[4]->Expression();
 		}
+		else
+		{
+			os << OutputVarInit(0, GetNodeVarType());
+		}
 
 		os << ";" << std::endl;
 
@@ -5086,4 +5090,5 @@ std::string Node::OutputNodeVarType(void)
 
 	return result;
 }
+
 

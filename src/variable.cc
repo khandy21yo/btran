@@ -171,6 +171,8 @@ std::string VariableStruct::OutputDef(void)
 		break;
 	}
 
+	result += OutputVarInit(Class, Type);
+
 	//
 	// Flag this one as having been output.
 	//
@@ -465,5 +467,66 @@ std::string OutputVarType(
 
 	}
 	return std::string(result);
+}
+
+/**
+ * \brief Output an initializer for a variable definition, since c++ does
+ * not initialize memory for variables automatically.
+ *
+ *	This function is used to output the variable initilization for
+ *	nodes in a definition statement for types that are not initialized
+ *	in some other method.
+ */
+std::string OutputVarInit(int Class, int Type)
+{
+	std::string result;
+
+	switch (Class)
+	{
+	case VARCLASS_ARRAY:
+		switch (Type)
+		{
+		case VARTYPE_INTEGER:
+		case VARTYPE_LONG:
+		case VARTYPE_BYTE:
+		case VARTYPE_WORD:
+			result = " = { 0 }";
+			break;
+
+		case VARTYPE_REAL:
+		case VARTYPE_GFLOAT:
+		case VARTYPE_HFLOAT:
+		case VARTYPE_DOUBLE:
+		case VARTYPE_DECIMAL:
+		case VARTYPE_SINGLE:
+			result = " = { 0.0 }";
+			break;
+		}
+		break;
+
+
+	default:
+		switch(Type)
+		{
+		case VARTYPE_INTEGER:
+		case VARTYPE_LONG:
+		case VARTYPE_BYTE:
+		case VARTYPE_WORD:
+			result = " = 0";
+			break;
+
+		case VARTYPE_REAL:
+		case VARTYPE_GFLOAT:
+		case VARTYPE_HFLOAT:
+		case VARTYPE_DOUBLE:
+		case VARTYPE_DECIMAL:
+		case VARTYPE_SINGLE:
+			result = " = 0.0";
+			break;
+		}
+		break;
+	}
+
+	return result;
 }
 

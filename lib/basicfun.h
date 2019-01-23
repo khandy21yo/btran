@@ -164,7 +164,7 @@ static inline int err()
  *	matter
  */
 inline double floatrand(
-	double fmax = 1		/**< Maximum value to return */
+	double fmax = 1.0	/**< Maximum value to return */
 )
 {
 	return ((double) rand()) / ((double) RAND_MAX); // * fmax;

@@ -144,6 +144,7 @@ const char* DumpVarType(VARTYPE VarType);
 std::string OutputVarType(VARTYPE VarType);
 VARTYPE GuessVarType(const std::string Name);
 int UnguessVarType(VARTYPE vartype);
+std::string OutputVarInit(int Class, int Type);
 
 /**
  * \brief Which type to raise expression to
