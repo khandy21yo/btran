@@ -3789,7 +3789,9 @@ void Node::OutputDefinitionList(
 		}
 		else
 		{
-			os << OutputVarInit(0, GetNodeVarType());
+			os << OutputVarInit(
+				Tree[2] != 0,
+				Tree[1]->GetNodeVarType());
 		}
 
 		os << ";" << std::endl;
