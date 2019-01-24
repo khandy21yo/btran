@@ -107,7 +107,12 @@ Doing otherwise creates very ugly "not C++" code.
 	  MAP's are usually used for RMS I/O, which doesn't exist in any
 	  standard way in C++. The code needs to be cleaned up after
 	  processing, So it is being converted into a simple 'class' for now.
-
+ File Names
+	In BASIC, file names were case insensitive. Under most modern
+	systems, theyy are case sensitive, and often transfered in lower
+	case. P:Old programers picked whatever case they wanted, and were
+	not always sconsistant. This may require fixing the case used in
+	the source code.
 
 Several packages are required to use this code.
 The debian command to install thse ackages include

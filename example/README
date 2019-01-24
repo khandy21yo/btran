@@ -27,6 +27,9 @@ amazin.bas	101 Basic Computer Games
 kmaze.bas	Kevin Handy
 		A maze building program
 		** Top row of maze is wrong
+morgul.bas	This ia not actually a program. It
+		is a data file for trek.bas. I don't
+		know why it is called what it is.
 revrse.bas	101 Basic Compuer Games
 		A reverse the digits gane
 		** Doesnt show spaces around numbers
@@ -35,4 +38,6 @@ snak.bas	Kevin Handy
 snoopy.bas	101 Basic Computer Games
 		Print a simple poster
 		** The things that used to amuse us
-
+trek/bas	A version of Star Trek gane that was
+		available locally. It sorta works, but
+		has issues.
