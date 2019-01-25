@@ -1416,11 +1416,11 @@ void Node::OutputCodeOne(
 		{
 			if (Tree[1]->Type == BAS_S_INPUT)
 			{
-				os << ", std::ios::in";
+				os << ", std::ios_base::in";
 			}
 			else
 			{
-				os << ", std::ios::out";
+				os << ", std::ios_base::out";
 			}
 
 		}
