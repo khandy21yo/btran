@@ -1402,23 +1402,30 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_OPEN:
+		os << Indent() <<
+			GetIPChannel(Tree[2], 0) <<
+			".open(";
+		if (Tree[0] != 0)
+		{
+			os << Tree[0]->Expression();
+		}
 		//
 		// For INPUT/OUTPUT
 		//
 		if (Tree[1] != 0)
 		{
-			os << Indent() <<
-				GetIPChannel(Tree[2], 0) << ".";
 			if (Tree[1]->Type == BAS_S_INPUT)
 			{
-				os << "ForInput();" << std::endl;
+				os << ", std::ios::in";
 			}
 			else
 			{
-				os << "ForOutput();" << std::endl;
+				os << ", std::ios::out";
 			}
 
 		}
+
+		os << ");" << std::endl;
 
 		//
 		// Other flags set on open
@@ -1428,15 +1435,9 @@ void Node::OutputCodeOne(
 			Tree[3]->OutputOpenStuff(os, Tree[2]);
 		}
 
-		os << Indent() <<
-			GetIPChannel(Tree[2], 0) <<
-			".open(";
-		if (Tree[0] != 0)
-		{
-			os << Tree[0]->Expression();
-		}
-		os << ");" << std::endl;
-
+		//
+		// Throw an error if file doesn't open
+		//
 		os << Indent() <<
 			"if (!" <<
 			GetIPChannel(Tree[2], 0) <<
