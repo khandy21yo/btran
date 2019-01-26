@@ -37,7 +37,7 @@ kmaze: kmaze.bas
 #
 # Star trek
 #
-kmaze: trek.bas
+trek: trek.bas
 	../src/b1filter trek.bas  | ../src/btran > trek.cc
 	c++ -g -I ../lib/ trek.cc -o trek ../lib/libbtran.a
 

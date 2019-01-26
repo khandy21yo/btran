@@ -109,7 +109,7 @@ inline std::string mid(const std::string& Source, long Start, long Length)
 	{
 		Start = 1;
 	}
-	if (Start < Source.size())
+	if (Start <= Source.size())
 	{
 		return std::string(Source, Start - 1, Length);
 	}
