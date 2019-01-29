@@ -3148,6 +3148,11 @@ int Node::OutputInputData(
 				", " <<
 				Expression() <<
 				");" << std::endl;
+			//
+			//  getline drops terminater. INPUT LINE wants it back on.
+			//
+			os << Indent() <<
+				Expression() << " += \"\\n\";" << std::endl;
 
 			if (IOChannel != 0)
 			{
