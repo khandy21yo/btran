@@ -2832,6 +2832,23 @@ void Node::OutputInput(
 	{
 		os << ";" << std::endl;
 	}
+	
+	//
+	// Try to handle bad entries with more grace.
+	// Eat the bad entry instead of letting it block the next input.
+	//
+	if (InputFlag & 1)
+	{
+		os << Indent() <<
+			"if (" << GetIPChannel(IOChannel, InputFlag) <<
+			".fail()) { " << 
+			GetIPChannel(IOChannel, InputFlag) << ".clear(); " <<
+			std::endl;
+		os << Indent() <<
+			GetIPChannel(IOChannel, InputFlag) << 
+			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }" <<
+			std::endl;
+	}
 }
 
 

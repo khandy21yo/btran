@@ -38,6 +38,8 @@ snak.bas	Kevin Handy
 snoopy.bas	101 Basic Computer Games
 		Print a simple poster
 		** The things that used to amuse us
-trek/bas	A version of Star Trek gane that was
+trek.bas	A version of Star Trek gane that was
 		available locally. It sorta works, but
-		has issues.
+		has issues. It needs to run in a subdirectory
+		with morgul.bas in it. Many things are still
+		broken in the translation.

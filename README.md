@@ -44,6 +44,10 @@ Doing otherwise creates very ugly "not C++" code.
 	  or subtract channel numbers, for example.
 	- FIELD statements a;so have no equivelent C++ translation.
 	- RMS operations have no equivelent in C++.
+	- Data errors, such as entering letters when numbers are wanted, will
+	  cause odd behaviour. It can get the stream stuck. Right nowm it should
+	  act as if '0' was entered. Not easy to fix without introducing massive
+	  amounts of code.
 - Error handling
 	- ON ERROR GOTO, RESUME, etc. are not easily translated. It is somewhat
 	  lige a subroutine, but not closely enoug to translate well.
