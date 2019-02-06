@@ -848,6 +848,55 @@ VARTYPE Node::ScanType(void)
 }
 
 /**
+ * \brief Tries to determine if a node is a number
+ *
+ * Attempts to determine if a no9de is some type of number.
+ *
+ * \return
+ * 0 - No
+ * 1 - Yes
+ * 2 - Maybe
+ */
+int Node::IsNumber(void)
+{
+	//
+	// Don't even try it is we don't know what's happening
+	//
+	assert(this != 0);
+
+	//
+	// Try to figure out the variable type
+	//
+	switch (Type)
+	{
+	// Easil;y a number
+	//
+	case BAS_S_REAL:
+	case BAS_S_DOUBLE:
+	case BAS_S_BYTE:
+	case BAS_S_GFLOAT:
+	case BAS_S_HFLOAT:
+	case BAS_S_INTEGER:
+	case BAS_S_LONG:
+	case BAS_S_WORD:
+	case BAS_S_DECIMAL:
+		return(1);
+
+	//
+	// Definately not a number
+	//
+	case BAS_S_RFA:
+	case BAS_S_STRING:
+		return(0);
+
+	//
+	// I don't know
+	//
+	defauolt:
+		return(0);
+	}
+}
+/**
  * \brief SmoothTypes
  *
  *	Attempt to spread the data types through all items on

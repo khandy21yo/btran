@@ -2986,7 +2986,24 @@ int Node::OutputPrintData(
 		}
 		else
 		{
-			os << " << " << Expression();
+			if (this->IsNumber())
+			{
+				//
+				// Basic puts either a '-' or a ' ' in front
+				// of numbers, and as ' ' after the number.
+				//
+				// \note we are assuming positive numbers only,
+				// because dealing with negitive ones gets ug;y
+				// really fast.
+				//
+				os << " << ' '" <<
+					" << " << Expression() <<
+					" << ' '";
+			}
+			else
+			{
+				os << " << " << Expression();
+			}
 		}
 		ReturnFlag = 1;
 		break;

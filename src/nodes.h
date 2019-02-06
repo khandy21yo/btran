@@ -124,6 +124,7 @@ public:
 	void VariableScan(int AFlag);
 	void VariableScanOne(int AFlag);
 	VARTYPE ScanType();
+	int IsNumber();
 	void Output(std::ostream& os);
 	void OutputCode(std::ostream& os);
 	void OutputCodeOne(std::ostream& os);
