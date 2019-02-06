@@ -2986,7 +2986,7 @@ int Node::OutputPrintData(
 		}
 		else
 		{
-			if (this->IsNumber())
+			if (IsNumber() != 0)
 			{
 				//
 				// Basic puts either a '-' or a ' ' in front

@@ -859,43 +859,91 @@ VARTYPE Node::ScanType(void)
  */
 int Node::IsNumber(void)
 {
-	//
-	// Don't even try it is we don't know what's happening
-	//
-	assert(this != 0);
+	VariableStruct *ThisVar;
 
 	//
 	// Try to figure out the variable type
 	//
 	switch (Type)
 	{
-	// Easil;y a number
-	//
-	case BAS_S_REAL:
-	case BAS_S_DOUBLE:
-	case BAS_S_BYTE:
-	case BAS_S_GFLOAT:
-	case BAS_S_HFLOAT:
-	case BAS_S_INTEGER:
-	case BAS_S_LONG:
-	case BAS_S_WORD:
-	case BAS_S_DECIMAL:
-		return(1);
+	case BAS_V_FUNCTION:
+	case BAS_V_NAME:
+		//
+		// Look for variable in table
+		//
+		ThisVar = Variables->Lookup(TextValue, Tree[0]);
+
+		//
+		// Print this variable
+		//
+		if (ThisVar != 0)
+		{
+			switch (ThisVar->Type)
+			{
+			case VARTYPE_BYTE:
+			case VARTYPE_WORD:
+			case VARTYPE_INTEGER:
+			case VARTYPE_LONG:
+			case VARTYPE_SINGLE:
+			case VARTYPE_REAL:
+			case VARTYPE_DOUBLE:
+			case VARTYPE_HFLOAT:
+			case VARTYPE_GFLOAT:
+			case VARTYPE_DECIMAL:
+				return 1;
+
+			}
+		}
+		return 0;
 
 	//
-	// Definately not a number
+	// Sometomes used for strings.
 	//
-	case BAS_S_RFA:
-	case BAS_S_STRING:
-		return(0);
+	case '+':
+		return Tree[0]->IsNumber();
+
+	//
+	// Always Numeric
+	//
+	case '-':
+	case '*':
+	case '/':
+	case '>':
+	case '<':
+	case BAS_S_MOD:
+	case '^':
+	case BAS_X_LAND:
+	case BAS_S_EQV:
+	case BAS_S_IMP:
+	case BAS_X_GE:
+	case BAS_X_LE:
+	case BAS_P_NAME:
+	case BAS_X_EQ:
+	case BAS_X_NEQ:
+	case BAS_S_NOT:
+	case BAS_X_LNOT:
+	case BAS_X_LOR:
+	case BAS_S_OR:
+	case BAS_N_UMINUS:
+	case BAS_N_UPLUS:
+	case BAS_S_XOR:
+		return 1;
+
+	// Easily a number
+	//
+	case BAS_V_INT:
+	case BAS_V_INTEGER:
+	case BAS_V_FLOAT:
+		return(1);
 
 	//
 	// I don't know
 	//
-	defauolt:
+	default:
 		return(0);
 	}
 }
+
 /**
  * \brief SmoothTypes
  *
