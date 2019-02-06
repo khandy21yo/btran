@@ -117,6 +117,9 @@ Doing otherwise creates very ugly "not C++" code.
 	case. P:Old programers picked whatever case they wanted, and were
 	not always sconsistant. This may require fixing the case used in
 	the source code.
+Input Statements
+	You cannot enter a blank for a string input. C++ statement "cin >> xxx;"
+	requires a non-blank entry.
 
 Several packages are required to use this code.
 The debian command to install thse ackages include

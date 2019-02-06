@@ -43,3 +43,9 @@ trek.bas	A version of Star Trek gane that was
 		has issues. It needs to run in a subdirectory
 		with morgul.bas in it. Many things are still
 		broken in the translation.
+superstartrek	Another version of trek.
+		Larger programs like this help be locate problems.
+		This program does not work correctly (yet), but
+		is mostly functional. You get 0 Klingns to kill, though,
+		and it sometimes locks up at the start.
+
