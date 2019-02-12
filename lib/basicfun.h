@@ -88,7 +88,8 @@ extern long Status;		/* Status flag */
  * There is no test for stack underflow.
  */
 #define BReturn goto *BGoStack[--BGoCount];
-#else
+
+#else // GOSUB2
 /** 
  * \brief Initiaize gosub/return stack
  */
@@ -103,6 +104,58 @@ extern long Status;		/* Status flag */
 #define BReturn longjmp(BGoStack[--BGoCount], 1);
 #endif
 
+#ifdef GOSUB2
+//
+// Now for some nasty on-error-goto code.
+//
+//	It's not completely compatible with the "On error goto"
+//	code, but it's better than nothing.
+//
+
+/**
+ * \brief Die on an eror
+ */
+static inline void OnErrorDie()
+{
+	std::cerr << "%Error " << ErrNum << " at " << ErrLine << std::endl;
+	exit(EXIT_FAILURE);
+}
+/**
+ * \brief ON ERROR GOTO 0
+ */
+#define OnErrorZero ErrorStack = 0;
+/**
+ * \brief Create error return point
+ */
+#define OnErrorStack void *ErrorStack;
+/**
+ * \brief Handle ON EROR GOTO statement
+ */
+#define OnErrorGoto(x) (ErrorStack = $$x; }
+/**
+ * \brief RESUME
+ */
+#define OnResumeLine(x) goto x;
+/**
+ * \brief Generate error
+ */
+#define OnErrorHit(x) ErrNum = x; if (ErrorStack) goto &ErrorStack; throw BasicErr(x); ;
+/**
+ * \brief return error line
+ */
+static inline int erl()
+{
+	return ErrLine;
+}
+/**
+ * \brief return error number
+ */
+static inline int err()
+{
+	return ErrNum;
+}
+
+#else	// GOSUB2
 //
 // Now for some nasty on-error-goto code.
 //
@@ -152,6 +205,7 @@ static inline int err()
 {
 	return ErrNum;
 }
+#endif
 
 /**
  * \brief Rnd (random number between 0 and 1)
