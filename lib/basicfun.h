@@ -131,7 +131,7 @@ static inline void OnErrorDie()
 /**
  * \brief Handle ON EROR GOTO statement
  */
-#define OnErrorGoto(x) (ErrorStack = $$x; }
+#define OnErrorGoto(x) { ErrorStack = &&x; }
 /**
  * \brief RESUME
  */
