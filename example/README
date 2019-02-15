@@ -48,4 +48,5 @@ superstartrek	Another version of trek.
 		This program does not work correctly (yet), but
 		is mostly functional. You get 0 Klingns to kill, though,
 		and it sometimes locks up at the start.
+		Problems incluse use of TAB().
 
