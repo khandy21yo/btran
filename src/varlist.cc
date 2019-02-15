@@ -759,7 +759,7 @@ void VariableList::InitFunctions(void)
 	InitOneFunction("SUM$",		"basic::Sum",		VARTYPE_DYNSTR);
 	InitOneFunction("SWAP%",	"basic::Swap",		VARTYPE_LONG);
 	InitOneFunction("SYS",		"basic::sys",		VARTYPE_DYNSTR);
-	InitOneFunction("TAB",		"Tab",			VARTYPE_DOUBLE);
+	InitOneFunction("TAB",		"Tab",			VARTYPE_DYNSTR);
 	InitOneFunction("TAN",		"tan",			VARTYPE_DOUBLE);
 	InitOneFunction("TIME",		"basic::Time",		VARTYPE_DOUBLE);
 	InitOneFunction("TIME$",	"basic::Qtime",		VARTYPE_DYNSTR);
