@@ -3159,6 +3159,29 @@ int Node::OutputInputData(
 	default:
 
 		//
+		// If we want to allow the user to enter a blank value
+		// for a string, then we cannot use '>>' to ask for the
+		// value.
+		//
+		if (IsString())
+		{
+			if (IOChPrinted != 0)
+			{
+				os << ";" << std::endl;
+				IOChPrinted = 0;
+			}
+
+			os << Indent() <<
+				"getline(" <<
+				GetIPChannel(IOChannel, InputFlag) <<
+				", " <<
+				Expression() <<
+				");" << std::endl;
+
+			break;
+		}
+
+		//
 		// Output seperator depending on what state we are in
 		//
 		switch(InputFlag)

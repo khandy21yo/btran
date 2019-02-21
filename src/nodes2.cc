@@ -945,6 +945,61 @@ int Node::IsNumber(void)
 }
 
 /**
+ * \brief Tries to determine if a node is a string
+ *
+ * Attempts to determine if a no9de is some type of string.
+ *
+ * \return
+ * 0 - No
+ * 1 - Yes
+ * 2 - Maybe
+ */
+int Node::IsString(void)
+{
+	VariableStruct *ThisVar;
+
+	//
+	// Try to figure out the variable type
+	//
+	switch (Type)
+	{
+	case BAS_V_FUNCTION:
+	case BAS_V_NAME:
+		//
+		// Look for variable in table
+		//
+		ThisVar = Variables->Lookup(TextValue, Tree[0]);
+
+		//
+		// Print this variable
+		//
+		if (ThisVar != 0)
+		{
+			switch (ThisVar->Type)
+			{
+			case BAS_S_STRING:
+			case VARTYPE_DYNSTR:
+				return 1;
+
+			}
+		}
+		return 0;
+
+	//
+	// Sometomes used for strings.
+	//
+	case '+':
+		return Tree[0]->IsString();
+
+	//
+	// I don't know
+	//
+	default:
+		return(0);
+	}
+}
+
+/**
  * \brief SmoothTypes
  *
  *	Attempt to spread the data types through all items on
