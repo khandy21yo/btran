@@ -96,7 +96,7 @@
 1950 IF S<=200 THEN PRINT "     SHIELDS DANGEROUSLY LOW"
 1960 FOR I=1 TO 3 : K(I,1)=0 : K(I,2)=0 : NEXT I
 1970 FOR I=1 TO 3 : K(I,3)=0 : NEXT I
-1980 Q$=SPACE$(192) : REM 8 x 8 x 3 Characters 
+1980 Q$=SPACE$(8*8*3) : REM 8 x 8 x 3 Characters 
 1990 REM *** Position ENTERPRISE in quadrant, then place K3 Klingons, ***
 2000 REM *** B3 starbases and S3 stars elsewhere                      ***
 2010 A$="<*>" : Z1=S1 : Z2=S2 : GOSUB 7490 : REM * Place into quadrant
@@ -649,7 +649,7 @@
 7480 REM
 7490 S8=INT(Z2-0.5)*24+INT(Z1-0.5)*3+1
 7500 !Q$=LEFT$(Q$,S8-1)+A$+RIGHT$(Q$,190-S8)
-7501 Q$=LEFT$(Q$,S8-1)+A$+RIGHT$(Q$,S8+2)
+7501 Q$=LEFT$(Q$,S8-1)+A$+RIGHT$(Q$,S8+3)
 7510 RETURN
 7520 REM
 7530 REM *** Get device name ***************************************************
