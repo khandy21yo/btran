@@ -17,6 +17,7 @@
 #include <time.h>
 
 #include "bstring.h"
+#include "pusing.h"
 
 #ifndef PI
 static const double PI = 3.1415926535; /**< \brief Pi (Someone else already defined this) */

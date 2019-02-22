@@ -172,7 +172,8 @@
 2710 PRINT "   'Insufficient energy available for maneuvering at Warp";STR$(W1);"!'"
 2720 IF S<N-E OR D(7)<0 THEN 2160
 2730 PRINT "Deflector Control Room acknowledges:"
-2740 PRINT "   '";RIGHT$(STR$(S),2);" units of energy presently deployed to shields.'"
+2740 !PRINT "   '";RIGHT$(STR$(S),2);" units of energy presently deployed to shields.'"
+2741 PRINT "   '";NUM1$(S);" units of energy presently deployed to shields.'"
 2750 GOTO 2160
 2760 REM *** Klingons move/fire on moving Starship ***
 2770 FOR I=1 TO K3
@@ -278,7 +279,8 @@
 3770 FOR L=1 TO 3
 3780 PRINT ": ";
 3790 IF N(L)<0 THEN PRINT "*** "; : GOTO 3810
-3800 PRINT RIGHT$(STR$(N(L)+1000),3);" ";
+3800 !PRINT RIGHT$(STR$(N(L)+1000),3);" ";
+3801 PRINT FORMAT$(L,"<0>## ");
 3810 NEXT L
 3820 PRINT ":"
 3830 PRINT O1$
@@ -540,7 +542,8 @@
 6390 FOR I=1 TO 8
 6400 PRINT "   ";
 6410 IF Z(I,J)=0 THEN PRINT "***"; : GOTO 6430
-6420 PRINT RIGHT$(STR$(Z(I,J)+1000),3);
+6420 !PRINT RIGHT$(STR$(Z(I,J)+1000),3);
+6420 PRINT FORMAT$(Z(I,J),"<0>##");
 6430 NEXT I
 6440 GOTO 6520
 6450 Z5=J
