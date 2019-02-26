@@ -41,6 +41,8 @@ static Node* IOChannel;		/**< \brief IO Channel to use (NULL if default) */
 static Node* IOUsing;		/**< \brief Print using format */
 static int DataWidth;		/**< \brief Used to format DATA statements */
 
+std::string erl = "0";		/**< Last numeric line number seen. */
+
 /** \brief add/subtract from string with optimization
  *
  * Adds or subtracts from a value, and if possible
@@ -517,7 +519,8 @@ void Node::OutputCodeOne(
 	case BAS_N_CAUSEERROR:
 		os << Indent() <<
 			"throw basic::BasicError(" <<
-			Tree[0]->Expression() << ");" << std::endl;
+			Tree[0]->Expression() <<
+			", " << erl << ");" << std::endl;
 		break;
 
 	case BAS_P_ABORT:
@@ -1189,6 +1192,10 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_V_LABEL:
+		if (isdigit(TextValue[0]))
+		{
+			erl = TextValue;
+		}
 		ThisVar = Variables->Lookup(TextValue, 0);
 		if (ThisVar != 0)
 		{
@@ -1396,7 +1403,8 @@ void Node::OutputCodeOne(
 		{
 			os << Indent() << "default:" << std::endl <<
 				Indent() <<
-				"\tthrow basic::BasicError(58);\t// Out of range" << std::endl;
+				"\tthrow basic::BasicError(58, " <<
+				erl << ");\t// Out of range" << std::endl;
 		}
 		os << Indent() << "}" << std::endl;
 		break;
@@ -1441,7 +1449,8 @@ void Node::OutputCodeOne(
 		os << Indent() <<
 			"if (!" <<
 			GetIPChannel(Tree[2], 0) <<
-			".is_open()) { throw basic::BasicError(5); }" <<
+			".is_open()) { throw basic::BasicError(5, " <<
+			erl << "); }" <<
 			std::endl;;
 		break;
 
@@ -3220,13 +3229,15 @@ int Node::OutputInputData(
 				os << Indent() <<
 					"if (" <<
 					GetIPChannel(IOChannel, InputFlag) <<
-					".eof()) { throw basic::BasicError(11); }" <<
+					".eof()) { throw basic::BasicError(11, " <<
+					erl << "); }" <<
 					"\t// End of file on device" <<
 					std::endl;
 				os << Indent() <<
 					"if (" <<
 					GetIPChannel(IOChannel, InputFlag) <<
-					".fail()) { throw basic::BasicError(12); }" <<
+					".fail()) { throw basic::BasicError(12, " <<
+					erl << "); }" <<
 					"\t// Fatal system I/O failure" <<
 					std::endl;
 			}

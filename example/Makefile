@@ -46,7 +46,7 @@ trek: trek.bas
 #
 # Super Star trek
 #
-trek: superstartrek.bas
+superstartrek: superstartrek.bas
 	cat superstartrek.bas  | ../src/btran  > superstartrek.cc
 	c++ -g -I ../lib/ superstartrek.cc -o superstartrek ../lib/libbtran.a
 
