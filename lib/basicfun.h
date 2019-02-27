@@ -118,7 +118,7 @@ extern long Status;		/* Status flag */
  */
 static inline void OnErrorDie()
 {
-	std::cerr << "%Error " << ErrNum << " at " << ErrLine << std::endl;
+	std::cerr << "%Error " << basic::ErrNum << " at " << ErrLine << std::endl;
 	exit(EXIT_FAILURE);
 }
 /**
@@ -140,7 +140,9 @@ static inline void OnErrorDie()
 /**
  * \brief Generate error
  */
-#define OnErrorHit(x) ErrNum = x; if (ErrorStack) goto &ErrorStack; throw BasicErr(x); ;
+#define OnErrorHit(x,y) if (ErrorStack) \
+	{ basic::ErrNum = x; basic::ErrLine = y; goto *ErrorStack; } else \
+	throw basic::BasicError(x, y); ;
 /**
  * \brief return error line
  */
@@ -169,7 +171,8 @@ static inline int err()
  */
 static inline void OnErrorDie()
 {
-	std::cerr << "%Error " << ErrNum << " at " << ErrLine << std::endl;
+	std::cerr << "%Error " << ErrNum << " at " <<
+		basic::ErrLine << std::endl;
 	exit(EXIT_FAILURE);
 }
 /**
@@ -191,7 +194,7 @@ static inline void OnErrorDie()
 /**
  * \brief Generate error
  */
-#define OnErrorHit(x) ErrNum = x; longjmp(ErrorStack);
+#define OnErrorHit(x,y) basic::ErrNum = x; basic::ErrLine = y; longjmp(ErrorStack);
 /**
  * \brief return error line
  */
