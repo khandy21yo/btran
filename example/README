@@ -39,15 +39,15 @@ snoopy.bas	101 Basic Computer Games
 		Print a simple poster
 		** The things that used to amuse us
 trek.bas	A version of Star Trek gane that was
-		available locally. It sorta works, but
+		available locally. It mostly works, but
 		has issues. It needs to run in a subdirectory
-		with morgul.bas in it. Many things are still
+		with morgul.bas in it. Some things are still
 		broken in the translation.
 superstartrek	Another version of trek.
 		Larger programs like this help be locate problems.
-		This program does not work correctly (yet), but
-		is mostly functional. You get 0 Klingns to kill, though,
-		and it sometimes locks up at the start.
+		It is mostly functional. 
+		It sometimes locks up at the start.
 		Problems incluse use of TAB(), odd usage of RIGHT.
-		Some code patched to fix bugs caused by these.
+		Some code patched to fix bugs caused by these, and DIM
+		statements added.
 
