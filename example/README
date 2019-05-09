@@ -50,4 +50,10 @@ superstartrek	Another version of trek.
 		Problems incluse use of TAB(), odd usage of RIGHT.
 		Some code patched to fix bugs caused by these, and DIM
 		statements added.
+moon.bas	This is a program from a decus tape.
+		I had to modify it sligtly for the translator.
+		Added '&' line continuation markers, and changed the
+		print using "//" to "\\".
+		For dates wanting "MON,DY,YR", enter each part on a seperate
+		lline because CC++ doesn't understand commas.
 
