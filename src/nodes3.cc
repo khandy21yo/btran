@@ -2721,7 +2721,7 @@ void Node::OutputPrint(
 				// case properly in C++, so fake it.
 				//
 				OutputIPChannel(os, 0);
-				os << ".GetOstream() << std::endl";
+				os << " << std::endl";
 			}
 		}
 	}
@@ -2742,7 +2742,7 @@ void Node::OutputPrint(
 			// case properly in C++, so fake it.
 			//
 			OutputIPChannel(os, 0);
-			os << ".GetOstream() << std::endl";
+			os << " << std::endl";
 		}
 	}
 
