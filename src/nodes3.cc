@@ -3190,8 +3190,12 @@ int Node::OutputInputData(
 			//
 			//  getline drops terminater. INPUT LINE wants it back on.
 			//
-			os << Indent() <<
-				Expression() << " += \"\\n\";" << std::endl;
+			if (InputFlag == 2)
+			{
+				os << Indent() <<
+					Expression() <<
+					" += \"\\n\";" << std::endl;
+			}
 
 			break;
 		}

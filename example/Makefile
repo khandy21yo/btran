@@ -1,4 +1,4 @@
-all: amazin kmaze snak snoopy revrse works unbac trek superstartrek
+all: amazin kmaze snak snoopy revrse works unbac trek superstartrek moon
 
 clean:
 	-rm *.o
@@ -17,6 +17,7 @@ clean:
 	-rm unbac
 	-rm trek
 	-rm superstartrek
+	-rm moon
 
 #
 # A Maze genertor
@@ -42,7 +43,6 @@ trek: trek.bas
 	../src/b1filter trek.bas  | ../src/btran > trek.cc
 	c++ -g -I ../lib/ trek.cc -o trek ../lib/libbtran.a
 
-#
 #
 # Super Star trek
 #
@@ -90,4 +90,11 @@ works: works.bas
 #
 unbac: unbac.cc
 	g++ -o unbac -O0 -g -I ../lib  unbac.cc ../lib/libbtran.a
+
+#
+# Super Star trek
+#
+moon: moon.bas
+	cat moon.bas  | ../src/btran  > moon.cc
+	c++ -g -I ../lib/ moon.cc -o moon ../lib/libbtran.a
 
