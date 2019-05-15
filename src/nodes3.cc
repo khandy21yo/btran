@@ -174,6 +174,12 @@ void Node::Output(
 		NeedPuse = 0;
 	}
 
+	//
+	// This code duplicates basicfun.h, but sometimes it is still needed
+	// 
+	os << Indent() << "extern basic::BasicError Be;" <<
+		std::endl;
+
 	os << std::endl;
 
 	//
@@ -941,12 +947,12 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
+//				os << Indent() << "basic::BasicError Be;" <<
+//					std::endl;
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)
 			{
-				os << Indent() << "basic::BasicError Be;" <<
-					std::endl;
 				WhenErrorFlag = 0;
 			}
 
@@ -1047,8 +1053,8 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
-				os << Indent() << "basic::BasicError Be;" <<
-					std::endl;
+//				os << Indent() << "basic::BasicError Be;" <<
+//					std::endl;
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)
@@ -1792,8 +1798,8 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
-				os << Indent() << "basic::BasicError Be;" <<
-					std::endl;
+//				os << Indent() << "basic::BasicError Be;" <<
+//					std::endl;
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)
@@ -1891,8 +1897,8 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
-				os << Indent() << "basic::BasicError Be;" <<
-					std::endl;
+//				os << Indent() << "basic::BasicError Be;" <<
+//					std::endl;
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)

@@ -56,13 +56,52 @@ static const char DEL = 127;	/**< \brief Delete */
 //
 // Error routines
 //
-extern long ErrNum;		/* Error Number */
-extern long ErrLine;		/* Line Number */
 extern long Status;		/* Status flag */
 
 //
 // Horrible gosub/return code, but it does work (Icky icky icky)
 //
+
+/**
+ * \brief Error trapping stuff
+ */
+class BasicError
+{
+public:
+	int err;		/**< \brief Basc error number */
+	int erl;		/**< Line number for error */
+	std::string ern;	/**< Function name of error */
+
+public:
+	/**
+	 * \brief Empty constructor
+	 */
+	BasicError()
+	{
+		err = 0;
+		erl = 0;
+	}
+	/**
+	 * \brief Constructor
+	 */
+	BasicError(int newerr, int newerl = 0, std::string newern = "")
+	{
+		err = newerr;
+		erl = newerl;
+		ern = newern;
+	}
+	/**
+	 * Copy constructor
+	 */
+	BasicError(const BasicError &be)
+	{
+		err = be.err;
+		erl = be.erl;
+		ern = be.ern;
+	}
+
+};
+extern basic::BasicError Be;
 
 #ifdef GOSUB2
 #define __C(a, b) a ## b
@@ -118,7 +157,7 @@ extern long Status;		/* Status flag */
  */
 static inline void OnErrorDie()
 {
-	std::cerr << "%Error " << basic::ErrNum << " at " << ErrLine << std::endl;
+	std::cerr << "%Error " << Be.err << " at " << Be.erl << std::endl;
 	exit(EXIT_FAILURE);
 }
 /**
@@ -141,21 +180,21 @@ static inline void OnErrorDie()
  * \brief Generate error
  */
 #define OnErrorHit(x,y) if (ErrorStack) \
-	{ basic::ErrNum = x; basic::ErrLine = y; goto *ErrorStack; } else \
+	{ Be.err = x; Be.erl = y; goto *ErrorStack; } else \
 	throw basic::BasicError(x, y); ;
 /**
  * \brief return error line
  */
 static inline int erl()
 {
-	return ErrLine;
+	return Be.erl;
 }
 /**
  * \brief return error number
  */
 static inline int err()
 {
-	return ErrNum;
+	return Be.err;
 }
 
 #else	// GOSUB2
@@ -171,8 +210,8 @@ static inline int err()
  */
 static inline void OnErrorDie()
 {
-	std::cerr << "%Error " << ErrNum << " at " <<
-		basic::ErrLine << std::endl;
+	std::cerr << "%Error " << Be.err << " at " <<
+		Be.erl << std::endl;
 	exit(EXIT_FAILURE);
 }
 /**
@@ -194,20 +233,20 @@ static inline void OnErrorDie()
 /**
  * \brief Generate error
  */
-#define OnErrorHit(x,y) basic::ErrNum = x; basic::ErrLine = y; longjmp(ErrorStack);
+#define OnErrorHit(x,y) Be.err = x; Be.erl = y; longjmp(ErrorStack);
 /**
  * \brief return error line
  */
 static inline int erl()
 {
-	return ErrLine;
+	return Be.erl;
 }
 /**
  * \brief return error number
  */
 static inline int err()
 {
-	return ErrNum;
+	return Be.err;
 }
 #endif
 
@@ -343,46 +382,6 @@ inline void MatZer_n(
 	int s2		/**< Size 2 */
 	)
 	{ memset(x, s2, s1 / s2); }
-
-/**
- * \brief Error trapping stuff
- */
-class BasicError
-{
-public:
-	int err;		/**< \brief Basc error number */
-	int erl;		/**< Line number for error */
-	std::string ern;	/**< Function name of error */
-
-public:
-	/**
-	 * \brief Empty constructor
-	 */
-	BasicError()
-	{
-		err = 0;
-		erl = 0;
-	}
-	/**
-	 * \brief Constructor
-	 */
-	BasicError(int newerr, int newerl = 0, std::string newern = "")
-	{
-		err = newerr;
-		erl = newerl;
-		ern = newern;
-	}
-	/**
-	 * Copy constructor
-	 */
-	BasicError(const BasicError &be)
-	{
-		err = be.err;
-		erl = be.erl;
-		ern = be.ern;
-	}
-
-};
 
 std::string sys(const std::string& Source);
 std::string Qdate(int x);

@@ -29,8 +29,6 @@
 //
 // Global values
 //
-long basic::ErrNum = 0;		/**< Error number (ern) */
-long basic::ErrLine = 0;	/**< Error Line (erl) */
 long basic::Status = 0;		/**< Status (status) */
 
 
