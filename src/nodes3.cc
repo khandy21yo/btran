@@ -35,6 +35,7 @@
 //
 extern int GosubFlag;
 extern int OnErrorFlag;
+extern int WhenErrorFlag;
 
 static int IOChPrinted;		/**< \brief Has channel number been output */
 static Node* IOChannel;		/**< \brief IO Channel to use (NULL if default) */
@@ -471,6 +472,7 @@ void Node::OutputCodeOne(
 	Node* LookDown;
 	int KeepGosubFlag;
 	int KeepOnErrorFlag;
+	int KeepWhenErrorFlag;
 	VARTYPE ThisType = VARTYPE_NONE;
 
 	assert(this != 0);
@@ -816,7 +818,9 @@ void Node::OutputCodeOne(
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
+		KeepWhenErrorFlag = WhenErrorFlag;
 		OnErrorFlag = 0;
+		WhenErrorFlag = 0;
 
 		Variables->NewLevel();
 
@@ -939,6 +943,12 @@ void Node::OutputCodeOne(
 				os << Indent() << "OnErrorStack;" << std::endl;
 				OnErrorFlag = 0;
 			}
+			if (WhenErrorFlag != 0)
+			{
+				os << Indent() << "basic::BasicError Be;" <<
+					std::endl;
+				WhenErrorFlag = 0;
+			}
 
 			Block[1]->OutputCode(os);
 		}
@@ -961,6 +971,7 @@ void Node::OutputCodeOne(
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
 		OnErrorFlag = KeepOnErrorFlag;
+		WhenErrorFlag = KeepWhenErrorFlag;
 
 		break;
 
@@ -974,7 +985,9 @@ void Node::OutputCodeOne(
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
+		KeepWhenErrorFlag = WhenErrorFlag;
 		OnErrorFlag = 0;
+		WhenErrorFlag = 0;
 
 		Variables->NewLevel();
 
@@ -1034,7 +1047,13 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
+				os << Indent() << "basic::BasicError Be;" <<
+					std::endl;
 				OnErrorFlag = 0;
+			}
+			if (WhenErrorFlag != 0)
+			{
+				WhenErrorFlag = 0;
 			}
 
 			Block[1]->OutputCode(os);
@@ -1053,6 +1072,7 @@ void Node::OutputCodeOne(
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
 		OnErrorFlag = KeepOnErrorFlag;
+		WhenErrorFlag = KeepWhenErrorFlag;
 
 		break;
 
@@ -1705,7 +1725,9 @@ void Node::OutputCodeOne(
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
+		KeepWhenErrorFlag = WhenErrorFlag;
 		OnErrorFlag = 0;
+		WhenErrorFlag = 0;
 
 		Variables->NewLevel();
 
@@ -1770,7 +1792,13 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
+				os << Indent() << "basic::BasicError Be;" <<
+					std::endl;
 				OnErrorFlag = 0;
+			}
+			if (WhenErrorFlag != 0)
+			{
+				WhenErrorFlag = 0;
 			}
 
 			Block[1]->OutputCode(os);
@@ -1782,6 +1810,7 @@ void Node::OutputCodeOne(
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
 		OnErrorFlag = KeepOnErrorFlag;
+		WhenErrorFlag = KeepWhenErrorFlag;
 
 		break;
 
@@ -1795,7 +1824,9 @@ void Node::OutputCodeOne(
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
+		KeepWhenErrorFlag = WhenErrorFlag;
 		OnErrorFlag = 0;
+		WhenErrorFlag = 0;
 
 		Variables->NewLevel();
 
@@ -1860,7 +1891,13 @@ void Node::OutputCodeOne(
 			if (OnErrorFlag != 0)
 			{
 				os << Indent() << "OnErrorStack;" << std::endl;
+				os << Indent() << "basic::BasicError Be;" <<
+					std::endl;
 				OnErrorFlag = 0;
+			}
+			if (WhenErrorFlag != 0)
+			{
+				WhenErrorFlag = 0;
 			}
 
 			Block[1]->OutputCode(os);
@@ -1872,6 +1909,7 @@ void Node::OutputCodeOne(
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
 		OnErrorFlag = KeepOnErrorFlag;
+		WhenErrorFlag = KeepWhenErrorFlag;
 
 		break;
 

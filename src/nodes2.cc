@@ -33,6 +33,7 @@
 //
 extern int GosubFlag;
 extern int OnErrorFlag;
+extern int WhenErrorFlag;
 
 /**
  * \brief Search block for variable names
@@ -400,6 +401,14 @@ void Node::VariableScanOne(
 		}
 		break;
 
+	case BAS_N_WHENERRORIN:
+		WhenErrorFlag = 1;
+		if (Tree[0] != 0)
+		{
+			Tree[0]->VariableScanOne(InDefineFlag);
+		}
+		break;
+
 	case BAS_N_ONGOSUB:
 		GosubFlag = 1;
 		assert(Tree[0] != 0);
@@ -418,6 +427,7 @@ void Node::VariableScanOne(
 			Tree[0]->VariableScanOne(InDefineFlag);
 		}
 		OnErrorFlag = 1;
+		WhenErrorFlag = 1;
 		break;
 
 	case '+':

@@ -33,6 +33,7 @@
 //
 int GosubFlag = 0;		/**< \brief Gosub flag */
 int OnErrorFlag = 0;		/**< \brief On Eooor flag. */
+int WhenErrorFlag = 0;		/**< \brief When Eooor flag. */
 
 int Node::Level = 0;		/**< \brief Indentation level */
 
