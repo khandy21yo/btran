@@ -7,10 +7,6 @@
 #ifndef _BASICFUN_H_
 #define _BASICFUN_H_
 
-#define GOSUB2		//!< Defined to enable 2nd version of GOSUB/RETURN
-			//! Version 2 uses GCC extensions allowing labels to
-			//! be refered to by void* variables.
-
 #include <stdlib.h>
 #include <math.h>
 #include <setjmp.h>
@@ -103,7 +99,6 @@ public:
 };
 extern basic::BasicError Be;
 
-#ifdef GOSUB2
 #define __C(a, b) a ## b
 #define __U(p, q) __C(p, q)
 /** 
@@ -129,22 +124,6 @@ extern basic::BasicError Be;
  */
 #define BReturn goto *BGoStack[--BGoCount];
 
-#else // GOSUB2
-/** 
- * \brief Initiaize gosub/return stack
- */
-#define BStack(x) jmp_buf BGoStack[x]; int BGoCount = 0;
-/**
- * \brief Execute a GOSUB
- */
-#define BGosub(x) if (setjmp(BGoStack[BGoCount++]) == 0) { goto x; }
-/**
- * \brief execute a RETURN
- */
-#define BReturn longjmp(BGoStack[--BGoCount], 1);
-#endif
-
-#ifdef GOSUB2
 //
 // Now for some nasty on-error-goto code.
 //
@@ -196,59 +175,6 @@ static inline int err()
 {
 	return Be.err;
 }
-
-#else	// GOSUB2
-//
-// Now for some nasty on-error-goto code.
-//
-//	It's not completely compatible with the "On error goto"
-//	code, but it's better than nothing.
-//
-
-/**
- * \brief Die on an eror
- */
-static inline void OnErrorDie()
-{
-	std::cerr << "%Error " << Be.err << " at " <<
-		Be.erl << std::endl;
-	exit(EXIT_FAILURE);
-}
-/**
- * \brief ON ERROR GOTO 0
- */
-#define OnErrorZero if (setjmp(ErrorStack) == 0) { basic::OnErrorDie(); }
-/**
- * \brief Create error return point
- */
-#define OnErrorStack jmp_buf ErrorStack;
-/**
- * \brief Handle ON EROR GOTO statement
- */
-#define OnErrorGoto(x) if (setjmp(ErrorStack) != 0) { goto x; }
-/**
- * \brief RESUME
- */
-#define OnResumeLine(x) goto x;
-/**
- * \brief Generate error
- */
-#define OnErrorHit(x,y) Be.err = x; Be.erl = y; longjmp(ErrorStack);
-/**
- * \brief return error line
- */
-static inline int erl()
-{
-	return Be.erl;
-}
-/**
- * \brief return error number
- */
-static inline int err()
-{
-	return Be.err;
-}
-#endif
 
 /**
  * \brief Rnd (random number between 0 and 1)
