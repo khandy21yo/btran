@@ -3719,7 +3719,8 @@ void Node::OutputRemark(
 		}
 
 		// New Line
-		if (*(Remark.end() - 1) == '\n')
+		if ((*(Remark.end() - 1) == '\n') ||
+			(*(Remark.end() - 1) == '\r'))
 		{
 #ifdef STLREMOVE
 			Remark.remove(Remark.end() - 1);
