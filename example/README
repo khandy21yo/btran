@@ -24,6 +24,10 @@ binary executables.
 
 amazin.bas	101 Basic Computer Games
 		A maze generating program
+amazin2.cc	amazin.bas
+		I took the code generated drom amazin.bas. and hand edited
+		it to make it less spagetti code. The origibal junps around
+		too much to be understandable.
 kmaze.bas	Kevin Handy
 		A maze building program
 		** Top row of maze is wrong

@@ -1,9 +1,10 @@
-all: amazin kmaze snak snoopy revrse works unbac trek superstartrek moon
+all: amazin amazin2 kmaze snak snoopy revrse works unbac trek superstartrek moon
 
 clean:
 	-rm *.o
 	-rm amazin.cc
 	-rm amazin
+	-rm amazin2
 	-rm kmaze.cc
 	-rm kmaze
 	-rm snak.cc
@@ -27,6 +28,9 @@ clean:
 amazin: amazin.bas
 	../src/b1filter amazin.bas  | ../src/btran -i > amazin.cc
 	c++ -I ../lib/ amazin.cc -o amazin
+
+amazin2: amazin2.cc
+	c++ -I ../lib/ amazin2.cc -o amazin2
 
 #
 # A Maze generator

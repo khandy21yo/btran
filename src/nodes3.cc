@@ -113,12 +113,6 @@ void Node::Output(
 	os << "#include <unistd.h>" << std::endl;
 	NeedUnistd = 0;
 
-	if ((NeedStringH != 0) | (NeedBasicFun != 0))
-	{
-		os << "#include <cstring>" << std::endl;
-		NeedStringH = 0;
-	}
-
 	if (NeedMathH != 0)
 	{
 		os << "#include <cmath>" << std::endl;
