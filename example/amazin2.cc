@@ -195,20 +195,20 @@ L_390:;
 	}
 	if (s != v)
 	{
-		goto L_420;
+		if (w[r][s + 1] != 0)
+		{
+			goto L_450;
+		}
 	}
-	if (z == 1)
+	else
 	{
-		goto L_450;
+		if (z == 1)
+		{
+			goto L_450;
+		}
+		q = 1;
 	}
-	q = 1;
-	goto L_430;
-L_420:;
-	if (w[r][s + 1] != 0)
-	{
-		goto L_450;
-	}
-L_430:;
+
 	x = floor(basic::floatrand(0) * 3 + 1);
 	if (x == 1)
 	{
@@ -239,14 +239,14 @@ L_470:;
 	}
 	if (z == 1)
 	{
-		goto L_520;
+		goto L_790;
 	}
 	q = 1;
 	goto L_500;
 L_490:;
 	if (w[r][s + 1] != 0)
 	{
-		goto L_520;
+		goto L_790;
 	}
 L_500:;
 	x = floor(basic::floatrand(0) * 2 + 1);
@@ -258,7 +258,6 @@ L_500:;
 	{
 		goto L_910;
 	}
-L_520:;
 	goto L_790;
 L_530:;
 	if (s - 1 == 0)
@@ -319,20 +318,20 @@ L_590:;
 L_610:;
 	if (s != v)
 	{
-		goto L_630;
+		if (w[r][s + 1] != 0)
+		{
+			goto L_820;
+		}
 	}
-	if (z == 1)
+	else if (z == 1)
 	{
-		goto L_660;
+		goto L_820;
 	}
-	q = 1;
-	goto L_640;
-L_630:;
-	if (w[r][s + 1] != 0)
+	else
 	{
-		goto L_660;
+		q = 1;
 	}
-L_640:;
+
 	x = floor(basic::floatrand(0) * 2 + 1);
 	if (x == 1)
 	{
@@ -342,7 +341,6 @@ L_640:;
 	{
 		goto L_910;
 	}
-L_660:;
 	goto L_820;
 L_670:;
 	if (r == h)
@@ -385,19 +383,16 @@ L_740:;
 	}
 	if (z == 1)
 	{
-		goto L_780;
+		goto L_210;
 	}
 	q = 1;
-	goto L_770;
+	goto L_910;
 L_760:;
 	if (w[r][s + 1] != 0)
 	{
-		goto L_780;
+		goto L_210;
 	}
-L_770:;
 	goto L_910;
-L_780:;
-	goto L_210;
 L_790:;
 	w[r - 1][s] = c;
 	c = c + 1;
@@ -426,13 +421,13 @@ L_860:;
 	c = c + 1;
 	if (v_V1[r][s] == 0)
 	{
-		goto L_880;
+		v_V1[r][s] = 2;
 	}
-	v_V1[r][s] = 3;
-	goto L_890;
-L_880:;
-	v_V1[r][s] = 2;
-L_890:;
+	else
+	{
+		v_V1[r][s] = 3;
+	}
+
 	r = r + 1;
 	if (c == h * v + 1)
 	{
@@ -442,7 +437,21 @@ L_890:;
 L_910:;
 	if (q == 1)
 	{
-		goto L_960;
+		z = 1;
+		if (v_V1[r][s] == 0)
+		{
+			v_V1[r][s] = 1;
+			q = 0;
+			r = 1;
+			s = 1;
+			goto L_250;
+		}
+		else
+		{
+			v_V1[r][s] = 3;
+			q = 0;
+			goto L_210;
+		}
 	}
 	w[r][s + 1] = c;
 	c = c + 1;
@@ -460,22 +469,6 @@ L_910:;
 		goto L_1010;
 	}
 	goto L_260;
-L_960:;
-	z = 1;
-	if (v_V1[r][s] == 0)
-	{
-		v_V1[r][s] = 1;
-		q = 0;
-		r = 1;
-		s = 1;
-		goto L_250;
-	}
-	else
-	{
-		v_V1[r][s] = 3;
-		q = 0;
-		goto L_210;
-	}
 L_1010:;
 	for (j = 1; j <= v; j++)
 	{

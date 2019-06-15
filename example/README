@@ -27,7 +27,7 @@ amazin.bas	101 Basic Computer Games
 amazin2.cc	amazin.bas
 		I took the code generated drom amazin.bas. and hand edited
 		it to make it less spagetti code. The origibal junps around
-		too much to be understandable.
+		too much to be understandable. This is a work in progress.
 kmaze.bas	Kevin Handy
 		A maze building program
 		** Top row of maze is wrong
