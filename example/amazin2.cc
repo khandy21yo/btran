@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 	int r = 0;
 	int s = 0;
 	int v = 0;
-	int x = 0;
+	int x;
 	int z = 0;
 
 	int w[26][26] = { 0 };
@@ -123,28 +123,19 @@ L_260:;
 	{
 		goto L_390;
 	}
-	if (r == h)
+	if ((r != h) && (w[r + 1][s] == 0))
 	{
-		goto L_330;
+		switch ((int)(basic::floatrand(0) * 3 + 1))
+		{
+		case 1:
+			goto L_790;
+		case 2:
+			goto L_820;
+		case 3:
+			goto L_860;
+		}
 	}
-	if (w[r + 1][s] != 0)
-	{
-		goto L_330;
-	}
-	x = floor(basic::floatrand(0) * 3 + 1);
-	if (x == 1)
-	{
-		goto L_790;
-	}
-	if (x == 2)
-	{
-		goto L_820;
-	}
-	if (x == 3)
-	{
-		goto L_860;
-	}
-L_330:;
+
 	if (s != v)
 	{
 		if (w[r][s + 1] != 0)
@@ -161,27 +152,21 @@ L_330:;
 		q = 1;
 	}
 
-	x = floor(basic::floatrand(0) * 3 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 3 + 1))
 	{
+	case 1:
 		goto L_790;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_820;
-	}
-	if (x == 3)
-	{
+	case 3:
 		goto L_910;
 	}
 L_370:;
-	x = floor(basic::floatrand(0) * 2 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 2 + 1))
 	{
+	case 1:
 		goto L_790;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_820;
 	}
 L_390:;
@@ -209,27 +194,21 @@ L_390:;
 		q = 1;
 	}
 
-	x = floor(basic::floatrand(0) * 3 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 3 + 1))
 	{
+	case 1:
 		goto L_790;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_860;
-	}
-	if (x == 3)
-	{
+	case 3:
 		goto L_910;
 	}
 L_450:;
-	x = floor(basic::floatrand(0) * 2 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 2 + 1))
 	{
+	case 1:
 		goto L_790;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_860;
 	}
 L_470:;
@@ -249,16 +228,13 @@ L_490:;
 		goto L_790;
 	}
 L_500:;
-	x = floor(basic::floatrand(0) * 2 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 2 + 1))
 	{
+	case 1:
 		goto L_790;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_910;
 	}
-	goto L_790;
 L_530:;
 	if (s - 1 == 0)
 	{
@@ -292,27 +268,21 @@ L_560:;
 		goto L_590;
 	}
 L_570:;
-	x = floor(basic::floatrand(0) * 3 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 3 + 1))
 	{
+	case 1:
 		goto L_820;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_860;
-	}
-	if (x == 3)
-	{
+	case 3:
 		goto L_910;
 	}
 L_590:;
-	x = floor(basic::floatrand(0) * 2 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 2 + 1))
 	{
+	case 1:
 		goto L_820;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_860;
 	}
 L_610:;
@@ -332,16 +302,13 @@ L_610:;
 		q = 1;
 	}
 
-	x = floor(basic::floatrand(0) * 2 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 2 + 1))
 	{
+	case 1:
 		goto L_820;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_910;
 	}
-	goto L_820;
 L_670:;
 	if (r == h)
 	{
@@ -366,16 +333,13 @@ L_700:;
 	{
 		goto L_860;
 	}
-	x = floor(basic::floatrand(0) * 2 + 1);
-	if (x == 1)
+	switch((int)(basic::floatrand(0) * 2 + 1))
 	{
+	case 1:
 		goto L_860;
-	}
-	if (x == 2)
-	{
+	case 2:
 		goto L_910;
 	}
-	goto L_860;
 L_740:;
 	if (s != v)
 	{
