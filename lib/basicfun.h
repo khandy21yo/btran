@@ -181,13 +181,14 @@ static inline int err()
  *
  *	This is a real nasty hack, and may not produce as
  *	wide a range of random numbers as basic desires.
+ *	This version has a small chance of returning 1.
  *	
  * \bug fmax parameter is ignored because of strange
  *	usage in many basic programs which assume the value doesn't
  *	matter
  */
 inline double floatrand(
-	double fmax = 1.0	/**< Maximum value to return */
+	double fmax = 1.0	/**< Maximum value to return  (ignored)*/
 )
 {
 	return ((double) rand()) / ((double) RAND_MAX); // * fmax;

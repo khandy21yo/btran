@@ -67,7 +67,7 @@ L_120:;
 	std::cout << std::endl;
 	q = 0;
 	z = 0;
-	x = floor(basic::floatrand(0) * h + 1);
+	x = (rand() % h + 1);
 	for (i = 1; i <= h; i++)
 	{
 		if (i == x)
@@ -125,13 +125,13 @@ L_260:;
 	}
 	if ((r != h) && (w[r + 1][s] == 0))
 	{
-		switch ((int)(basic::floatrand(0) * 3 + 1))
+		switch (rand() % 3)
 		{
-		case 1:
+		case 0:
 			goto L_790;
-		case 2:
+		case 1:
 			goto L_820;
-		case 3:
+		case 2:
 			goto L_860;
 		}
 	}
@@ -152,21 +152,21 @@ L_260:;
 		q = 1;
 	}
 
-	switch((int)(basic::floatrand(0) * 3 + 1))
+	switch(rand() % 3)
 	{
-	case 1:
+	case 0:
 		goto L_790;
-	case 2:
+	case 1:
 		goto L_820;
-	case 3:
+	case 2:
 		goto L_910;
 	}
 L_370:;
-	switch((int)(basic::floatrand(0) * 2 + 1))
+	switch(rand() % 2)
 	{
-	case 1:
+	case 0:
 		goto L_790;
-	case 2:
+	case 1:
 		goto L_820;
 	}
 L_390:;
@@ -194,21 +194,21 @@ L_390:;
 		q = 1;
 	}
 
-	switch((int)(basic::floatrand(0) * 3 + 1))
+	switch(rand() % 3)
 	{
-	case 1:
+	case 0:
 		goto L_790;
-	case 2:
+	case 1:
 		goto L_860;
-	case 3:
+	case 2:
 		goto L_910;
 	}
 L_450:;
-	switch((int)(basic::floatrand(0) * 2 + 1))
+	switch(rand() % 2)
 	{
-	case 1:
+	case 0:
 		goto L_790;
-	case 2:
+	case 1:
 		goto L_860;
 	}
 L_470:;
@@ -228,11 +228,11 @@ L_490:;
 		goto L_790;
 	}
 L_500:;
-	switch((int)(basic::floatrand(0) * 2 + 1))
+	switch(rand() % 2)
 	{
-	case 1:
+	case 0:
 		goto L_790;
-	case 2:
+	case 1:
 		goto L_910;
 	}
 L_530:;
@@ -268,21 +268,21 @@ L_560:;
 		goto L_590;
 	}
 L_570:;
-	switch((int)(basic::floatrand(0) * 3 + 1))
+	switch(rand() % 3)
 	{
-	case 1:
+	case 0:
 		goto L_820;
-	case 2:
+	case 1:
 		goto L_860;
-	case 3:
+	case 2:
 		goto L_910;
 	}
 L_590:;
-	switch((int)(basic::floatrand(0) * 2 + 1))
+	switch(rand() % 2)
 	{
-	case 1:
+	case 0:
 		goto L_820;
-	case 2:
+	case 1:
 		goto L_860;
 	}
 L_610:;
@@ -302,11 +302,11 @@ L_610:;
 		q = 1;
 	}
 
-	switch((int)(basic::floatrand(0) * 2 + 1))
+	switch(rand() % 2)
 	{
-	case 1:
+	case 0:
 		goto L_820;
-	case 2:
+	case 1:
 		goto L_910;
 	}
 L_670:;
@@ -333,11 +333,11 @@ L_700:;
 	{
 		goto L_860;
 	}
-	switch((int)(basic::floatrand(0) * 2 + 1))
+	switch(rand() % 2)
 	{
-	case 1:
+	case 0:
 		goto L_860;
-	case 2:
+	case 1:
 		goto L_910;
 	}
 L_740:;
