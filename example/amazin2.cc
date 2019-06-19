@@ -6,8 +6,6 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <cstring>
-#include <unistd.h>
 #include <ctime>
 #include "basicfun.h"
 
@@ -38,14 +36,6 @@ int main(int argc, char **argv)
 		std::endl;
 	std::cout << std::endl;
 	srand(time(0));
-	for (i = 0; i <= 25; i++)
-	{
-		for (j = 0; j <= 25; j++)
-		{
-			w[i][j] = 0;
-			v_V1[i][j] = 0;
-		}
-	}
 L_120:;
 	std::cout << "YOUR WIDTH? ";
 	std::cin >> h;
