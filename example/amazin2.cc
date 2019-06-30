@@ -13,7 +13,7 @@
 
 int main(int argc, char **argv)
 {
-	int c = 0;
+	int c = 0;	// Cells filled in
 	int h = 0;
 	int i = 0;
 	int j = 0;
@@ -24,8 +24,9 @@ int main(int argc, char **argv)
 	int x;
 	int z = 0;
 
-	int w[26][26] = { 0 };
-	int v_V1[26][26] = { 0 };
+	int w[26][26] = { 0 };		// Cells used
+	int v_V1[26][26] = { 0 };	// Walls (0=none, 1=bottom,
+       					//  2=right, 4=both)
 
 	// ARKABLE PROGRAM BY JACK HAUBER, LOOMIS SCHOOL, WINDS OR , CT
 	// ODELED FOR B AS IC-PLUS BY DAVE AHL, DIGITAL
@@ -120,7 +121,8 @@ L_260:;
 		case 0:
 			goto L_790;
 		case 1:
-			goto L_820;
+			w[r][s - 1] = c;
+			goto L_830;
 		case 2:
 			goto L_860;
 		}
@@ -147,7 +149,8 @@ L_260:;
 	case 0:
 		goto L_790;
 	case 1:
-		goto L_820;
+		w[r][s - 1] = c;
+		goto L_830;
 	case 2:
 		goto L_910;
 	}
@@ -157,7 +160,8 @@ L_370:;
 	case 0:
 		goto L_790;
 	case 1:
-		goto L_820;
+		w[r][s - 1] = c;
+		goto L_830;
 	}
 L_390:;
 	if (r == h)
@@ -204,7 +208,11 @@ L_450:;
 L_470:;
 	if (s != v)
 	{
-		goto L_490;
+		if (w[r][s + 1] != 0)
+		{
+			goto L_790;
+		}
+		goto L_500;
 	}
 	if (z == 1)
 	{
@@ -212,11 +220,6 @@ L_470:;
 	}
 	q = 1;
 	goto L_500;
-L_490:;
-	if (w[r][s + 1] != 0)
-	{
-		goto L_790;
-	}
 L_500:;
 	switch(rand() % 2)
 	{
@@ -244,24 +247,23 @@ L_530:;
 	}
 	if (s != v)
 	{
-		goto L_560;
+		if (w[r][s + 1] != 0)
+		{
+			goto L_590;
+		}
+		goto L_570;
 	}
 	if (z == 1)
 	{
 		goto L_590;
 	}
 	q = 1;
-	goto L_570;
-L_560:;
-	if (w[r][s + 1] != 0)
-	{
-		goto L_590;
-	}
 L_570:;
 	switch(rand() % 3)
 	{
 	case 0:
-		goto L_820;
+		w[r][s - 1] = c;
+		goto L_830;
 	case 1:
 		goto L_860;
 	case 2:
@@ -271,7 +273,8 @@ L_590:;
 	switch(rand() % 2)
 	{
 	case 0:
-		goto L_820;
+		w[r][s - 1] = c;
+		goto L_830;
 	case 1:
 		goto L_860;
 	}
@@ -280,12 +283,14 @@ L_610:;
 	{
 		if (w[r][s + 1] != 0)
 		{
-			goto L_820;
+			w[r][s - 1] = c;
+			goto L_830;
 		}
 	}
 	else if (z == 1)
 	{
-		goto L_820;
+		w[r][s - 1] = c;
+		goto L_830;
 	}
 	else
 	{
@@ -295,7 +300,8 @@ L_610:;
 	switch(rand() % 2)
 	{
 	case 0:
-		goto L_820;
+		w[r][s - 1] = c;
+		goto L_830;
 	case 1:
 		goto L_910;
 	}
@@ -310,7 +316,17 @@ L_670:;
 	}
 	if (s != v)
 	{
-		goto L_700;
+		if (w[r][s + 1] != 0)
+		{
+			goto L_860;
+		}
+		switch(rand() % 2)
+		{
+		case 0:
+			goto L_860;
+		case 1:
+			goto L_910;
+		}
 	}
 	if (z == 1)
 	{
@@ -318,34 +334,20 @@ L_670:;
 	}
 	q = 1;
 	goto L_830;
-L_700:;
-	if (w[r][s + 1] != 0)
-	{
-		goto L_860;
-	}
-	switch(rand() % 2)
-	{
-	case 0:
-		goto L_860;
-	case 1:
-		goto L_910;
-	}
 L_740:;
 	if (s != v)
 	{
-		goto L_760;
+		if (w[r][s + 1] != 0)
+		{
+			goto L_210;
+		}
+		goto L_910;
 	}
 	if (z == 1)
 	{
 		goto L_210;
 	}
 	q = 1;
-	goto L_910;
-L_760:;
-	if (w[r][s + 1] != 0)
-	{
-		goto L_210;
-	}
 	goto L_910;
 L_790:;
 	w[r - 1][s] = c;
@@ -358,8 +360,6 @@ L_790:;
 	}
 	q = 0;
 	goto L_260;
-L_820:;
-	w[r][s - 1] = c;
 L_830:;
 	c = c + 1;
 	v_V1[r][s - 1] = 1;
@@ -429,7 +429,7 @@ L_1010:;
 		std::cout << "I";
 		for (i = 1; i <= h; i++)
 		{
-			if (v_V1[i][j] < 2)
+			if ((v_V1[i][j] & 2) == 0)
 			{
 				std::cout << "  I";
 			}
@@ -441,11 +441,7 @@ L_1010:;
 		std::cout << std::endl;
 		for (i = 1; i <= h; i++)
 		{
-			if (v_V1[i][j] == 0)
-			{
-				std::cout << ":--";
-			}
-			else if (v_V1[i][j] == 2)
+			if ((v_V1[i][j] & 1) == 0)
 			{
 				std::cout << ":--";
 			}
