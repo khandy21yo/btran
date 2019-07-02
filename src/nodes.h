@@ -63,6 +63,47 @@ public:
 		delete Tree[3]; delete Tree[4];
 		delete Block[0]; delete Block[1]; delete Block[2]; }
 
+	inline bool operator==(
+		const Node& rhs)
+	{
+		int loop;		// Loop variable
+		bool testflag = true;	// Assume same until proveb false
+
+		if ((Type != rhs.Type) ||
+			(TextValue != rhs.TextValue))
+		{
+			// Check easy stuff first
+			return false;
+		}
+		for (loop = 0; loop < 5; loop++)
+		{
+			if ((Tree[loop] != 0) &&
+				(rhs.Tree[loop] != 0))
+			{
+				// Both sies have values
+				testflag = false;
+			}
+			else if ((Tree[loop] != 0) ||
+				(rhs.Tree[loop] != 0))
+			{
+				// One side is false
+				testflag = false;
+			}
+			if (testflag == false)
+			{
+				// Early exit
+				return testflag;
+			}
+
+		}
+
+		//
+		// We don't care if the other fields vary for this
+		// operator.
+		//
+		return testflag;
+	}
+
 	/**
 	 * \brief Get next downlink
 	 *

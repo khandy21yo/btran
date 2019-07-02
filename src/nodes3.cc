@@ -500,6 +500,51 @@ void Node::OutputCodeOne(
 			else
 			{
 				//
+				// Is this an increment command?
+				//
+				if (Tree[1]->Type == '+')
+				{
+					if (Tree[0]->Expression() == Tree[1]->Tree[0]->Expression())
+					{
+						if (Tree[1]->Tree[1]->Expression() == "1")
+						{
+							os << Tree[0]->Expression() << "++;" <<
+								std::endl;
+						}
+						else
+						{
+							os << Tree[0]->Expression() << " += " <<
+								Tree[1]->Tree[1]->Expression() << ";" <<
+								std::endl;
+						}
+						break;
+					}
+				}
+
+				//
+				// Is this an decrement command?
+				//
+				if (Tree[1]->Type == '-')
+				{
+					if (Tree[0]->Expression() == Tree[1]->Tree[0]->Expression())
+					{
+						if (Tree[1]->Tree[1]->Expression() == "1")
+						{
+							os << Tree[0]->Expression() << "--;" <<
+								std::endl;
+						}
+						else
+						{
+							os << Tree[0]->Expression() << " -= " <<
+								Tree[1]->Tree[1]->Expression() << ";" <<
+								std::endl;
+						}
+						break;
+					}
+				}
+
+
+				//
 				// A simple assignment statement
 				//
 				os << Tree[0]->Expression() <<
