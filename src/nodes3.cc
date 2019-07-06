@@ -532,14 +532,22 @@ void Node::OutputCodeOne(
 						{
 							os << Tree[0]->Expression() << "--;" <<
 								std::endl;
+							break;
 						}
-						else
-						{
-							os << Tree[0]->Expression() << " -= " <<
-								Tree[1]->Tree[1]->Expression() << ";" <<
-								std::endl;
-						}
-						break;
+// This part doesn't workright because
+//	x = = x - y + z
+//	is bit equal to
+//	x -= y + z
+//	it would beed ti be converted to
+//	x -= y - z
+//	also,it is paesed into
+//	x = (x - y) + z
+//						else
+//						{
+//							os << Tree[0]->Expression() << " -= " <<
+//								Tree[1]->Tree[1]->Expression() << ";" <<
+//								std::endl;
+//						}
 					}
 				}
 
