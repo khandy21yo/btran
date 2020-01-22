@@ -399,7 +399,7 @@ static Node *ScanForLoops
 			// statements. I'll assume they are all at the
 			// top of the stack.
 			//
-			if (isdigit(ThisTree->GetText()[0]))
+			if (isdigit(ThisTree->TextValue[0]))
 			{
 				while ((ThisLevel > 0) &&
 					((IndentType[ThisLevel-1] == BAS_S_IF) ||

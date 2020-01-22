@@ -114,10 +114,6 @@ public:
 		) 
 		{ return Block[Ptr]; }
 	/**
-	 * \brief Get text value associated with this node
-	 */
-	std::string GetText() { return TextValue; }
-	/**
 	 * \brief Get next tree node (next part of expression)
 	 */
 	Node* GetTree(

@@ -435,7 +435,7 @@ void VariableList::Define(
 	VARCLASS ThisClass = VARCLASS_NONE;
 	int ParCount = 0;
 	int PreDefined = false;
-	std::string TextName = ThisNode->GetText();
+	std::string TextName = ThisNode->TextValue;
 
 	UpperCase(TextName);
 
