@@ -16,6 +16,8 @@
 #include <iostream>
 #include <string>
 
+#include "vartype.h"
+
 //
 // Definitions
 //
@@ -161,15 +163,19 @@ public:
 	void VariableScan(int AFlag);
 	void VariableScanOne(int AFlag);
 	VARTYPE ScanType();
+
+	VARTYPE GetNodeVarType();
 	int IsNumber();
 	int IsString();
+	int IsLogical();
+	int IsSimpleInteger();
+	int IsReallyString(void);
+
 	void Output(std::ostream& os);
 	void OutputCode(std::ostream& os);
 	void OutputCodeOne(std::ostream& os);
 	std::string Expression();
 
-	int IsLogical();
-	int IsSimpleInteger();
 	int CountParam();
 	/**
 	 * \brief Strip off leading zero's from text value
@@ -225,9 +231,7 @@ private:
 	std::string OutputBstringText();
 	std::string OutputInteger();
 	void OutputField(std::ostream& os);
-	int IsReallyString(void);
 	void OutputGetPutOptions(Node* Channel, std::ostream& os);
-	VARTYPE GetNodeVarType();
 	std::string OutputForcedType(VARTYPE VarType);
 	void OutputPrototypes(std::ostream& os);
 	std::string OutputPassmech(int FunctionFlag);

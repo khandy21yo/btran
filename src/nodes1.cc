@@ -319,10 +319,13 @@ void Node::PrintTree(
 }
 
 /**
- * \brief Calculate the varible type for a given node.
+ * \brief Determine the varible type for a given expression.
  *
  *	Determines the variable type for a given node, and returns
  *	the specified type.
+ *
+ *	Expects to be called with an expression node,
+ *	not a statement node.
  *
  * \return data type for nodes expression.
  *

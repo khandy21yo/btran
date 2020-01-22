@@ -804,9 +804,11 @@ void Node::ScanVarList(
 
 
 /**
- * \brief Search block for type definion
+ * \brief Convert a keyword into a VARTYPE.
  *
- *	Scans a block of code for the variable type.
+ *	Examines a node for the variable type.
+ *	
+ *	This is used to convert a declaration lex code to a VARTYPE value.
  */
 VARTYPE Node::ScanType(void)
 {
