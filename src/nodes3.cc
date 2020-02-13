@@ -3060,6 +3060,7 @@ int Node::OutputPrintData(
 
 	default:
 
+
 		//
 		// Print
 		//
@@ -3073,6 +3074,7 @@ int Node::OutputPrintData(
 			os << ";" << std::endl;
 			IOChPrinted = 0;
 		}
+
 		OutputIPChannel(os, InputFlag);
 
 		//
@@ -3257,6 +3259,21 @@ int Node::OutputInputData(
 
 
 	default:
+
+		//
+		// Input: Do we need a prompt displayed?
+		//
+		if (IOChannel == 0)
+		{
+			if (IOChPrinted != 0)
+			{
+				os << ";" << std::endl;
+				IOChPrinted = 0;
+			}
+			OutputIPChannel(os, 0);
+			os << " << \"? \";" << std::endl;
+			IOChPrinted = 0;
+		}
 
 		//
 		// If we want to allow the user to enter a blank value
