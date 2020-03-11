@@ -10,7 +10,7 @@
 #include <vector>
 #include <unistd.h>
 
-#include "lib$routines.h"
+#include "libroutines.h"
 
 /** \brief Delete a file
  *

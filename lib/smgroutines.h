@@ -12,7 +12,7 @@
 #define _smg_routines_h_
 
 #include <string>
-#include <smgdef.h>
+#include "smgdef.h"
 
 //! \brief Special structure used by this implementation
 //!

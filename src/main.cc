@@ -36,7 +36,7 @@
 //
 // System Include Files
 //
-#include <config.h>
+#include "config.h"
 #include <iostream>
 #include <cstdlib>
 #include <string>

@@ -4,10 +4,10 @@
 #include <string>
 #include <panel.h>
 
-#include <smgdef.h>
-#include <smgmsg.h>
+#include "smgdef.h"
+#include "smgmsg.h"
 
-#include "smg$routines.h"
+#include "smgroutines.h"
 
 int smg$begin_display_update(
 	struct ncurses_struct **display_id)
