@@ -11,6 +11,15 @@ add_library(btran STATIC
 	virtual.h basicchannel.cc
 	)
 
+target_include_directories(btran
+          INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+          )
+
 add_library(btranvms STATIC 
 	smg.cc lib.cc smgdef.h
 	)
+
+target_include_directories(btranvms
+          INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+          )
+
