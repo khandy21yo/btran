@@ -4,6 +4,8 @@ project(btran VERSION 1.0
 	DESCRIPTION "VAX Basic to C++ translatoe"
 	LANGUAGES CXX C)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(BISON)
 find_package(FLEX)
@@ -23,4 +25,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	${FLEX_MyScanner_OUTPUTS}
  )
  add_executable(b1filter b1filter.cc)
+
+ install(TARGETS btran DESTINATION bin)
 
