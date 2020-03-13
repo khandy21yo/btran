@@ -9,10 +9,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(BISON)
 find_package(FLEX)
-BISON_TARGET(MyParser parse.yy ${CMAKE_CURRENT_BINARY_DIR}/parse.cc)
-FLEX_TARGET(MyScanner lex.ll  ${CMAKE_CURRENT_BINARY_DIR}/lex.cc)
+BISON_TARGET(MyParser parse.yy ${CMAKE_CURRENT_BINARY_DIR}/parse.cc COMPILE_FLAGS "-d -v")
+FLEX_TARGET(MyScanner lex.ll  ${CMAKE_CURRENT_BINARY_DIR}/lex.cc COMPILE_FLAGS "-i -s -v")
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
- include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
