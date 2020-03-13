@@ -28,3 +28,16 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
  install(TARGETS btran DESTINATION bin)
 
+set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
+set(CPACK_SOURCE_IGNORE_FILES
+    /.git
+    /dist
+    /.deps
+    /.*build.*
+    /autom4te.cache
+    /\\\\.DS_Store
+)
+SET(CPACK_GENERATOR "DEB")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "KH")
+include(CPack)
+

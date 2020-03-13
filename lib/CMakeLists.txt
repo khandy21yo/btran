@@ -33,3 +33,17 @@ target_include_directories(btranvms
 install(TARGETS btranvms DESTINATION lib)
 install(FILES smgdef.h libroutines.h smgroutines.h
 	DESTINATION include)
+
+set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
+set(CPACK_SOURCE_IGNORE_FILES
+    /.git
+    /dist
+    /.deps
+    /.*build.*
+    /autom4te.cache
+    /\\\\.DS_Store
+)
+SET(CPACK_GENERATOR "DEB")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "KH")
+include(CPack)
+
