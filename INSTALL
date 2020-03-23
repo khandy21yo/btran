@@ -1,3 +1,45 @@
+How to build
+
+	You may build in-tree or out of tree
+
+	In tree
+
+		cd to top level directory
+
+		cmake .
+		make
+
+	Out of tree
+
+		mkdir build
+		cd build
+		cmake /<kit directory>/btran
+		make
+
+	To install (as priviledged user) to /usr/local/...
+
+		make install
+
+	To build source package (out of tree preferably)
+
+		make package_source
+
+	To build Debian package (out of tree preferably)
+
+		cpack
+
+	To build examples (in tree, using in-tree bin/lib)
+
+		Build programs/libs in tree
+		cd examples
+		make
+
+
+
+------
+
+Old automake/autoconf method. May not work. Never quite did the right things.
+
 Tools you will need to build
 
 	automake
