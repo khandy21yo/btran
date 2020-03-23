@@ -17,11 +17,12 @@
 #include <cctype>
 #include <cassert>
 #include <string>
+#include <cstring>
 #include <iostream>
 
 #include <string>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
+//#include <boost/regex.hpp>
+//#include <boost/algorithm/string.hpp>
 
 #ifndef MAX_INPUT
 /**
