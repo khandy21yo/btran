@@ -16,16 +16,19 @@ ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
- add_executable(btran
+ add_executable(btran-bin
 	main.cc nodes1.cc nodes2.cc nodes3.cc
 	program.cc variable.cc varlist.cc yywrap.c basic.h config.h
 	nodes.h variable.h varlist.h
 	${BISON_MyParser_OUTPUTS}
 	${FLEX_MyScanner_OUTPUTS}
  )
+set_target_properties(btran-bin
+	PROPERTIES OUTPUT_NAME btran)
+
  add_executable(b1filter b1filter.cc)
 
- install(TARGETS btran DESTINATION bin)
+ install(TARGETS btran-bin DESTINATION bin)
 
 set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
 set(CPACK_SOURCE_IGNORE_FILES
