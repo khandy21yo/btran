@@ -7,9 +7,10 @@
 #ifndef _BASICFUN_H_
 #define _BASICFUN_H_
 
+#include <limits>
 #include <stdlib.h>
 #include <math.h>
-#include <setjmp.h>
+//#include <setjmp.h>
 #include <time.h>
 
 #include "bstring.h"

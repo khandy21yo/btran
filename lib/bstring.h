@@ -22,7 +22,8 @@
 
 #include <string>
 //#include <boost/regex.hpp>
-//#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 #ifndef MAX_INPUT
 /**
