@@ -18,7 +18,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
  add_executable(btran-bin
 	main.cc nodes1.cc nodes2.cc nodes3.cc
-	program.cc variable.cc varlist.cc yywrap.c basic.h config.h
+	program.cc variable.cc varlist.cc yywrap.c basic.h
 	nodes.h variable.h varlist.h
 	${BISON_MyParser_OUTPUTS}
 	${FLEX_MyScanner_OUTPUTS}

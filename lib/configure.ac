@@ -17,7 +17,7 @@ AM_PROG_LIBTOOL
 dnl Checks for libraries.
 
 dnl Checks for header files.
-AM_CONFIG_HEADER(config.h)
+# AM_CONFIG_HEADER(config.h)
 AC_HEADER_STDC
 
 dnl Checks for typedefs, structures, and compiler characteristics.

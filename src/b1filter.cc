@@ -15,7 +15,6 @@ you may have to do some hand editing afterwards (yuck)
 // \author 03/13/2000 - Kevin Handy
 //
 
-#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
