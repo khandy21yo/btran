@@ -103,6 +103,7 @@ void Node::Output(
 	if (NeedIostreamH != 0)
 	{
 		os << "#include <iostream>" << std::endl;
+		os << "#include <limits>" << std::endl;
 		NeedIostreamH = 0;
 	}
 

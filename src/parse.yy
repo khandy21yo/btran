@@ -688,7 +688,7 @@ dimby:		{ $$ = NULL; }
 ;
 
 dimcomma:	{ $$ = NULL; }
-		| dimcomma ',' dimcomma { $$ = $2->Link($1, $3); }
+		| dimcomma ',' dimcomma { delete $2; $$ = $1->DownLink($3); }
 		| BAS_V_INTEGER { $$ = $1; }
 		| BAS_V_INT { $$ = $1; }
 		| BAS_V_NAME { $$ = $1; }
