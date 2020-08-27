@@ -2639,6 +2639,54 @@ std::string Node::Expression(void)
 		result = Tree[0]->Expression() + " ^ " + Tree[1]->Expression();
 		break;
 
+	case BAS_S_STRING:
+		result += OutputVarType(VARTYPE_DYNSTR);
+		break;
+
+	case BAS_S_INTEGER:
+		result += OutputVarType(VARTYPE_INTEGER);
+		break;
+
+	case BAS_S_WORD:
+		result += OutputVarType(VARTYPE_WORD);
+		break;
+
+	case BAS_S_LONG:
+		result += OutputVarType(VARTYPE_LONG);
+		break;
+
+	case BAS_S_REAL:
+		result += OutputVarType(VARTYPE_REAL);
+		break;
+
+	case BAS_S_DOUBLE:
+		result += OutputVarType(VARTYPE_DOUBLE);
+		break;
+
+	case BAS_S_BYTE:
+		result += OutputVarType(VARTYPE_BYTE);
+		break;
+
+	case BAS_S_RFA:
+		result += OutputVarType(VARTYPE_RFA);
+		break;
+
+	case BAS_S_DECIMAL:
+		result += OutputVarType(VARTYPE_DECIMAL);
+		break;
+
+	case BAS_S_SINGLE:
+		result += OutputVarType(VARTYPE_SINGLE);
+		break;
+
+	case BAS_S_GFLOAT:
+		result += OutputVarType(VARTYPE_GFLOAT);
+		break;
+
+	case BAS_S_HFLOAT:
+		result += OutputVarType(VARTYPE_HFLOAT);
+		break;
+
 	default:
 		{
 			// FIXME: There must be a better way
