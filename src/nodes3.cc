@@ -3532,7 +3532,14 @@ void Node::OutputDataValue(
 		{
 		case BAS_V_TEXTSTRING:
 
-			os << TextValue;
+			if (TextValue[0] == '"')
+			{
+				os << TextValue;
+			}
+			else
+			{
+				os << '"' << TextValue << '"';
+			}
 			DataWidth += TextValue.length();
 			break;
 

@@ -253,8 +253,8 @@
 
 1860	DATA "WB4BWK", 34, 19.7833, 82, 22.6333, 30, 0, 2400
 
-1880	DATA "Jan", "Feb", "Mar", "Apr", "May", "Jun" 
-1900	DATA "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+1880	DATA Jan, Feb, Mar, Apr, May, Jun 
+1900	DATA Jul, Aug, Sep, Oct, Nov, Dec
 1920	DATA    31,    28,    31,    30,    31,    30
 1940	DATA    31,    31,    30,    31,    30,    31
 

@@ -177,6 +177,10 @@ static inline void CountLine()
 "%ELSE"		return SetReturn(BAS_P_ELSE);
 "%END"		return SetReturn(BAS_P_END);
 
+	/*
+	 * Note: this assumes that the word DATA alwats starts a DATA
+	 * Statement.
+	 */
 "DATA"		{BEGIN(indata); return SetReturn(BAS_S_DATA); }
 
 "%CROSS" |
@@ -220,10 +224,10 @@ static inline void CountLine()
 	/*
 	 * Code to handle data statemenys
 	 */
-<indata>[^ \n\r\t !,\"\']+		{std::cerr << "indata " << yytext << std::endl; return SetReturn(BAS_V_TEXTSTRING); }
-<indata>"\""([^\"]*)"\""	{std::cerr << "indata " << yytext << std::endl; return SetStringReturn(BAS_V_TEXTSTRING); }
-<indata>[ \t]+			{std::cerr << "indata " << yytext << std::endl; ; }
-<indata>"," 		{std::cerr << "indata " << yytext << std::endl; return SetReturn(yytext[0]); }
+<indata>[^ \n\r\t_!,\"\']+[^\n\r\t_!,\"\']*		{return SetReturn(BAS_V_TEXTSTRING); }
+<indata>"\""([^\"]*)"\""	{ return SetStringReturn(BAS_V_TEXTSTRING); }
+<indata>[ \t]+			{ }
+<indata>"," 		{ return SetReturn(yytext[0]); }
 
 	/*
 	 * End of file (try to back up one include level)

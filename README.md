@@ -83,9 +83,7 @@ Doing otherwise creates very ugly "not C++" code.
 	- These functions are translated using C++ 'lambda's, instead of the
 	  g++ extensions, but requires cxx-11 capabilities.
 - DATA sstatements
-	- Bare Reserved words in basic cause parsing problems. Putting quotes
-	  around the text works to fix this, and is compatable with basic.
-	  Data statements are not easily handled in Flex/Bison grammers.
+	DATA statement as the first line in a program cause problems for some reason.
 - %xxx preprocessor)
 	- Code exists but only thinly tested. %IF can cause problems if blocks
 	  start or end inside of it (IF, FOR, etc.).
