@@ -1,3 +1,12 @@
+//!\file
+//!\brief Lexical analysis
+//!
+//! These classes are used to vreak source code into individual tokens.
+//! The tokens returned can vary depending on the state of the parser.
+//! For eample, DATA statements will lex tokens dirrerently than an
+//! expression would, or an OPTION statement would.
+//!
+//! Tokens must be able to be eamined multiple values 
 
 //
 // Read an entire file

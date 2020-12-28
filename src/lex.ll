@@ -11,6 +11,7 @@
  */
 %x incl
 %x xremark
+%x indata
 
 %{
 #include <stdio.h>
@@ -91,9 +92,8 @@ static inline void CountLine()
 	/*
 	 * White-space characters
 	 */
-[\r\0]			;
-[\n\f]			{ CountLine(); return('\n'); }
-"&"[\n\f]		CountLine();
+<*>[\n\f]			{ BEGIN(INITIAL); CountLine(); return('\n'); }
+<*>"&"[\n\f]		CountLine();
 [ \t]+			;
 	/*
 	 * Qutted Strings
@@ -177,6 +177,8 @@ static inline void CountLine()
 "%ELSE"		return SetReturn(BAS_P_ELSE);
 "%END"		return SetReturn(BAS_P_END);
 
+"DATA"		{BEGIN(indata); return SetReturn(BAS_S_DATA); }
+
 "%CROSS" |
 "%NOCROSS" |
 "%LIST" |
@@ -214,6 +216,14 @@ static inline void CountLine()
 				  if (nt != 0) return SetReturn(nt);
 				  else return SetReturn(BAS_V_NAME); }
 %[A-Z][A-Z0-9._$]*[%]?		{ return SetReturn(BAS_P_NAME); }
+
+	/*
+	 * Code to handle data statemenys
+	 */
+<indata>[^ \n\r\t !,\"\']+		{std::cerr << "indata " << yytext << std::endl; return SetReturn(BAS_V_TEXTSTRING); }
+<indata>"\""([^\"]*)"\""	{std::cerr << "indata " << yytext << std::endl; return SetStringReturn(BAS_V_TEXTSTRING); }
+<indata>[ \t]+			{std::cerr << "indata " << yytext << std::endl; ; }
+<indata>"," 		{std::cerr << "indata " << yytext << std::endl; return SetReturn(yytext[0]); }
 
 	/*
 	 * End of file (try to back up one include level)
@@ -621,4 +631,9 @@ static void my_fatal_error(const char* msg)
 	}
 	std::cerr << std::endl;
 	exit(YY_EXIT_FAILURE);
+}
+
+void flex_indata()
+{
+	BEGIN(indata);
 }

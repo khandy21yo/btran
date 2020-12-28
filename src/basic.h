@@ -94,6 +94,7 @@ extern char* include_name[];		/**< \brief Stack of include files */
 int yyparse();			// Hook into bison parser
 int yyerror(char *s);		// Hook into bison error routines
 int yylex( void );		// Hook into flex lexer
+void flex_indata();		// Switch flex into DATA reading mode
 
 #ifdef __MSDOS__
 extern "C"
