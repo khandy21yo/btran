@@ -236,6 +236,7 @@ private:
 	void OutputPrototypes(std::ostream& os);
 	std::string OutputPassmech(int FunctionFlag);
 	std::string OutputNodeVarType();
+	std::string OutputArrayDef(Node *base);
 };
 
 Node *DownLink(Node* node1, Node *Node0 = 0, int Ptr = 0);

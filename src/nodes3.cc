@@ -104,6 +104,7 @@ void Node::Output(
 	{
 		os << "#include <iostream>" << std::endl;
 		os << "#include <limits>" << std::endl;
+		os << "#include <array>" << std::endl;
 		NeedIostreamH = 0;
 	}
 
@@ -2707,12 +2708,13 @@ std::string Node::Expression(void)
  */
 std::string Node::OutputVarName(
 	Node* array,		/**< Pointer to any array references */
-	int InDefine		/**< Is this part of a definition */
+	int InDefine		/**< Is this part of a definition,
+       					bit 1 = Yes, bit2 = Don't add array dims*/
 )
 {
 	int flags = 0;		// GetName flags
 
-	if (InDefine)
+	if (InDefine & 1)
 	{
 		//
 		// We don't want the prefix on the definition, since the
@@ -2750,7 +2752,7 @@ std::string Node::OutputVarName(
 	// Handle array references (May need to be modified from x[a,b]
 	// to x[a][b] manually.
 	//
-	if (array != 0)
+	if (array != 0 && (InDefine & 2) == 0)
 	{
 		if ((ThisVar != 0) && (ThisVar->Class == VARCLASS_FUNC))
 		{
@@ -4020,27 +4022,38 @@ void Node::OutputDefinitionList(
 			break;
 		}
 
-		if (Tree[1] != 0)
+		//
+		// We have an array
+		//
+		if (Tree[2] != 0)
 		{
-			os << Tree[1]->OutputNodeVarType() << " ";
-		}
-		if (Tree[3] != 0)
-		{
-			os << Tree[3]->OutputPassmech(0);
-		}
-		if (Tree[0] != 0)
-		{
-			os << Tree[0]->OutputVarName(Tree[2], 1);
-		}
-		if (Tree[4] != 0)
-		{
-			os << " = " << Tree[4]->Expression();
+			os << Tree[2]->OutputArrayDef(this) << " " <<
+				Tree[0]->OutputVarName(Tree[2], 1 + 2);
 		}
 		else
 		{
-			os << OutputVarInit(
-				Tree[2] != 0,
-				Tree[1]->GetNodeVarType());
+			if (Tree[1] != 0)
+			{
+				os << Tree[1]->OutputNodeVarType() << " ";
+			}
+			if (Tree[3] != 0)
+			{
+				os << Tree[3]->OutputPassmech(0);
+			}
+			if (Tree[0] != 0)
+			{
+				os << Tree[0]->OutputVarName(Tree[2], 1);
+			}
+			if (Tree[4] != 0)
+			{
+				os << " = " << Tree[4]->Expression();
+			}
+			else
+			{
+				os << OutputVarInit(
+					Tree[2] != 0,
+					Tree[1]->GetNodeVarType());
+			}
 		}
 
 		os << ";" << std::endl;
@@ -4138,6 +4151,52 @@ void Node::OutputDefinitionList(
 	}
 }
 
+
+/**
+ * Output an array definition
+ */
+std::string Node::OutputArrayDef(Node *base)
+{
+	std::string working;	// Working definition being created
+
+	working = "std::array<";
+
+	if (Block[0] != 0)
+	{
+		//
+		// If we have more dimensions to go, ...
+		//
+		working += Block[0]->OutputArrayDef(base);
+	}
+	else
+	{
+		//
+		// No more dimensions, so output the base type
+		//
+		working += base->Tree[1]->OutputNodeVarType();
+	}
+//	working += ", " + Tree[2]->Expression() + ">";
+
+	//
+	// The array size in C++ includes the [0] element, while Basic
+	// specifies the last element, so we have to add 1 to the size
+	// requested.
+	//
+	if (IsSimpleInteger())
+	{
+		// FIXME: There really ought to be a better way
+		char buffer[16];
+		sprintf(buffer, ", %d>", atoi(TextValue.c_str()) + 1);
+		working += buffer;
+	}
+	else
+	{
+		working += ", " + OutputForcedType(VARTYPE_INTEGER) + " + 1>";
+	}
+
+
+	return working;
+}
 
 /**
  * \brief Prints out a series of Virtual Array definitions
