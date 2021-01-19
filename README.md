@@ -116,10 +116,12 @@ Doing otherwise creates very ugly "not C++" code.
 	not always sconsistant. This may require fixing the case used in
 	the source code.
 Input Statements
-	You cannot enter a blank for a string input. C++ statement "cin >> xxx;"
-	requires a non-blank entry.
+	BASIC seems to allow dropping a semicolon between a output text and
+	an input variable, but btran doren't allow that.
+		INPUT "TESTING"A$
 
-Several packages are required to use this code.
+Several packages are required to use this code, and it makes extensive use of
+the std:: libraries (C++11 required).
 The debian command to install thse ackages include
 
 	apt-get install gcc g++ automake autoconf libtool

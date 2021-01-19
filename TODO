@@ -16,9 +16,13 @@ String and other library functions
 	Use host features where available.
 	EDIT$$(CVT$$). Handle boost routines better when multiple bits are set.
 
-DATA statements
-	Bare basic keywords cause probmems.
+Arrays defined like 'DIM X(3 TO 10)' are not handled
+	Option didn't exist in the version I based this on.
 
-DEF FN
-	Program variables are not avaiable inside function.
+File IO
+	RMS Missing entirely.
+	Virtual arrays Currently not working
+
+MAT functions
+	Not implemented
 
