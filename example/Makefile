@@ -87,7 +87,7 @@ revrse: revrse.bas
 #
 works: works.bas
 	../src/btran works.bas > works.cc
-	c++ -std=c++11 -I ../lib/ works.cc -o works
+	c++ -std=c++14 -I ../lib/ works.cc -o works
 
 #
 # A convertedprogram that was heavily modified

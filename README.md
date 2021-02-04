@@ -119,6 +119,10 @@ Input Statements
 	BASIC seems to allow dropping a semicolon between a output text and
 	an input variable, but btran doren't allow that.
 		INPUT "TESTING"A$
+Arrays
+	Passing arrays through functions is a major problem. C [] arrsys don't
+	remember their size. std::array is mostly useless for this. std::vector
+	won't pre-allocate the arrays. etc..
 
 Several packages are required to use this code, and it makes extensive use of
 the std:: libraries (C++11 required).

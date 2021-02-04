@@ -12,6 +12,7 @@
 #include <math.h>
 //#include <setjmp.h>
 #include <time.h>
+#include <vector>
 
 #include "bstring.h"
 #include "pusing.h"
@@ -56,8 +57,42 @@ static const char DEL = 127;	/**< \brief Delete */
 extern long Status;		/* Status flag */
 
 //
-// Horrible gosub/return code, but it does work (Icky icky icky)
+// Array of vector code stolen from
+// https://mklimenko.github.io/english/2019/08/17/multidimensional-vector-allocation/
 //
+namespace detail
+{
+	template<typename T, std::size_t sz>
+		struct vector_type
+	{
+		using type = std::vector<typename vector_type<T, sz - 1>::type>;
+	};
+	template<typename T>
+	struct vector_type<T, 1>
+	{
+		using type = T;
+	};
+
+	template<typename T, std::size_t sz>
+	using vector_type_t = typename vector_type<T, sz>::type;
+}
+
+template <typename T>
+	struct VectorGenerator
+{
+	static auto Generate(std::size_t last_arg)
+	{ 
+		return std::vector<T>(last_arg);
+	}
+
+	template <typename ...Args>
+	static auto Generate(std::size_t first_arg, Args... args)
+	{
+		using vector = std::vector<typename detail::vector_type_t<T, 1 + sizeof...(args)>>;
+
+		return vector(first_arg, VectorGenerator<T>::Generate(args...));
+	}
+};
 
 /**
  * \brief Error trapping stuff
