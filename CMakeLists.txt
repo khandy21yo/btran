@@ -4,7 +4,7 @@ project(btran_all VERSION 1.0
 	DESCRIPTION "VAX Basic to C++ translatoe"
 	LANGUAGES CXX C)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(src)

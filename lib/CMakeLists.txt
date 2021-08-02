@@ -4,7 +4,7 @@ project(libbtran VERSION 1.0
 	DESCRIPTION "Library for btran"
 	LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_library(btran STATIC 
