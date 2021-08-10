@@ -11,7 +11,7 @@ clean:
 	-rm snak
 	-rm snoopy.cc
 	-rm snoopy
-	--rm recrse.cc
+	-rm revrse.cc
 	-rm revrse
 	-rm works.cc
 	-rm works
