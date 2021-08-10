@@ -19,7 +19,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <cctype>
-#include <cassert>
 #include <unistd.h>
 
 //
@@ -154,7 +153,6 @@ static Node *ScanForLoops
 	//
 	// Start the whole mass going
 	//
-	assert(Program != 0);
 	IndentTree[0] = 0;
 
 	//
@@ -195,7 +193,8 @@ static Node *ScanForLoops
 
 		case BAS_S_THEN:
 			//
-			// We don't need to keep THEN's at all.
+			// We don't need to keep THEN's at all,
+			// Since we should have a 'IF' preceding it.
 			//
 			delete ThisTree;
 			goto reloop;
@@ -223,7 +222,6 @@ static Node *ScanForLoops
 				// Use the ELSE node as a hook to this
 				// section.
 				//
-				assert(IndentTree[ThisLevel-1]->GetDown(2) == 0);
 				IndentTree[ThisLevel-1]->DownLink(ThisTree, 2);
 				IndentTree[ThisLevel] = ThisTree;
 			}
@@ -254,7 +252,6 @@ static Node *ScanForLoops
 				// Use the USE node as a hook to this
 				// section.
 				//
-				assert(IndentTree[ThisLevel-1]->GetDown(2) == 0);
 				IndentTree[ThisLevel-1]->DownLink(ThisTree, 2);
 				IndentTree[ThisLevel] = ThisTree;
 			}
@@ -504,7 +501,6 @@ static Node *ScanForLoops
 			//
 			if (ThisLevel != 0)
 			{
-				assert(IndentTree[ThisLevel-1]->GetDown(1) == 0);
 				IndentTree[ThisLevel-1]->DownLink(ThisTree, 1);
 			}
 		}
@@ -563,8 +559,6 @@ static Node *ScanForLoops
 		case BAS_S_SELECT:
 		case BAS_S_RECORD:
 		case BAS_S_VARIANT:
-
-			assert(ThisTree->GetDown(1) == 0);
 
 			IndentType[ThisLevel] = ThisTree->Type;
 			ThisLevel++;

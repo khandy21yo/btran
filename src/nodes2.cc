@@ -12,7 +12,6 @@
 // System Include Files
 //
 #include <iostream>
-#include <cassert>
 #include <cstddef>
 #include <cstdlib>
 #include <string>
@@ -49,8 +48,6 @@ void Node::VariableScan(
 {
 	Node *ThisNode;
 
-	assert(this != 0);
-
 	//
 	// Scan this statement
 	//
@@ -86,20 +83,16 @@ void Node::VariableScanOne(
 	VariableStruct *ThisVar;
 	VARTYPE ThisType = VARTYPE_NONE;
 
-	assert(this != 0);
-
 	//
 	// Look at current node type
 	//
 	switch (Type)
 	{
 	case BAS_N_EXTERNALCONSTANT:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_NONE, true);
 		break;
 
 	case BAS_N_EXTERNALSUB:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_FUNC, true);
 		break;
 
@@ -115,22 +108,18 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_S_DECLARE:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_NONE, true);
 		break;
 
 	case BAS_V_DECLARECONSTANT:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_NONE, true);
 		break;
 
 	case BAS_V_DECLAREFUN:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_FUNC, true);
 		break;
 
 	case BAS_S_DIM:
-		assert(Tree[0] != 0);
 		if (Tree[1] != 0)
 		{
 			Tree[1]->VariableScanOne(1);
@@ -139,7 +128,6 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_S_EXTERNAL:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_NONE, true);
 		break;
 
@@ -180,7 +168,6 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_N_EXTERNALFUNCTION:
-		assert(Tree[0] != 0);
 		Tree[0]->ScanVarList(VARTYPE_REAL, VARCLASS_FUNC, true);
 		break;
 
@@ -200,8 +187,6 @@ void Node::VariableScanOne(
 		//
 		// must have a name
 		//
-		assert(Tree[1] != 0);
-
 		//
 		// Functions return type
 		//
@@ -251,8 +236,6 @@ void Node::VariableScanOne(
 		//
 		// Function Definition
 		//
-		assert(Tree[2] != 0);
-
 		if (Tree[0] != 0)
 		{
 			ThisType = Tree[0]->ScanType();
@@ -344,7 +327,6 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_S_RECORD:
-		assert(Tree[0] != 0);
 //
 // FIXME:
 // We don't scan the structure names because they are not real
@@ -379,9 +361,6 @@ void Node::VariableScanOne(
 
 	case BAS_X_STRREF:
 
-		assert (Tree[0] != 0);
-		assert (Tree[1] != 0);
-
 		Tree[0]->VariableScanOne(InDefineFlag);
 		Tree[1]->VariableScanOne(InDefineFlag);
 
@@ -389,7 +368,6 @@ void Node::VariableScanOne(
 
 	case BAS_S_GOSUB:
 		GosubFlag = 1;
-		assert(Tree[0] != 0);
 		Tree[0]->VariableScanOne(InDefineFlag);
 		break;
 
@@ -411,8 +389,6 @@ void Node::VariableScanOne(
 
 	case BAS_N_ONGOSUB:
 		GosubFlag = 1;
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
 		Tree[0]->VariableScanOne(InDefineFlag);
 		Tree[1]->VariableScanOne(InDefineFlag);
 		break;
@@ -468,7 +444,6 @@ void Node::VariableScanOne(
 		// array.
 		//
 		{
-			assert(Tree[1] != 0);
 			//
 			// Assume 2nd one is a string
 			//
@@ -518,9 +493,6 @@ void Node::VariableScanOne(
 		break;
 
 	case BAS_S_MAT:
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
-
 		//
 		// Force array type to l-value
 		//
@@ -536,8 +508,6 @@ void Node::VariableScanOne(
 
 		case BAS_S_TRN:		// MAT xxx = TRN(yyy)
 		case BAS_S_INV:
-			assert(Tree[1]->Tree[0] != 0);
-
 			//
 			// rvalue MUST be array
 			//
@@ -548,9 +518,6 @@ void Node::VariableScanOne(
 		case '+':			// MAT xxx = yyy + zzz
 		case '-':
 		case '*':
-			assert(Tree[1]->Tree[0] != 0);
-			assert(Tree[1]->Tree[1] != 0);
-
 			//
 			// Two rvalues MUST be arrays
 			//
@@ -560,9 +527,6 @@ void Node::VariableScanOne(
 			break;
 
 		case '(':			// MAT xxx = (yyy) * zzz
-			assert(Tree[1]->Tree[0] != 0);
-			assert(Tree[1]->Tree[1] != 0);
-
 			//
 			// right rvalue values MUST be arrays
 			//
@@ -572,8 +536,6 @@ void Node::VariableScanOne(
 			break;
 
 		default:			// Oops, forgot to code something
-
-			assert(Tree[1] == 0);	// Should never reach here
 			break;
 		}
 
@@ -638,7 +600,6 @@ void Node::ScanVarList(
 )
 {
 	VariableStruct* ThisVar;
-	assert(this != 0);
 
 	switch(Type)
 	{
@@ -663,7 +624,6 @@ void Node::ScanVarList(
 
 	case BAS_V_DEFINEVAR:
 
-		assert(Tree[1] != NULL);
 		ThisType = Tree[1]->ScanType();
 
 		if (Tree[0] != 0)
@@ -812,11 +772,6 @@ void Node::ScanVarList(
  */
 VARTYPE Node::ScanType(void)
 {
-	//
-	// Don't even try it is we don't know what's happening
-	//
-	assert(this != 0);
-
 	//
 	// Try to figure out the variable type
 	//
@@ -1024,8 +979,6 @@ void Node::SmoothTypes(
 {
 	bool actualtype = false;
 
-	assert(this != 0);
-
 	if (Tree[1] == 0)
 	{
 		//
@@ -1091,9 +1044,6 @@ void Node::SmoothTypes(
  */
 void Node::ScanMap(void)
 {
-	assert(this != 0);
-	assert(Tree[0] != 0);
- 
 	VariableStruct ThisVar(Tree[0]->TextValue,
 		VARTYPE_STRUCT, VARCLASS_NONE, true);
 
@@ -1134,8 +1084,6 @@ void Node::ScanMap(void)
 	int skipprefix
 )
 {
-	assert(this != 0);
- 
 	switch (Type)
 	{
 	case BAS_N_LIST:
@@ -1175,8 +1123,6 @@ void Node::ScanMap(void)
 	case BAS_S_STRING:
 	case BAS_S_DECIMAL:
  
-		assert(Tree[1] != 0);
- 
 		{
 			VariableStruct NewVar(Tree[1]->TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);
@@ -1192,7 +1138,6 @@ void Node::ScanMap(void)
 // the right thing yet
 	case BAS_V_DEFINEVAR:
  
-		assert(Tree[0] != 0);                                                
 		{
 			VariableStruct NewVar(Tree[0]->TextValue,
 				VARTYPE_NONE, VARCLASS_MAP, true);

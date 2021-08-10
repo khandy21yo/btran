@@ -12,7 +12,6 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
-#include <cassert>
 #include <cctype>
 #include <cstring>
 

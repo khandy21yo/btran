@@ -40,7 +40,6 @@
 #include <cstdlib>
 #include <string>
 #include <cctype>
-#include <cassert>
 #include <map>
 #include <list>
 

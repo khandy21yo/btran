@@ -12,7 +12,6 @@
 // System Include Files
 //
 #include <iostream>
-#include <cassert>
 #include <cstddef>
 #include <cstdlib>
 #include <string>
@@ -117,41 +116,26 @@ Node *Node::Link
 )
 {
 	//
-	// Trap stupid bugs
-	//
-	assert(this != 0);
-
-	//
 	// Attach them together
 	//
 	if (Node0 != 0)
 	{
-		assert(Tree[0] == 0);
-		assert(Node0 != this);
 		Tree[0] = Node0;
 	}
 	if (Node1 != 0)
 	{
-		assert(Tree[1] == 0);
-		assert(Node1 != this);
 		Tree[1] = Node1;
 	}
 	if (Node2 != 0)
 	{
-		assert(Tree[2] == 0);
-		assert(Node2 != this);
 		Tree[2] = Node2;
 	}
 	if (Node3 != 0)
 	{
-		assert(Tree[3] == 0);
-		assert(Node3 != this);
 		Tree[3] = Node3;
 	}
 	if (Node4 != 0)
 	{
-		assert(Tree[4] == 0);
-		assert(Node4 != this);
 		Tree[4] = Node4;
 	}
 
@@ -192,11 +176,6 @@ Node *Node::DownLink
 	{
 		return this;
 	}
-
-	//
-	// Test for stupid bugs
-	//
-	assert(Node0 != this);
 
 	//
 	// If we aren't at the top of the stack, scan to the end
@@ -240,11 +219,6 @@ void Node::PrintTree(
 	char Node			/**< Character to link to indent level */
 )
 {
-	//
-	// Not really a node
-	//
-	assert(this != 0);
-
 	//
 	// Local variables
 	//
@@ -365,8 +339,6 @@ VARTYPE Node::GetNodeVarType(void)
 	case '*':
 	case '/':
 	case '^':
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
 		return ChooseVarType(Tree[0]->GetNodeVarType(),
 			Tree[1]->GetNodeVarType());
 

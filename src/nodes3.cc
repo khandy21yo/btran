@@ -13,7 +13,6 @@
 //
 #include <iostream>
 #include <cstdio>
-#include <cassert>
 #include <cstddef>
 #include <cstdlib>
 #include <string>
@@ -206,8 +205,6 @@ void Node::OutputCode(
 	std::ostream& os	/**< iostream to write the C++ code to */
 )
 {
-	assert(this != 0);
-
 	//
 	// Local Variables
 	//
@@ -477,9 +474,6 @@ void Node::OutputCodeOne(
 	int KeepWhenErrorFlag;
 	VARTYPE ThisType = VARTYPE_NONE;
 
-	assert(this != 0);
-	assert(Type != BAS_S_CHANGE);
-
 	//
 	// Handle this node type
 	//
@@ -646,17 +640,14 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_DECLARE:
-		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, Tree[1], Type);
 		break;
 
 	case BAS_V_DECLARECONSTANT:
-		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, 0, 0, 1);
 		break;
 
 	case BAS_V_DECLAREFUN:
-		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
 		break;
 
@@ -673,7 +664,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_DIM:
-		assert(Tree[0] != 0);
 		if (Tree[1] == 0)
 		{
 			Tree[0]->OutputDefinitionList(os, 0, 0);
@@ -709,7 +699,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_N_EXTERNALSUB:
-		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
 		break;
 
@@ -718,7 +707,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_N_EXTERNALFUNCTION:
-		assert(Tree[0] != 0);
 		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
 		break;
 
@@ -868,8 +856,6 @@ void Node::OutputCodeOne(
 		//
 		// Empty variable list
 		//
-		assert(Tree[1] != 0);
-
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
@@ -1035,8 +1021,6 @@ void Node::OutputCodeOne(
 		//
 		// Empty variable list
 		//
-		assert(Tree[2] != 0);
-
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
@@ -1178,8 +1162,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_IF:
-		assert(Tree[0] != 0);
-
 		os << Indent() << "if (" << Tree[0]->NoParen() << ")" << std::endl;
 
 		if (Block[1] != 0)
@@ -1201,8 +1183,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_P_IF:
-		assert(Tree[0] != 0);
-
 		os << "#if (" << Tree[0]->NoParen() << ")" << std::endl;
 		break;
 
@@ -1294,11 +1274,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_LSET:
-		assert(Tree[0] != 0);
-		assert(Tree[0]->Type == BAS_N_ASSIGN);
-		assert(Tree[0]->Tree[0] != 0);
-		assert(Tree[0]->Tree[1] != 0);
-
 		os << Indent() << "Lset(" <<
 			Tree[0]->Tree[0]->Expression() << ", " <<
 			Tree[0]->Tree[1]->Expression() << ");" << std::endl;
@@ -1318,9 +1293,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_MAT:
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
-
 		switch(Tree[1]->Type)
 		{
 		case BAS_S_CON:     // MAT xxx = CON
@@ -1334,9 +1306,7 @@ void Node::OutputCodeOne(
 			break;
 
 		case BAS_S_ZER:
-			assert(Tree[0]->Tree[0] != 0);
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			assert(ThisVar != 0);
 			switch (ThisVar->ParCount)
 			{
 			case 1:
@@ -1589,11 +1559,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_RSET:
-		assert(Tree[0] != 0);
-		assert(Tree[0]->Type == BAS_N_ASSIGN);
-		assert(Tree[0]->Tree[0] != 0);
-		assert(Tree[0]->Tree[1] != 0);
-
 		os << Indent() << "Rset(" <<
 			Tree[0]->Tree[0]->Expression() << ", " <<
 			Tree[0]->Tree[1]->Expression() << ");" << std::endl;
@@ -1622,8 +1587,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_SELECT:
-		assert(Tree[0] != 0);
-
 		if (Block[1] != 0 && Block[1]->CheckCaseLabel())
 		{
 			os << Indent() <<
@@ -1775,8 +1738,6 @@ void Node::OutputCodeOne(
 		//
 		// Empty variable list
 		//
-		assert(Tree[1] != 0);
-
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
@@ -1874,8 +1835,6 @@ void Node::OutputCodeOne(
 		//
 		// Empty variable list
 		//
-		assert(Tree[1] != 0);
-
 		KeepGosubFlag = GosubFlag;
 		GosubFlag = 0;
 		KeepOnErrorFlag = OnErrorFlag;
@@ -2007,13 +1966,10 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_UNLESS:
-		assert(Tree[0] != 0);
-
 		os << Indent();
 		LookDown = Tree[0];
 		while(LookDown->Type == '(')
 		{
-			assert(Tree[0] != 0);
 			LookDown = LookDown->Tree[0];
 		}
 
@@ -2073,9 +2029,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_UNTIL:
-		assert(Tree[0] != 0);
-		assert(Block[1] != 0);
-
 		os << Indent() << "while (!(" << Tree[0]->NoParen() <<
 			"))" << std::endl;
 
@@ -2095,9 +2048,6 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_WHILE:
-		assert(Tree[0] != 0);
-		assert(Block[1] != 0);
-
 		os << Indent() << "while (" << Tree[0]->NoParen() <<
 			")" << std::endl;
 
@@ -2147,17 +2097,12 @@ std::string Node::Expression(void)
 	std::string result;
 	VariableStruct *ThisVar;
 
-	assert(this != 0);
-
 	//
 	// Handle this node type
 	//
 	switch (Type)
 	{
 	case BAS_N_ASSIGNLIST:
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
-
 		if (Tree[0]->Type == BAS_V_FUNCTION)
 		{
 			result = "Result = ";
@@ -2729,8 +2674,6 @@ std::string Node::OutputVarName(
 	VariableStruct *ThisVar;
 	std::string result;
 
-	assert(this != 0);
-
 	//
 	// Look for variable in table
 	//
@@ -2817,8 +2760,6 @@ void Node::OutputPrint(
 )
 {
 	int ReturnFlag = 0;
-
-	assert(this != 0);
 
 	//
 	// Indent as necessary
@@ -2959,8 +2900,6 @@ void Node::OutputInput(
 	int InputFlag		/**< INPUT/PRINT flag */
 )
 {
-	assert(this != 0);
-
 	//
 	// Initialize flags
 	//
@@ -3026,8 +2965,6 @@ int Node::OutputPrintData(
 				//   Gets set to one if the print/Input command
 				//   ends with a ',' or ';'.
 	int TestFlag = 0;	// Test for special item
-
-	assert(this != 0);
 
 	//
 	// Is this a piece of a list?
@@ -3238,8 +3175,6 @@ int Node::OutputInputData(
 				//   ends with a ',' or ';'.
 	int TestFlag = 0;	// Test for special item
 
-	assert(this != 0);
-
 	//
 	// Is this a piece of a list?
 	//
@@ -3433,8 +3368,6 @@ void Node::OutputData(
 	std::ostream& os	/**< Output stream */
 )
 {
-	assert(this != 0);
-
 	DataWidth = 0;
 	os << Indent();
 
@@ -3491,8 +3424,6 @@ void Node::OutputDataValue(
 	std::ostream& os		/**< iostream to write C++ code to */
 )
 {
-	assert(this != 0);
-
 	if (Type == BAS_N_LIST)
 	{
 		//
@@ -3574,11 +3505,7 @@ void Node::OutputMap(
 	std::ostream& os		/**< iostream to write C++ code to */
 )
 {
-	assert(this != 0);
-	assert(Tree[0] != 0);
-
 	VariableStruct* ThisVar = Variables->Lookup(Tree[0]->TextValue, 0);
-	assert(ThisVar != 0);
 
 	os << std::endl << Indent() <<
 		"// #pragma psect static_rw " << ThisVar->GetName(1) <<
@@ -3643,8 +3570,6 @@ void Node::OutputCaseLabel(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
-	assert(this != 0);
-
 	//
 	// Handle this if it is a list
 	//
@@ -3670,8 +3595,6 @@ void Node::OutputCaseIf(
 	Node *Parent		/**< parent node */
 )
 {
-	assert(this != 0);
-
 	//
 	// Handle this if it is a list
 	//
@@ -3730,8 +3653,6 @@ void Node::OutputCaseIf(
  */
 int Node::CheckCaseLabel(void)
 {
-	assert(this != 0);
-
 	//
 	// Handle this if it is a list
 	//
@@ -3990,8 +3911,6 @@ void Node::OutputDefinitionList(
 	int GlobalStat		/**< global status */
 )
 {
-	assert(this != 0);
-
 	switch(Type)
 	{
 	case BAS_S_DECLARE:
@@ -4075,8 +3994,6 @@ void Node::OutputDefinitionList(
 	case BAS_V_DEFINEFUN:
 	case BAS_N_EXTERNALFUNCTION:
 	case BAS_N_EXTERNALSUB:
-		assert(Tree[0] != 0);
-
 		os << Indent();
 
 		switch(GlobalStat)
@@ -4211,15 +4128,9 @@ void Node::OutputVirtualList(
 {
 	VariableStruct *ThisVar;
 
-	assert(this != 0);
-	assert(Channel != 0);
-
 	switch(Type)
 	{
 	case BAS_N_LIST:
-
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
 
 		//
 		// Put multiple items on seperate lines
@@ -4233,10 +4144,6 @@ void Node::OutputVirtualList(
 		//
 		// Look for variable in table
 		//
-		assert(Tree[0] != 0);
-		assert(Tree[2] != 0);
-		assert(Channel != 0);
-
 		ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[2]);
 
 		os << Indent() <<
@@ -4277,9 +4184,7 @@ std::string Node::OutputDefinitionParams(
 	int GlobalStat		/**< Global status */
 )
 {
-	assert(this != 0);
 	std::string result;
-	assert(Type != BAS_N_LIST); // Should no longer happen
 
 	switch(Type)
 	{
@@ -4316,8 +4221,6 @@ std::string Node::OutputDefinitionParams(
 		break;
 
 	case BAS_V_DEFINEFUN:
-		assert(Tree[0] != 0);
-
 		if (Tree[1] != 0)
 		{
 			result += Tree[1]->OutputNodeVarType() + " ";
@@ -4388,28 +4291,22 @@ std::string Node::OutputNewDefinition(void)
 	int IsFunction = 0;
 	std::string result;
 
-	assert(this != 0);
-	assert(Tree[1] != 0);
-
 	//
 	// Handle class and type
 	//
 	switch(Type)
 	{
 	case BAS_N_EXTERNALFUNCTION:
-		assert(Tree[0] != 0);
 		IsFunction = 1;
 		result = std::string("extern ") + Tree[0]->OutputNodeVarType() + " ";
 		break;
 
 	case BAS_N_EXTERNALSUB:
-		assert(Tree[0] == 0);
 		IsFunction = 1;
 		result = "extern void ";
 		break;
 
 	case BAS_S_FUNCTION:
-		assert(Tree[0] != 0);
 		IsFunction = 1;
 		result = Tree[0]->OutputNodeVarType() + " ";
 		break;
@@ -4421,7 +4318,6 @@ std::string Node::OutputNewDefinition(void)
 		break;
 
 	case BAS_N_EXTERNALCONSTANT:
-		assert(Tree[0] != 0);
 		result = "extern const " + Tree[0]->OutputNodeVarType() + " ";
 		break;
 
@@ -4539,8 +4435,6 @@ std::string Node::OutputDefinition(
 {
 	VariableStruct *ThisVar;
 	std::string result;
-
-	assert(this != 0);
 
 	switch(Type)
 	{
@@ -4771,8 +4665,6 @@ std::string Node::OutputArrayParam(
 	int Increment	/**< Increment */
 )
 {
-	assert(this != 0);
-
 	std::string result;
 
 	switch(Type)
@@ -4841,16 +4733,12 @@ void Node::OutputOpenStuff(
 	{
 	case BAS_S_RECORDSIZE:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetRecordSize(" << Tree[0]->Expression() << ");" << std::endl;
 		break;
 
 	case BAS_S_CLUSTERSIZE:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -4860,8 +4748,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_FILESIZE:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetFileSize(" << Tree[0]->Expression() << ");" <<
@@ -4869,8 +4755,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_EXTENDSIZE:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -4880,8 +4764,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_WINDOWSIZE:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetWindowSize(" << Tree[0]->Expression() << ");" <<
@@ -4889,8 +4771,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_BLOCKSIZE:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -4900,8 +4780,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_BUCKETSIZE:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetBucketSize(" << Tree[0]->Expression() << ");" <<
@@ -4909,8 +4787,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_MODE:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0)<<
@@ -4920,8 +4796,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_BUFFER:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetBuffer(" << Tree[0]->Expression() << ");" <<
@@ -4929,8 +4803,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_DEFAULTNAME:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -4940,8 +4812,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_PRIMARY:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetKey(" << Tree[0]->Expression() << ");" <<
@@ -4949,8 +4819,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_ALTERNATE:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -4995,8 +4863,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_ORGANIZATION:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetOrginization(" << Tree[0]->TextValue;
@@ -5009,8 +4875,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_ACCESS:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetAccess(" << Tree[0]->TextValue << ");" <<
@@ -5018,8 +4882,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_ALLOW:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -5029,8 +4891,6 @@ void Node::OutputOpenStuff(
 
 	case BAS_S_CONNECT:
 
-		assert(Tree[0] != 0);
-
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
 			".SetConnect(BasicChannel[" << Tree[0]->Expression() << "]);" <<
@@ -5038,8 +4898,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_MAP:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -5049,8 +4907,6 @@ void Node::OutputOpenStuff(
 		break;
 
 	case BAS_S_RECORDTYPE:
-
-		assert(Tree[0] != 0);
 
 		os << Indent() <<
 			GetIPChannel(Channel, 0) <<
@@ -5193,14 +5049,9 @@ void Node::OutputField(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
-	assert(this != 0);
-
 	switch(Type)
 	{
 	case BAS_N_LIST:
-
-		assert(Tree[0] != 0);
-		assert(Tree[1] != 0);
 
 		Tree[0]->OutputField(os);
 		Tree[1]->OutputField(os);
