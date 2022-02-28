@@ -734,11 +734,10 @@ void Node::OutputCodeOne(
 	case BAS_S_FIND:
 		if (Tree[1] != 0)
 		{
-			Tree[1]->OutputGetPutOptions(Tree[0], os);
+			os << Tree[1]->OutputGetPutOptions(Tree[0], os) + "\n";
 		}
 		os << Indent() <<
-			GetIPChannel(Tree[0], 0) <<
-			"].Find()" << std::endl;
+			GetIPChannel(Tree[0], 0);
 		break;
 
 	case BAS_S_FOR:
@@ -1134,7 +1133,7 @@ void Node::OutputCodeOne(
 	case BAS_S_GET:
 		if (Tree[1] != 0)
 		{
-			Tree[1]->OutputGetPutOptions(Tree[0], os);
+			os << Tree[1]->OutputGetPutOptions(Tree[0], os) << std::endl;;
 		}
 		os << Indent() <<
 			GetIPChannel(Tree[0], 0) <<
@@ -1506,7 +1505,7 @@ void Node::OutputCodeOne(
 	case BAS_S_PUT:
 		if (Tree[1] != 0)
 		{
-			Tree[1]->OutputGetPutOptions(Tree[0], os);
+			os << Tree[1]->OutputGetPutOptions(Tree[0], os) << std::endl;;
 		}
 		os << Indent() <<
 			GetIPChannel(Tree[0], 0) <<
@@ -1546,7 +1545,7 @@ void Node::OutputCodeOne(
 		{
 			if (Tree[1] != 0)
 			{
-				Tree[1]->OutputGetPutOptions(Tree[0], os);
+				os << Tree[1]->OutputGetPutOptions(Tree[0], os) << std::endl;;
 			}
 			os << Indent() << GetIPChannel(Tree[0], 0) <<
 				"].seekg(0, std::ios::beg);" << std::endl;
@@ -5078,87 +5077,89 @@ void Node::OutputField(
  *	Outputs code for get/put/find for such options as 'record',
  *	'rfa', 'regardless' and other modifiers.
  */
-void Node::OutputGetPutOptions(
+std::string Node::OutputGetPutOptions(
 	Node* Channel,		/**< BASIC channel */
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	switch(Type)
 	{
 	case BAS_N_LIST:
 		if (Tree[0] != 0)
 		{
-			Tree[0]->OutputGetPutOptions(Channel, os);
+			result = Tree[0]->OutputGetPutOptions(Channel, os);
 		}
 		if (Tree[1] != 0)
 		{
-			Tree[1]->OutputGetPutOptions(Channel, os);
+			result += Tree[1]->OutputGetPutOptions(Channel, os);
 		}
 		break;
 
 	case BAS_V_RMSRECORD:
 	case BAS_S_RECORD:
 	case BAS_S_BLOCK:
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetRecord(" <<
-			Tree[0]->Expression() << ");" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetRecord(" +
+			Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_REGARDLESS:
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetRegardless();" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetRegardless();";
 		break;
 
 	case BAS_S_KEY:
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetKey(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetKey(" + Tree[0]->Expression() + ");";
 		if (Tree[1] != 0)
 		{
-			os << Indent() <<
-				GetIPChannel(Channel, 0) <<
+			result += "\n" + Indent() +
+				GetIPChannel(Channel, 0) +
 				".SetKeyMode(";
 			switch(Tree[1]->Type)
 			{
 			case BAS_S_EQ:
-				os << "Equal";
+				result += "Equal";
 				break;
 			case BAS_S_GE:
-				os << "GreaterEqual";
+				result += "GreaterEqual";
 				break;
 			case BAS_S_GT:
-				os << "Greater";
+				result += "Greater";
 				break;
 
 			}
-			os << ");" << std::endl <<
-				Indent() <<
-				GetIPChannel(Channel, 0) <<
-				".SetKeyValue(" << Tree[2]->Expression() << ");" << std::endl;
+			result += ");\n" +
+				Indent() +
+				GetIPChannel(Channel, 0) +
+				".SetKeyValue(" + Tree[2]->Expression() +
+				");";
 		}
 		break;
 
 	case BAS_S_RFA:
-		os <<
-			GetIPChannel(Channel, 0) <<
-			".SetRfaValue(" <<
-			Tree[0]->Expression() << ");" << std::endl;
+		result =
+			GetIPChannel(Channel, 0) +
+			".SetRfaValue(" +
+			Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_COUNT:
-		os <<
-			GetIPChannel(Channel, 0) <<
-			".SetCount(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result =
+			GetIPChannel(Channel, 0) +
+			".SetCount(" + Tree[0]->Expression() + ");";
 		break;
 	default:
-		os <<
-			GetIPChannel(Channel, 0) <<
-			".Goofy(" << Expression() << ");" << std::endl;
+		result =
+			GetIPChannel(Channel, 0) +
+			".Goofy(" + Expression() + ");";
 	}
+	return result;
 }
 
 /**

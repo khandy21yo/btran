@@ -231,7 +231,7 @@ private:
 	std::string OutputBstringText();
 	std::string OutputInteger();
 	void OutputField(std::ostream& os);
-	void OutputGetPutOptions(Node* Channel, std::ostream& os);
+	std::string OutputGetPutOptions(Node* Channel, std::ostream& os);
 	std::string OutputForcedType(VARTYPE VarType);
 	void OutputPrototypes(std::ostream& os);
 	std::string OutputPassmech(int FunctionFlag);
