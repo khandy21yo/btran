@@ -230,7 +230,7 @@ private:
 	void OutputClose(std::ostream& os);
 	std::string OutputBstringText();
 	std::string OutputInteger();
-	void OutputField(std::ostream& os);
+	std::string OutputField(std::ostream& os);
 	std::string OutputGetPutOptions(Node* Channel, std::ostream& os);
 	std::string OutputForcedType(VARTYPE VarType);
 	void OutputPrototypes(std::ostream& os);

@@ -726,7 +726,7 @@ void Node::OutputCodeOne(
 		os << Indent() << "char* FieldBase = BasicChannel[" <<
 			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
 			"].BufferLoc();" << std::endl;
-		Tree[1]->OutputField(os);
+		os << Tree[1]->OutputField(os) << std::endl;
 		Level--;
 		os << Indent() << "}" << std::endl;
 		break;
@@ -5044,31 +5044,35 @@ std::string Node::OutputInteger(void)
  *
  *	Used to generate code for field statements
  */
-void Node::OutputField(
+std::string Node::OutputField(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	switch(Type)
 	{
 	case BAS_N_LIST:
 
-		Tree[0]->OutputField(os);
-		Tree[1]->OutputField(os);
+		result = Tree[0]->OutputField(os) + "\n" +
+			Tree[1]->OutputField(os);
 
 		break;
 
 	case BAS_S_AS:
-		os << Indent() << Tree[1]->Expression() <<
-			".ReMap(FieldBase, " << Tree[0]->Expression() <<
-			");" << std::endl <<
-			Indent() << "FieldBase += " << Tree[0]->Expression() << ";" << std::endl;
+		result =  Indent() + Tree[1]->Expression() +
+			".ReMap(FieldBase, " + Tree[0]->Expression() +
+			");\n" +
+			Indent() + "FieldBase += " +
+			Tree[0]->Expression() + ";";
 		break;
 
 	default:
-		os << "// **** This shouldn't be possible ***** @ " << lineno << std::endl <<
-			Indent() << genname(TextValue);
+		result = "// **** This shouldn't be possible *****\n" +
+			Indent() + genname(TextValue);
 		break;
 	}
+	return result;
 }
 
 /**
