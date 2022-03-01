@@ -617,7 +617,7 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_CLOSE:
-		Tree[0]->OutputClose(os);
+		os << Tree[0]->OutputClose(os) << std::endl;
 		break;
 
 	case BAS_S_COMMON:
@@ -4941,23 +4941,26 @@ void Node::OutputOpenStuff(
  *	This function generates the code necessary to handle
  *	a full 'RMS' close statement.
  */
-void Node::OutputClose(
+std::string Node::OutputClose(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	switch(Type)
 	{
 	case BAS_N_LIST:
-		Tree[0]->OutputClose(os);
-		Tree[1]->OutputClose(os);
+		result = Tree[0]->OutputClose(os) + "\n" +
+			Tree[1]->OutputClose(os);
 		break;
 
 	default:
-		os << Indent() <<
-			GetIPChannel(this, 0) <<
-			".close();" << std::endl;
+		result = Indent() +
+			GetIPChannel(this, 0) +
+			".close();";
 		break;
 	}
+	return result;
 }
 
 /**
