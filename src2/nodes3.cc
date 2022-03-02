@@ -1484,7 +1484,8 @@ void Node::OutputCodeOne(
 		//
 		if (Tree[3] != 0)
 		{
-			Tree[3]->OutputOpenStuff(os, Tree[2]);
+			os << Tree[3]->OutputOpenStuff(os, Tree[2]) <<
+				std::endl;
 		}
 
 		//
@@ -4723,194 +4724,183 @@ std::string Node::OutputArrayParam(
  *	a full 'RMS' open statement. It generates calls to a class
  *	for all the elements available in the statement.
  */
-void Node::OutputOpenStuff(
+std::string Node::OutputOpenStuff(
 	std::ostream& os,	/**< iosream to write C++ code to */
 	Node* Channel		/**< Basic IO channel */
 )
 {
+	std::string result;
+
 	switch(Type)
 	{
 	case BAS_S_RECORDSIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetRecordSize(" << Tree[0]->Expression() << ");" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetRecordSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_CLUSTERSIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetClusterSize(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetClusterSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_FILESIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetFileSize(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetFileSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_EXTENDSIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetExtendSize(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetExtendSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_WINDOWSIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetWindowSize(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetWindowSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_BLOCKSIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetBlockSize(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetBlockSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_BUCKETSIZE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetBucketSize(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetBucketSize(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_MODE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0)<<
-			".SetMode(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetMode(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_BUFFER:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetBuffer(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetBuffer(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_DEFAULTNAME:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetDefaultName(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetDefaultName(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_PRIMARY:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetKey(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetKey(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_ALTERNATE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetKey(" << Tree[0]->Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetKey(" + Tree[0]->Expression() + ");";
 		break;
 
 	case BAS_S_TEMPORARY:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetTemporary(True);" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetTemporary(True);";
 		break;
 
 	case BAS_S_CONTIGUOUS:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetContiguous(True);" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetContiguous(True);";
 		break;
 
 	case BAS_S_NOREWIND:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetRewind(False);" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetRewind(False);";
 		break;
 
 	case BAS_S_NOSPAN:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetSpan(False);" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetSpan(False);";
 		break;
 
 	case BAS_S_SPAN:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetSpan(True);" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetSpan(True);";
 		break;
 
 	case BAS_S_ORGANIZATION:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetOrginization(" << Tree[0]->TextValue;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetOrginization(" + Tree[0]->TextValue;
 		if (Tree[0]->Tree[0] != 0)
 		{
-			os << ", " << Tree[0]->Tree[0]->TextValue;
+			result += ", " + Tree[0]->Tree[0]->TextValue;
 		}
-		os << ");" << std::endl;
+		result += ");";
 		break;
 
 	case BAS_S_ACCESS:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetAccess(" << Tree[0]->TextValue << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetAccess(" + Tree[0]->TextValue + ");";
 		break;
 
 	case BAS_S_ALLOW:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetAllow(" << Tree[0]->TextValue << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetAllow(" + Tree[0]->TextValue + ");";
 		break;
 
 	case BAS_S_CONNECT:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetConnect(BasicChannel[" << Tree[0]->Expression() << "]);" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetConnect(BasicChannel[" + Tree[0]->Expression() +
+			"]);";
 		break;
 
 	case BAS_S_MAP:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetMap(" << Tree[0]->Expression() << ", sizeof(" <<
-			Tree[0]->Expression() <<
-			"));" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetMap(" + Tree[0]->Expression() + ", sizeof(" +
+			Tree[0]->Expression() +
+			"));";
 		break;
 
 	case BAS_S_RECORDTYPE:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".SetRecordType(" << Tree[0]->TextValue <<
-			");" << std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".SetRecordType(" + Tree[0]->TextValue +
+			");";
 		break;
 
 	case BAS_S_VIRTUAL:
@@ -4918,10 +4908,9 @@ void Node::OutputOpenStuff(
 
 	default:
 
-		os << Indent() <<
-			GetIPChannel(Channel, 0) <<
-			".GoofyOpenStuff(" << Expression() << ");" <<
-			std::endl;
+		result = Indent() +
+			GetIPChannel(Channel, 0) +
+			".GoofyOpenStuff(" + Expression() + ");";
 		break;
 
 	}
@@ -4931,8 +4920,10 @@ void Node::OutputOpenStuff(
 	//
 	if (Block[0] != 0)
 	{
-		Block[0]->OutputOpenStuff(os, Channel);
+		result += "\n" + Block[0]->OutputOpenStuff(os, Channel);
 	}
+
+	return result;
 }
 
 /**

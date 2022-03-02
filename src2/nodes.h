@@ -226,7 +226,7 @@ private:
 	std::string OutputDefinition(Node* MainType, int ExtType);
 	std::string OutputNewDefinition();
 	std::string OutputArrayParam(int Increment);
-	void OutputOpenStuff(std::ostream& os, Node* Channel);
+	std::string OutputOpenStuff(std::ostream& os, Node* Channel);
 	std::string OutputClose(std::ostream& os);
 	std::string OutputBstringText();
 	std::string OutputInteger();
