@@ -219,7 +219,7 @@ private:
 	int OutputOngo(std::ostream& os, const char* GoType, int GoLevel);
 	void OutputDefinitionList(std::ostream& os, Node* MainType,
 		int ExtType, int GlobalStat = 0);
-	void OutputVirtualList(std::ostream& os, Node* Channel,
+	std::string OutputVirtualList(std::ostream& os, Node* Channel,
 		Node* MainType, int ExtType, int GlobalStat = 0);
 	std::string OutputDefinitionParams(Node* MainType,
 		int ExtType, int GlobalStat = 0);

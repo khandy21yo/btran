@@ -670,7 +670,8 @@ void Node::OutputCodeOne(
 		}
 		else
 		{
-			Tree[0]->OutputVirtualList(os, Tree[1], 0, 0);
+			os << Tree[0]->OutputVirtualList(os, Tree[1], 0, 0) <<
+				std::endl;
 		}
 		break;
 
@@ -4118,7 +4119,7 @@ std::string Node::OutputArrayDef(Node *base)
 /**
  * \brief Prints out a series of Virtual Array definitions
  */
-void Node::OutputVirtualList(
+std::string Node::OutputVirtualList(
 	std::ostream& os,	/**< iostream to write C++ code */
 	Node* Channel,		/**< IO channe to use */
 	Node* MainType,		/**< Main stat type */
@@ -4127,6 +4128,7 @@ void Node::OutputVirtualList(
 )
 {
 	VariableStruct *ThisVar;
+	std::string result;
 
 	switch(Type)
 	{
@@ -4135,8 +4137,10 @@ void Node::OutputVirtualList(
 		//
 		// Put multiple items on seperate lines
 		//
-		Tree[0]->OutputVirtualList(os, Channel, MainType, ExtType);
-		Tree[1]->OutputVirtualList(os, Channel, MainType, ExtType);
+		result = Tree[0]->OutputVirtualList(os,
+			Channel, MainType, ExtType) + "\n" +
+			Tree[1]->OutputVirtualList(os, Channel,
+			MainType, ExtType);
 
 		break;
 
@@ -4146,33 +4150,37 @@ void Node::OutputVirtualList(
 		//
 		ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[2]);
 
-		os << Indent() <<
-			"VirtualArray<" <<
-			Tree[1]->OutputNodeVarType() << "> ";
+		result = Indent() +
+			"VirtualArray<" +
+			Tree[1]->OutputNodeVarType() + "> ";
 
 		if (ThisVar != 0)
 		{
-			os << ThisVar->GetName() << "(";
+			result +=  ThisVar->GetName() + "(";
 		}
 		else
 		{
-			os << genname(Tree[0]->TextValue) << "(";
+			result += genname(Tree[0]->TextValue) + "(";
 		}
-		os << Channel->Expression() << ", " << Tree[2]->Expression();
+		result += Channel->Expression() + ", " + Tree[2]->Expression();
 
 		if (Tree[3] != 0)
 		{
-			os << ", " << Tree[3]->Expression();
+			result += ", " + Tree[3]->Expression();
 		}
-		os << ");" << std::endl;
+		result += ");";
 
 		if (Block[0] != 0)
 		{
-			Block[0]->OutputVirtualList(os, Channel, MainType, ExtType);
+			result += "\n" +
+				Block[0]->OutputVirtualList(os, Channel,
+				MainType, ExtType);
 		}
 		break;
 
 	}
+
+	return result;
 }
 
 /**
