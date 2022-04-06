@@ -214,10 +214,10 @@ private:
 		return std::string(Level >= 0 ? Level : 0, '\t'); 
 	}
 	void ScanVarList(VARTYPE ThisType, VARCLASS ThisClass, int Status);
-	void OutputRemark(std::ostream& os);
+	std::string OutputRemark(std::ostream& os);
 	std::string OutputLabel();
 	int OutputOngo(std::ostream& os, const char* GoType, int GoLevel);
-	void OutputDefinitionList(std::ostream& os, Node* MainType,
+	std::string OutputDefinitionList(std::ostream& os, Node* MainType,
 		int ExtType, int GlobalStat = 0);
 	std::string OutputVirtualList(std::ostream& os, Node* Channel,
 		Node* MainType, int ExtType, int GlobalStat = 0);

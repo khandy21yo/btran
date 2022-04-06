@@ -640,15 +640,15 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_DECLARE:
-		Tree[0]->OutputDefinitionList(os, Tree[1], Type);
+		os << Tree[0]->OutputDefinitionList(os, Tree[1], Type) << std::endl;
 		break;
 
 	case BAS_V_DECLARECONSTANT:
-		Tree[0]->OutputDefinitionList(os, 0, 0, 1);
+		os << Tree[0]->OutputDefinitionList(os, 0, 0, 1) << std::endl;
 		break;
 
 	case BAS_V_DECLAREFUN:
-		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
+		os << Tree[0]->OutputDefinitionList(os, 0, 0, 2) << std::endl;
 		break;
 
 	case BAS_S_DELETE:
@@ -666,7 +666,7 @@ void Node::OutputCodeOne(
 	case BAS_S_DIM:
 		if (Tree[1] == 0)
 		{
-			Tree[0]->OutputDefinitionList(os, 0, 0);
+			os << Tree[0]->OutputDefinitionList(os, 0, 0) << std::endl;
 		}
 		else
 		{
@@ -696,19 +696,19 @@ void Node::OutputCodeOne(
 		break;
 
 	case BAS_S_EXTERNAL:
-		Tree[0]->OutputDefinitionList(os, 0, Type, 4);
+		os << Tree[0]->OutputDefinitionList(os, 0, Type, 4) << std::endl;
 		break;
 
 	case BAS_N_EXTERNALSUB:
-		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
+		os << Tree[0]->OutputDefinitionList(os, 0, 0, 2) << std::endl;
 		break;
 
 	case BAS_N_EXTERNALCONSTANT:
-		Tree[0]->OutputDefinitionList(os, Tree[1], Type, 3);
+		os << Tree[0]->OutputDefinitionList(os, Tree[1], Type, 3) << std::endl;
 		break;
 
 	case BAS_N_EXTERNALFUNCTION:
-		Tree[0]->OutputDefinitionList(os, 0, 0, 2);
+		os << Tree[0]->OutputDefinitionList(os, 0, 0, 2) << std::endl;
 		break;
 
 	case BAS_S_EXIT:
@@ -1529,7 +1529,7 @@ void Node::OutputCodeOne(
 		if (Block[1] != 0)
 		{
 			Level++;
-			Block[1]->OutputDefinitionList(os, 0, 0);
+			os << Block[1]->OutputDefinitionList(os, 0, 0) << std::endl;
 			Level--;
 		}
 
@@ -1613,8 +1613,7 @@ void Node::OutputCodeOne(
 				switch(LookDown->Type)
 				{
 				case BAS_S_REMARK:
-					os << Indent();
-					LookDown->OutputRemark(os);
+					os << Indent() << LookDown->OutputRemark(os);
 					break;
 
 				case BAS_S_CASE:
@@ -1688,8 +1687,7 @@ void Node::OutputCodeOne(
 					break;
 
 				case BAS_S_REMARK:
-					os << Indent();
-					LookDown->OutputRemark(os);
+					os << Indent() << LookDown->OutputRemark(os);
 					isremark = 1;
 					break;
 
@@ -1955,8 +1953,7 @@ void Node::OutputCodeOne(
 	case BAS_P_SBTTL:
 	case BAS_P_IDENT:
 	case BAS_S_REMARK:
-		os << Indent();
-		OutputRemark(os);
+		os << Indent() << OutputRemark(os);
 		break;
 
 	case BAS_S_TO:
@@ -3552,7 +3549,7 @@ void Node::OutputMap(
 
 		if (Tree[1] != 0)
 		{
-			Tree[1]->OutputDefinitionList(os, 0, 0);
+			os << Tree[1]->OutputDefinitionList(os, 0, 0) << std::endl;
 		}
 
 		Level--;
@@ -3715,11 +3712,12 @@ int Node::CheckCaseLabel(void)
  *	This function strips off all of the junk from a comment
  *	and prints it out.
  */
-void Node::OutputRemark(
+std::string Node::OutputRemark(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
 	std::string Remark = TextValue;
+	std::string result;
 
 	//
 	// Skip start of remark character
@@ -3816,11 +3814,11 @@ void Node::OutputRemark(
 	//
 	if ((Remark.length() == 0) || (Remark[0] == '\t') || (Remark[0] == '*'))
 	{
-		os << "//" << Remark;
+		result +=  "//" + Remark;
 	}
 	else
 	{
-		os << "// " << Remark;
+		result += "// " + Remark;
 	}
 
 	//
@@ -3828,10 +3826,10 @@ void Node::OutputRemark(
 	//
 	if (Tree[0] != 0)
 	{
-		os << ' ' << Tree[0]->Expression();
+		result += ' ' + Tree[0]->Expression();
 	}
 
-	os << std::endl;
+	return result;
 
 }
 
@@ -3905,21 +3903,24 @@ std::string Node::OutputLabel(void)
 /**
  * \brief Prints out a series of definitions
  */
-void Node::OutputDefinitionList(
+std::string Node::OutputDefinitionList(
 	std::ostream& os,	/**< iostream to write C++ code to */
 	Node* MainType,		/**< main data type */
 	int ExtType,		/**< extended data type */
 	int GlobalStat		/**< global status */
 )
 {
+	std::string result;
+
 	switch(Type)
 	{
 	case BAS_S_DECLARE:
-		Tree[0]->OutputDefinitionList(os,
+		result = Tree[0]->OutputDefinitionList(os,
 			MainType, ExtType, GlobalStat);
 		if (Block[0] != 0)
 		{
-			Block[0]->OutputDefinitionList(os,
+			result += "\n" +
+				Block[0]->OutputDefinitionList(os,
 				MainType, ExtType, GlobalStat);
 		}
 		break;
@@ -3930,15 +3931,15 @@ void Node::OutputDefinitionList(
 		switch(GlobalStat)
 		{
 		case 1:		// Constant definition
-			os << "const ";
+			result = "const ";
 			break;
 
 		case 3:		// External constant
-			os << "extern const ";
+			result = "extern const ";
 			break;
 
 		case 4:		// External
-			os << "extern ";
+			result = "extern ";
 			break;
 		}
 
@@ -3947,36 +3948,35 @@ void Node::OutputDefinitionList(
 		//
 		if (Tree[2] != 0)
 		{
-			os << Tree[2]->OutputArrayDef(this) << " " <<
+			result += Tree[2]->OutputArrayDef(this) + " " +
 				Tree[0]->OutputVarName(Tree[2], 1 + 2);
 		}
 		else
 		{
 			if (Tree[1] != 0)
 			{
-				os << Tree[1]->OutputNodeVarType() << " ";
+				result += Tree[1]->OutputNodeVarType() + " ";
 			}
 			if (Tree[3] != 0)
 			{
-				os << Tree[3]->OutputPassmech(0);
+				result += Tree[3]->OutputPassmech(0);
 			}
 			if (Tree[0] != 0)
 			{
-				os << Tree[0]->OutputVarName(Tree[2], 1);
+				result += Tree[0]->OutputVarName(Tree[2], 1);
 			}
 			if (Tree[4] != 0)
 			{
-				os << " = " << Tree[4]->Expression();
+				result += " = " + Tree[4]->Expression();
 			}
 			else
 			{
-				os << OutputVarInit(
-					Tree[2] != 0,
-					Tree[1]->GetNodeVarType());
+				result += OutputVarInit(
+					Tree[2] != 0, Tree[1]->GetNodeVarType());
 			}
 		}
 
-		os << ";" << std::endl;
+		result += ";";
 
 //
 // For these definitions, a downlink points to the next variable 
@@ -3988,7 +3988,7 @@ void Node::OutputDefinitionList(
 //
 		if (Block[0] != 0)
 		{
-			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+			result += Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
 		}
 		break;
 
@@ -4000,39 +4000,38 @@ void Node::OutputDefinitionList(
 		switch(GlobalStat)
 		{
 		case 2:		// Constant definition
-			os << "extern ";
+			result += "extern ";
 			break;
 		}
 
 		if (Tree[1] != 0)
 		{
-			os << Tree[1]->OutputNodeVarType() << " ";
+			result += Tree[1]->OutputNodeVarType() + " ";
 		}
 		if (Tree[3] != 0)
 		{
-			os << Tree[3]->OutputPassmech(1);
+			result += Tree[3]->OutputPassmech(1);
 		}
 		os << Tree[0]->OutputVarName(Tree[2], 1);
 		if (Tree[4] != 0)
 		{
-			os << " = ";
-			Tree[4]->OutputCodeOne(os);
+			result +=  " = " + Tree[4]->OutputCodeOne(os);
 		}
 		os << ";" << std::endl;
 		if (Block[0] != 0)
 		{
-			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+			result += Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
 		}
 		break;
 
 	case BAS_S_VARIANT:
 
-		os << Indent() << "union" << std::endl <<
-			Indent() << "{" << std::endl;
+		result = Indent() + "union\n" +
+			Indent() + "{\n";
 		Level++;
-		Block[1]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+		result += Block[1]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
 		Level--;
-		os << Indent() << "};" << std::endl;
+		result += "\n" +  Indent() + "};";
 
 		break;
 
@@ -4042,31 +4041,32 @@ void Node::OutputDefinitionList(
 		//
 		for (Node* loop = this; loop != 0; loop = loop->Block[0])
 		{
-			os << Indent() << "struct" << std::endl <<
-				Indent() << "{" << std::endl;
+			result += Indent() + "struct\n" +
+				Indent() + "{\n";
 			Level++;
-			loop->Block[1]->OutputDefinitionList(os, MainType, ExtType,
+			result += loop->Block[1]->OutputDefinitionList(os, MainType, ExtType,
 				GlobalStat);
 			Level--;
-			os << Indent() << "};" << std::endl;
+			result += "\n" + Indent() + "};";
 		}
 
 		break;
 
 
 	case BAS_S_REMARK:
-		os << Indent();
-		OutputRemark(os);
+		result += Indent() + OutputRemark(os);
 		if (Block[0] != 0)
 		{
-			Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
+			result += "\n" + Block[0]->OutputDefinitionList(os, MainType, ExtType, GlobalStat);
 		}
 		break;
 
 	default:
-		os << Indent() << OutputDefinition(MainType, ExtType) << ";" << std::endl;
+		result += Indent() + OutputDefinition(MainType, ExtType) + ";";
 		break;
 	}
+
+	return result;
 }
 
 
