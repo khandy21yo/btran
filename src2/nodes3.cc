@@ -191,7 +191,7 @@ void Node::Output(
 	// Output code
 	//
 	Level = 0;
-	OutputCode(os);
+	os << OutputCode(os) << std::endl;
 }
 
 
@@ -201,10 +201,12 @@ void Node::Output(
  *	This function goes through the level 0 code (statements)
  *	and handle output of the commands at that level.
  */
-void Node::OutputCode(
+std::string Node::OutputCode(
 	std::ostream& os	/**< iostream to write the C++ code to */
 )
 {
+	std::string result;
+
 	//
 	// Local Variables
 	//
@@ -225,7 +227,7 @@ void Node::OutputCode(
 		//
 		if ((Program->FromInclude == 0) || (CompileFlag != 0))
 		{
-			os << Program->OutputCodeOne(os) << std::endl;
+			result += "\n" + Program->OutputCodeOne(os);
 		}
 
 		//
@@ -233,6 +235,7 @@ void Node::OutputCode(
 		//
 		Program = Program->Block[0];
 	}
+	return result;
 }
 
 
@@ -242,23 +245,25 @@ void Node::OutputCode(
  *	This function will output a block of code (if it exists)
  *	surrounded by parentheses, otherwise it will output a semicolon.
  */
-void Node::OutputBlock(
+std::string Node::OutputBlock(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	//
 	// If this is a 0 bit of code, just output a semicolon
 	//
 	if (this == 0)
 	{
-		os << Indent() << ";" << std::endl;
+		result = Indent() + ";";
 	}
 	else
 	{
 		//
 		// Start the block
 		//
-		os << Indent() << "{" << std::endl;
+		result = Indent() + "{";
 
 		Level++;
 
@@ -282,7 +287,7 @@ void Node::OutputBlock(
 			//
 			if ((Program->FromInclude == 0) || (CompileFlag != 0))
 			{
-				os << Program->OutputCodeOne(os) << std::endl;
+				result += "\n" + Program->OutputCodeOne(os) << std::endl;
 			}
 
 			//
@@ -295,8 +300,9 @@ void Node::OutputBlock(
 		// End the block
 		//
 		Level--;
-		os << Indent() << "}" << std::endl;
+		result += "\n" + Indent() + "}";
 	}
+	return result;
 }
 
 
@@ -982,7 +988,7 @@ std::string Node::OutputCodeOne(
 				WhenErrorFlag = 0;
 			}
 
-			Block[1]->OutputCode(os);
+			result += Block[1]->OutputCode(os);
 		}
 
 		//

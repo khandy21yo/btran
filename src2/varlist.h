@@ -40,7 +40,7 @@ public:
 	// Dump out to console list of all variables
 	void Dump(void);
 	// Output C++ definition for a variable
-	void OutputDef(std::ostream& os, int Level);
+	std::string OutputDef(std::ostream& os, int Level);
 };
 
 /**
@@ -93,11 +93,11 @@ public:
 	/**
 	 * \brief Output definition
 	 */
-	void OutputDef(
+	std::string OutputDef(
 		std::ostream& os,		/**< Output Stream */
 		int Level			/**< identation level */
 	)
-	{ back().OutputDef(os, Level); }
+	{ return back().OutputDef(os, Level); }
 
 private:
 	// Used during the creation of C++ names

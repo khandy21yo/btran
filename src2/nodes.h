@@ -172,7 +172,7 @@ public:
 	int IsReallyString(void);
 
 	void Output(std::ostream& os);
-	void OutputCode(std::ostream& os);
+	std::string OutputCode(std::ostream& os);
 	std::string OutputCodeOne(std::ostream& os);
 	std::string Expression();
 
@@ -189,7 +189,7 @@ public:
 	void SmoothTypes(Node *DefaultType = NULL);
 
 private:
-	void OutputBlock(std::ostream& os);
+	std::string OutputBlock(std::ostream& os);
 	void OutputPrint(std::ostream& os);
 	void OutputIPChannel(std::ostream& os, int InputFlag);
 	void OutputInput(std::ostream& os, int InputFlag);

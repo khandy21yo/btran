@@ -650,11 +650,13 @@ void VariableList::Fixup1(
  *	This function will output any variables that have not been dumped
  *	by any previous routines.
  */
-void ListOfVariables::OutputDef(
+std::string ListOfVariables::OutputDef(
 	std::ostream& os, 	/**< Output chnnel */
 	int Level		/**< indent level */
 )
 {
+	std::string result;
+
 	//
 	// Loop through all variables
 	//
@@ -665,8 +667,8 @@ void ListOfVariables::OutputDef(
 		//
 		if ((*i).second.Output != true)
 		{ 
-			os << std::string(Level, '\t') <<
-				(*i).second.OutputDef() << ";" << std::endl;
+			result += std::string(Level, '\t') +
+				(*i).second.OutputDef() + ";\n";
 		}
 	}
 }
