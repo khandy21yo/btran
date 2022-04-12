@@ -481,7 +481,6 @@ std::string Node::OutputCodeOne(
 	switch (Type)
 	{
 	case BAS_N_ASSIGN:
-		os << Indent();
 		if (Tree[0] != 0)
 		{
 			//
@@ -490,7 +489,7 @@ std::string Node::OutputCodeOne(
 			//
 			if (Tree[0]->Type == BAS_V_FUNCTION)
 			{
-				result = "Result = " +
+				result = Indent() + "Result = " +
 					Tree[1]->Expression() +
 					";";
 			}
@@ -505,11 +504,11 @@ std::string Node::OutputCodeOne(
 					{
 						if (Tree[1]->Tree[1]->Expression() == "1")
 						{
-							resullt = Tree[0]->Expression() + "++;" ;
+							resullt = Indent() + Tree[0]->Expression() + "++;" ;
 						}
 						else
 						{
-							result = Tree[0]->Expression() + " += " +
+							result = Indent() + Tree[0]->Expression() + " += " +
 								Tree[1]->Tree[1]->Expression() + ";";
 						}
 						break;
@@ -525,7 +524,7 @@ std::string Node::OutputCodeOne(
 					{
 						if (Tree[1]->Tree[1]->Expression() == "1")
 						{
-							result = Tree[0]->Expression() + "--;";
+							result = Indent() + Tree[0]->Expression() + "--;";
 							break;
 						}
 // This part doesn't workright because
@@ -569,7 +568,7 @@ std::string Node::OutputCodeOne(
 		result = Indent() +
 			"OnErrorHit(" +
 			Tree[0]->Expression() +
-			", " + erl << ");";
+			", " + erl + ");";
 		break;
 
 	case BAS_P_ABORT:
@@ -592,7 +591,7 @@ std::string Node::OutputCodeOne(
 
 	case BAS_S_CHAIN:
 		result = Indent() + "basic::BasicChain(" +
-			Tree[0]->NoParen() << ");";
+			Tree[0]->NoParen() + ");";
 		break;
 
 	case BAS_S_CHANGE1:
@@ -707,16 +706,16 @@ std::string Node::OutputCodeOne(
 		break;
 
 	case BAS_S_EXIT:
-		result = Indent() <<  "return;";
+		result = Indent() +  "return;";
 		break;
 
 	case BAS_N_EXITHANDLER:
 		// Re-throw the exception
-		result = Indent() << "throw Be;";
+		result = Indent() + "throw Be;";
 		break;
 
 	case BAS_S_FIELD:
-		result = Indent() + "// Field Statement\n" <<
+		result = Indent() + "// Field Statement\n" +
 			Indent() + "{\n";
 		Level++;
 		result +=  Indent() + "char* FieldBase = BasicChannel[" +
@@ -724,7 +723,7 @@ std::string Node::OutputCodeOne(
 			"].BufferLoc();\n";
 		result += Tree[1]->OutputField(os) +"\n";
 		Level--;
-		result += Indent() << "}";
+		result += Indent() + "}";
 		break;
 
 	case BAS_S_FIND:
@@ -755,7 +754,7 @@ std::string Node::OutputCodeOne(
 			(Tree[2]->Type == BAS_N_UMINUS))
 		{
 			result += Tree[0]->Tree[0]->Expression() + " >= " +
-				Tree[1]->Expression() << "; ";
+				Tree[1]->Expression() + "; ";
 		}
 		else
 		{
@@ -950,7 +949,7 @@ std::string Node::OutputCodeOne(
 		//
 		if (Tree[0] != 0)
 		{
-			result += Indent() << Tree[0]->OutputNodeVarType() +
+			result += Indent() + Tree[0]->OutputNodeVarType() +
 				" Result;\n";
 		}
 		else
@@ -969,13 +968,13 @@ std::string Node::OutputCodeOne(
 
 			if (GosubFlag != 0)
 			{
-				result += Indent() << "BStack(20);\n";
+				result += Indent() + "BStack(20);\n";
 				GosubFlag = 0;
 			}
 
 			if (OnErrorFlag != 0)
 			{
-				result += Indent() << "OnErrorStack;\n";
+				result += Indent() + "OnErrorStack;\n";
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)
@@ -989,16 +988,16 @@ std::string Node::OutputCodeOne(
 		//
 		// Give back a result code
 		//
-		result += Indent() << "return Result;\n";
+		result += Indent() + "return Result;\n";
 
 		Level--;
 		if (Type == BAS_S_DEF || Type ==BAS_S_DEFSTAR)
 		{
-			result += Indent() << "};";
+			result += Indent() + "};";
 		}
 		else
 		{
-			result += Indent() << "}";
+			result += Indent() + "}";
 		}
 
 		Variables->KillLevel();
@@ -1051,12 +1050,12 @@ std::string Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		result += "\n" + Indent() << "int main(int argc, char **argv)\n";
+		result += "\n" + Indent() + "int main(int argc, char **argv)\n";
 
 		//
 		// Braces starting function
 		//
-		result += Indent() << "{\n";
+		result += Indent() + "{\n";
 		Level++;
 
 		//
@@ -1090,7 +1089,7 @@ std::string Node::OutputCodeOne(
 		//
 		result += "\n" +  Indent() + "return EXIT_SUCCESS;\n";
 		Level--;
-		result +=  Indent() << "}";
+		result +=  Indent() + "}";
 
 		//
 		// Clean up
@@ -1110,11 +1109,11 @@ std::string Node::OutputCodeOne(
 		if (Tree[0] != 0)
 		{
 			result =  Indent() + "exit(" +
-				Tree[0]->Expression() << ");";
+				Tree[0]->Expression() + ");";
 		}
 		else
 		{
-			result =  Indent() << "exit(EXIT_SUCCESS);";
+			result =  Indent() + "exit(EXIT_SUCCESS);";
 		}
 		break;
 
@@ -1158,12 +1157,12 @@ std::string Node::OutputCodeOne(
 		else
 		{
 			result +=  Indent() + "{\n" +
-				Indent() << "}";
+				Indent() + "}";
 		}
 
 		if (Block[2] != 0)
 		{
-			result += "\n" + Indent() << "else\n";
+			result += "\n" + Indent() + "else\n";
 
 			result += Block[2]->OutputBlock(os);
 		}
@@ -1240,12 +1239,12 @@ std::string Node::OutputCodeOne(
 		{
 			if ((ThisVar->EverUsed != 0) || (KeepAllLines == true))
 			{
-				result =  ThisVar->GetName(1) << ":;";
+				result =  ThisVar->GetName(1) + ":;";
 			}
 		}
 		else
 		{
-			result = genname(TextValue) << ":;";
+			result = genname(TextValue) + ":;";
 		}
 		break;
 
@@ -1310,142 +1309,142 @@ std::string Node::OutputCodeOne(
 					"[0][0]));";
 				break;
 			default:
-//++++++++++
-				os << Indent() << "MatZer_n(" <<
-					ThisVar->GetName() <<
-					", sizeof(" << ThisVar->GetName() <<
-					"));" << std::endl;
+				result = Indent() <+ "MatZer_n(" +
+					ThisVar->GetName() +
+					", sizeof(" + ThisVar->GetName() +
+					"));";
 				break;
 			}
 			break;
 
 		case BAS_S_TRN:		// MAT xxx = TRN(yyy)
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			os << Indent() << "MatTrn(" << ThisVar->GetName() << ", ";
+			result = Indent() + "MatTrn(" + ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->TextValue, Tree[1]->Tree[0]);
-			os << ThisVar->GetName() << ");" << std::endl;
+			resuilt = ThisVar->GetName() + ");";
 			break;
 
 		case BAS_S_INV:		// MAT xx = INV(yyy)
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			os << Indent() << "MatInv(" << ThisVar->GetName() << ", ";
+			result = Indent() + "MatInv(" + ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->TextValue, Tree[1]->Tree[0]);
-			os << ThisVar->GetName() << ");" << std::endl;
+			result += ThisVar->GetName() + ");";
 			break;
 
         case '+':			// MAT xxx = yyy + zzz
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			os << Indent() << "MatPlus(" << ThisVar->GetName() << ", ";
+			result = Indent() + "MatPlus(" + ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[0]->TextValue,
 				Tree[1]->Tree[0]->Tree[0]);
-			os << ThisVar->GetName() << ", ";
+			result += ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[1]->TextValue,
 				Tree[1]->Tree[1]->Tree[0]);
-			os << ThisVar->GetName() << ");" << std::endl;
+			result += ThisVar->GetName() + ");";
 			break;
 
         case '-':
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			os << Indent() << "MatMinus(" << ThisVar->GetName() << ", ";
+			result = Indent() + "MatMinus(" + ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[0]->TextValue,
 				Tree[1]->Tree[0]->Tree[0]);
-			os << ThisVar->GetName() << ", ";
+			result += ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[1]->TextValue,
 				Tree[1]->Tree[1]->Tree[0]);
-			os << ThisVar->GetName() << ");" << std::endl;
+			result += ThisVar->GetName() + ");";
 			break;
 
         case '*':
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			os << Indent() << "MatTimes(" << ThisVar->GetName() << ", ";
+			result = Indent() + "MatTimes(" + ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[0]->TextValue,
 				Tree[1]->Tree[0]->Tree[0]);
-			os << ThisVar->GetName() << ", ";
+			result += ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[1]->TextValue,
 				Tree[1]->Tree[1]->Tree[0]);
-			os << ThisVar->GetName() << ");" << std::endl;
+			result += ThisVar->GetName() + ");";
 			break;
 
         case '(':
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			os << Indent() << "MatScalar(" << ThisVar->GetName() << ", " <<
-				Tree[1]->Tree[0]->Expression() << ", ";
+			result = Indent() + "MatScalar(" + ThisVar->GetName() + ", " +
+				Tree[1]->Tree[0]->Expression() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->Tree[1]->TextValue,
 				Tree[1]->Tree[1]->Tree[0]);
-			os << ThisVar->GetName() << ");" << std::endl;
+			result += ThisVar->GetName() + ");";
 			break;
 
 		}
 		break;
 
 	case BAS_N_ONERROR:
-		os << Indent();
+		result = Indent();
 		if (Tree[0] != 0)
 		{
 			if (atoi(Tree[0]->TextValue.c_str()) == 0)
 			{
-				os << "OnErrorZero;" << std::endl;
+				result += "OnErrorZero;";
 			}
 			else
 			{
-				os << "OnErrorGoto(" << Tree[0]->Expression() << ");" << std::endl;
+				result += "OnErrorGoto(" + Tree[0]->Expression() + ");";
 			}
 		}
 		else
 		{
-			os << "OnErrorZero;" << std::endl;
+			result += "OnErrorZero;";
 		}
-
 		break;
 
 	case BAS_N_ONGOTO:
-		os << Indent() << "switch(" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			")" << std::endl << Indent() << "{" << std::endl;
-		Tree[1]->OutputOngo(os, "goto", 1);
+		result = Indent() + "switch(" +
+			Tree[0]->OutputForcedType(VARTYPE_INTEGER) +
+			")" + "\n" + Indent() + "{\n";
+		result += Tree[1]->OutputOngo(os, "goto", 1);
 		if (Tree[2] != 0)
 		{
-				os << Indent() << "default:" << std::endl <<
-					Indent() << "\tgoto " << Tree[2]->OutputLabel() <<
-					";" << std::endl;
+				result +="\n" + Indent() + 
+					"default:\n" +
+					Indent() + "\tgoto " + Tree[2]->OutputLabel() +
+					";";
 		}
 		else
 		{
-				os << Indent() << "default:" << std::endl <<
-					Indent() <<
-					"\tstd::cerr << \"ON-GOTO out of range\" << std::endl; abort();\t// Out of range" << std::endl;
+				result += "\n" +
+					Indent() + "default:\n" +
+					Indent() +
+					"\tstd::cerr << \"ON-GOTO out of range\" << std::endl; abort();\t// Out of range";
 		}
-		os << Indent() << "}" << std::endl;
+		result += "\n" + Indent() + "}" + std::endl;
 		break;
 
 	case BAS_N_ONGOSUB:
-		os << Indent() << "switch(" <<
-			Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-			")" << std::endl << Indent() << "{" << std::endl;
-		Tree[1]->OutputOngo(os, "BGosub", 1);
+		result = Indent() + "switch(" +
+			Tree[0]->OutputForcedType(VARTYPE_INTEGER) +
+			")\n" + Indent() + "{\n" +
+			Tree[1]->OutputOngo(os, "BGosub", 1);
 		if (Tree[2] != 0)
 		{
-				os << Indent() << "default:" << std::endl <<
-					Indent() << "\tBGosub(" <<
-					Tree[2]->OutputLabel() << ");" << std::endl;
+			result += "\n" + Indent() + "default:\n" +
+				Indent() + "\tBGosub(" +
+				Tree[2]->OutputLabel() + ");\n";
 		}
 		else
 		{
-			os << Indent() << "default:" << std::endl <<
-				Indent() <<
-				"OnErrorHit(58, " <<
-				erl << ");\t// Out of range" << std::endl;
+			result += "\n" + Indent() + "default:\n" +
+				Indent() +
+				"OnErrorHit(58, " +
+				erl + ");\t// Out of range\n";
 		}
-		os << Indent() << "}" << std::endl;
+		result += Indent() + "}";
 		break;
 
 	case BAS_S_OPEN:
-		os << Indent() <<
-			GetIPChannel(Tree[2], 0) <<
+		result = Indent() +
+			GetIPChannel(Tree[2], 0) +
 			".open(";
 		if (Tree[0] != 0)
 		{
-			os << Tree[0]->Expression();
+			result += Tree[0]->Expression();
 		}
 		//
 		// For INPUT/OUTPUT
@@ -1454,130 +1453,127 @@ std::string Node::OutputCodeOne(
 		{
 			if (Tree[1]->Type == BAS_S_INPUT)
 			{
-				os << ", std::ios_base::in";
+				result += ", std::ios_base::in";
 			}
 			else
 			{
-				os << ", std::ios_base::out";
+				result += ", std::ios_base::out";
 			}
 
 		}
 
-		os << ");" << std::endl;
+		result += ");";
 
 		//
 		// Other flags set on open
 		//
 		if (Tree[3] != 0)
 		{
-			os << Tree[3]->OutputOpenStuff(os, Tree[2]) <<
-				std::endl;
+			result += "\n" +
+				Tree[3]->OutputOpenStuff(os, Tree[2]);
 		}
 
 		//
 		// Throw an error if file doesn't open
 		//
-		os << Indent() <<
-			"if (!" <<
-			GetIPChannel(Tree[2], 0) <<
-			".is_open()) { OnErrorHit(5, " <<
-			erl << "); }" <<
+		result += "\n" + Indent() +
+			"if (!" +
+			GetIPChannel(Tree[2], 0) +
+			".is_open()) { OnErrorHit(5, " +
+			erl + "); }" +
 			std::endl;;
 		break;
 
 	case BAS_S_PRINT:
-		OutputPrint(os);
+		result = OutputPrint(os);
 		break;
 
 	case BAS_S_PUT:
 		if (Tree[1] != 0)
 		{
-			os << Tree[1]->OutputGetPutOptions(Tree[0], os) << std::endl;;
+			result = Tree[1]->OutputGetPutOptions(Tree[0], os)+ "\n";
 		}
-		os << Indent() <<
-			GetIPChannel(Tree[0], 0) <<
-			".Put();" << std::endl;
+		result += Indent() +
+			GetIPChannel(Tree[0], 0) +
+			".Put();";
 		break;
 
 	case BAS_S_RANDOM:
-		os << Indent() << "srand(time(0));" << std::endl;
+		result = Indent() + "srand(time(0));";
 		break;
 
 	case BAS_S_RECORD:
-		os << Indent() << "struct ";
+		result = Indent() + "struct ";
 		if (Tree[0] != 0)
 		{
-			os << genname(Tree[0]->Expression());
+			result += genname(Tree[0]->Expression());
 		}
-		os << std::endl << Indent() << "{" << std::endl;
+		result += "\n" + Indent() + "{\n";
 
 		if (Block[1] != 0)
 		{
 			Level++;
-			os << Block[1]->OutputDefinitionList(os, 0, 0) << std::endl;
+			result += Block[1]->OutputDefinitionList(os, 0, 0) + "\n";
 			Level--;
 		}
 
-		os << Indent() << "};" << std::endl;
-
+		result += Indent() + "};";
 		break;
 
 	case BAS_S_RESTORE:
 	case BAS_S_RESET:
 		if (Tree[0] == 0)
 		{
-			os << Indent() << "DataList.Reset();" << std::endl;
+			result = Indent() + "DataList.Reset();";
 		}
 		else
 		{
 			if (Tree[1] != 0)
 			{
-				os << Tree[1]->OutputGetPutOptions(Tree[0], os) << std::endl;;
+				result = Tree[1]->OutputGetPutOptions(Tree[0], os) + "\n";
 			}
-			os << Indent() << GetIPChannel(Tree[0], 0) <<
-				"].seekg(0, std::ios::beg);" << std::endl;
+			result += Indent() + GetIPChannel(Tree[0], 0) +
+				"].seekg(0, std::ios::beg);";
 		}
 		break;
 
 	case BAS_S_READ:
-		os << Indent() << "DataList.Read(" << Tree[0]->Expression() <<
-			");" << std::endl;
+		result = Indent() + "DataList.Read(" + Tree[0]->Expression() +
+			");";
 		break;
 
 	case BAS_S_RSET:
-		os << Indent() << "Rset(" <<
-			Tree[0]->Tree[0]->Expression() << ", " <<
-			Tree[0]->Tree[1]->Expression() << ");" << std::endl;
+		result = Indent() + "Rset(" +
+			Tree[0]->Tree[0]->Expression() + ", " +
+			Tree[0]->Tree[1]->Expression() + ");";
 		break;
 
 	case BAS_S_RESUME:
-		os << Indent();
 		if (Tree[0] != 0)
 		{
-			os << "OnErrorZero;" << std::endl <<
-				Indent() << "goto " << Tree[0]->Expression() << ";" << std::endl;
+			result = Indent() + "OnErrorZero;\n" +
+				Indent() + "goto " + Tree[0]->Expression() + ";";
 		}
 		else
 		{
-			os << "OnResume;" << std::endl;
+			result = "OnResume;";
 		}
 		break;
 
 	case BAS_S_RETRY:
 // FIXME: How to do a RETRY in C++
-		os << Indent() << "retry;" << std::endl;
+		result = Indent() + "retry;";
 		break;
 
 	case BAS_S_RETURN:
-		os << Indent() << "BReturn;" << std::endl << std::endl;
+		result = Indent() + "BReturn;";
 		break;
 
 	case BAS_S_SELECT:
 		if (Block[1] != 0 && Block[1]->CheckCaseLabel())
 		{
-			os << Indent() <<
-				"// ** Converted from a select statement **" <<
-				std::endl;
+			result = Indent() +
+				"// ** Converted from a select statement **i\n";
 
 			//
 			// We create a new variable for the tests so that we
@@ -1585,10 +1581,10 @@ std::string Node::OutputCodeOne(
 			// which can cause problems for function calls with
 			// side effects.
 			//
-			os << Indent() << "{" << std::endl;
+			result += Indent() + "{\n";
 			Level++;
-			os << Indent() << "auto TempS = " <<
-				Tree[0]->Expression() << ";" << std::endl;
+			result += Indent() + "auto TempS = " +
+				Tree[0]->Expression() + ";\n";
 
 			LookDown = Block[1];
 			int ifelse = 0;
@@ -1598,51 +1594,51 @@ std::string Node::OutputCodeOne(
 				switch(LookDown->Type)
 				{
 				case BAS_S_REMARK:
-					os << Indent() << LookDown->OutputRemark(os);
+					result += Indent() + LookDown->OutputRemark(os) + "\n";
 					break;
 
 				case BAS_S_CASE:
 
-					os << Indent();
+					result += Indent();
 
 					if (ifelse)
 					{
-						os << "else ";
+						result += "else ";
 					}
 					ifelse = 1;
 
-					os << "if (";
-					LookDown->Tree[0]->OutputCaseIf(os, Tree[0]);
-					os << ")" << std::endl;
+					result += "if (" +
+						LookDown->Tree[0]->OutputCaseIf(os, Tree[0]) +
+						")";
 					break;
 
 				default:
-					os << Indent() << "else" << std::endl;
+					result i+= Indent() + "else";
 					break;
 				}
 
 				if (LookDown->Block[1] != 0)
 				{
-					LookDown->Block[1]->OutputBlock(os);
+					result += "\n" + LookDown->Block[1]->OutputBlock(os) + "\n";
 				}
 				else if (LookDown->Type != BAS_S_REMARK)
 				{
 					//
 					// Empty case, Create a block anyway.
 					//
-					os << Indent() << "{" << std::endl;
-					os << Indent() << "}" << std::endl;
+					result +=  Indent() + "{\n" +
+						Indent() + "}\n";
 				}
 				LookDown = LookDown->Block[0];
 			}
 			Level--;
-			os << Indent() << "}" << std::endl;
+			result += Indent() + "}";
 		}
 		else
 		{
-			os << Indent() << "switch (" <<
-				Tree[0]->OutputForcedType(VARTYPE_INTEGER) <<
-				")" << std::endl << Indent() << "{" << std::endl;
+			result += Indent() + "switch (" +
+				Tree[0]->OutputForcedType(VARTYPE_INTEGER) +
+				")\n" + Indent() + "{\n";
 
 			LookDown = Block[1];
 
@@ -1655,24 +1651,24 @@ std::string Node::OutputCodeOne(
 				case BAS_S_CASE:
 					if (LookDown->Tree[0] != 0)
 					{
-						LookDown->Tree[0]->OutputCaseLabel(os);
-						os << std::endl;
+						result += LookDown->Tree[0]->OutputCaseLabel(os) +
+							"\n";
 					}
 					else
 					{
 						Level++;
-						os << Indent() << "case:\t// Empty case label" <<
-							std::endl << std::endl;
+						result += Indent() +
+							"case:\t// Empty case label\n";
 					}
 					break;
 
 
 				case BAS_N_CASEELSE:
-					os << Indent() << "default:" << std::endl;
+					result += Indent() + "default:\n";
 					break;
 
 				case BAS_S_REMARK:
-					os << Indent() << LookDown->OutputRemark(os);
+					result += Indent() + LookDown->OutputRemark(os);
 					isremark = 1;
 					break;
 
@@ -1686,17 +1682,16 @@ std::string Node::OutputCodeOne(
 					Level++;
 					if (LookDown->Block[1] != 0)
 					{
-						LookDown->Block[1]->OutputCode(os);
+						result += LookDown->Block[1]->OutputCode(os) + "\n";
 					}
-					os << Indent() << "break;" <<
-						std::endl << std::endl;
+					result += Indent() + "break;\n";
 					Level--;
 				}
 
 				LookDown = LookDown->Block[0];
 			}
 
-			os << Indent() << "}" << std::endl;
+			result += Indent() + "}\n";
 		}
 
 		break;
@@ -1704,16 +1699,16 @@ std::string Node::OutputCodeOne(
 	case BAS_S_SET:
 		if (Tree[0]->Type == BAS_S_NO)
 		{
-			os << Indent() << "// set no prompt" << std::endl;
+			result = Indent() + "// set no prompt";
 		}
 		else
 		{
-			os << Indent() << "// set prompt" << std::endl;
+			result += Indent() + "// set prompt";
 		}
 		break;
 
 	case BAS_S_STOP:
-		os << Indent() << "abort();" << std::endl;
+		result = Indent() + "abort();";
 		break;
 
 	case BAS_S_SUB:
@@ -1753,7 +1748,7 @@ std::string Node::OutputCodeOne(
 			//
 			// Output the DEF* code
 			//
-			Block[2]->OutputCode(os);
+			result = Block[2]->OutputCode(os);
 		}
 
 		//
@@ -1767,12 +1762,12 @@ std::string Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		os << std::endl << OutputNewDefinition() << std::endl;
+		result += "\n" +OutputNewDefinition();
 
 		//
 		// Braces starting function
 		//
-		os << Indent() << "{" << std::endl;
+		result += "\n" +  Indent() + "{\n";
 		Level++;
 
 		//
@@ -1780,20 +1775,17 @@ std::string Node::OutputCodeOne(
 		//
 		if (Block[1] != 0)
 		{
-			Variables->OutputDef(os, Level);
-			os << std::endl;
+			result += Variables->OutputDef(os, Level) + "\n";
 
 			if (GosubFlag != 0)
 			{
-				os << Indent() << "BStack(20);" << std::endl;
+				result += Indent() + "BStack(20);\n";
 				GosubFlag = 0;
 			}
 
 			if (OnErrorFlag != 0)
 			{
-				os << Indent() << "OnErrorStack;" << std::endl;
-//				os << Indent() << "basic::BasicError Be;" <<
-//					std::endl;
+				result +=  Indent() + "OnErrorStack;\n";
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)
@@ -1801,11 +1793,11 @@ std::string Node::OutputCodeOne(
 				WhenErrorFlag = 0;
 			}
 
-			Block[1]->OutputCode(os);
+			result += Block[1]->OutputCode(os);
 		}
 
 		Level--;
-		os << Indent() << "}" << std::endl;
+		result +=  Indent() + "}";
 
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
@@ -1850,7 +1842,7 @@ std::string Node::OutputCodeOne(
 			//
 			// Output the DEF* code
 			//
-			Block[2]->OutputCode(os);
+			result = Block[2]->OutputCode(os);
 		}
 
 		//
@@ -1864,12 +1856,12 @@ std::string Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		os << std::endl << OutputNewDefinition() << std::endl;
+		result += "\n" +OutputNewDefinition() + "\n";
 
 		//
 		// Braces starting function
 		//
-		os << Indent() << "{" << std::endl;
+		result += Indent() + "{\n";
 		Level++;
 
 		//
@@ -1877,20 +1869,17 @@ std::string Node::OutputCodeOne(
 		//
 		if (Block[1] != 0)
 		{
-			Variables->OutputDef(os, Level);
-			os << std::endl;
+			result += Variables->OutputDef(os, Level) + "\n";
 
 			if (GosubFlag != 0)
 			{
-				os << Indent() << "BStack(20);" << std::endl;
+				result += Indent() + "BStack(20);\n";
 				GosubFlag = 0;
 			}
 
 			if (OnErrorFlag != 0)
 			{
-				os << Indent() << "OnErrorStack;" << std::endl;
-//				os << Indent() << "basic::BasicError Be;" <<
-//					std::endl;
+				result += Indent() + "OnErrorStack;\n";
 				OnErrorFlag = 0;
 			}
 			if (WhenErrorFlag != 0)
@@ -1898,11 +1887,11 @@ std::string Node::OutputCodeOne(
 				WhenErrorFlag = 0;
 			}
 
-			Block[1]->OutputCode(os);
+			result += Block[1]->OutputCode(os);
 		}
 
 		Level--;
-		os << Indent() << "}" << std::endl;
+		result += "\n" + Indent() + "}";
 
 		Variables->KillLevel();
 		GosubFlag = KeepGosubFlag;
@@ -1917,20 +1906,20 @@ std::string Node::OutputCodeOne(
 			//
 			// Only need this if exit value is given
 			//
-			os << Indent() <<  "exit(" <<
-				Tree[0]->Expression() << ");" << std::endl;
+			result = "exit(" +
+				Tree[0]->Expression() + ");";
 		}
 		break;
 
 	case BAS_S_SUBEXIT:
 		if (Tree[0] == 0)
 		{
-			os << Indent() <<  "return;" << std::endl;
+			result = Indent() +  "return;";
 		}
 		else
 		{
-			os << Indent() <<  "return " <<
-				Tree[0]->Expression() << ";" << std::endl;
+			result = Indent() +  "return " +
+				Tree[0]->Expression() + ";";
 		}
 		break;
 
@@ -1938,18 +1927,17 @@ std::string Node::OutputCodeOne(
 	case BAS_P_SBTTL:
 	case BAS_P_IDENT:
 	case BAS_S_REMARK:
-		os << Indent() << OutputRemark(os);
+		result = Indent() + OutputRemark(os);
 		break;
 
 	case BAS_S_TO:
 		//
 		// TO used in a case statement
 		//
-		os << Tree[0]->Expression() << " ... " << Tree[1]->Expression();
+		result = Tree[0]->Expression() + " ... " + Tree[1]->Expression();
 		break;
 
 	case BAS_S_UNLESS:
-		os << Indent();
 		LookDown = Tree[0];
 		while(LookDown->Type == '(')
 		{
@@ -1963,103 +1951,111 @@ std::string Node::OutputCodeOne(
 		switch(LookDown->Type)
 		{
 		case '=':
-			os << "if (" << LookDown->Tree[0]->Expression() << " != " <<
-				LookDown->Tree[1]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + " != " +
+				LookDown->Tree[1]->Expression() + ")\n";
 			break;
 
 		case '>':
-			os << "if (" << LookDown->Tree[0]->Expression() << " <= " <<
-				LookDown->Tree[1]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + " <= " +
+				LookDown->Tree[1]->Expression() + ")\n";
 			break;
 
 		case '<':
-			os << "if (" << LookDown->Tree[0]->Expression() << " >= " <<
-				LookDown->Tree[1]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + " >= " +
+				LookDown->Tree[1]->Expression() + ")\n";
 			break;
 
 		case BAS_X_NEQ:
-			os << "if (" << LookDown->Tree[0]->Expression() << " == " <<
-				LookDown->Tree[1]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + " == " +
+				LookDown->Tree[1]->Expression() + ")\n";
 			break;
 
 		case BAS_X_GE:
-			os << "if (" << LookDown->Tree[0]->Expression() << " < " <<
-				LookDown->Tree[1]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + " < " +
+				LookDown->Tree[1]->Expression() + ")\n";
 			break;
 
 		case BAS_X_LE:
-			os << "if (" << LookDown->Tree[0]->Expression() << " > " <<
-				LookDown->Tree[1]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + " > " +
+				LookDown->Tree[1]->Expression() + ")\n";
 			break;
 
 		case BAS_X_LNOT:
-			os << "if (" << LookDown->Tree[0]->Expression() << ")" << std::endl;
+			result = Indent() + "if (" +
+				LookDown->Tree[0]->Expression() + ")\n";
 			break;
 
 		default:
-			os << "if (!(" << LookDown->Expression() << "))" << std::endl;
+			result = Indent() + "if (!(" +
+				LookDown->Expression() + "))";
 			break;
 		}
 
-		Block[1]->OutputBlock(os);
+		result += Block[1]->OutputBlock(os);
 
 		break;
 
 	case BAS_S_UNLOCK:
-		os << Indent() <<
-			GetIPChannel(Tree[0], 0) <<
-			".Unlock();" << std::endl;
+		result = Indent() +
+			GetIPChannel(Tree[0], 0) +
+			".Unlock();";
 		break;
 
 	case BAS_S_UNTIL:
-		os << Indent() << "while (!(" << Tree[0]->NoParen() <<
-			"))" << std::endl;
+		result = Indent() + "while (!(" + Tree[0]->NoParen() +
+			"))\n";
 
-		Block[1]->OutputBlock(os);
+		result += Block[1]->OutputBlock(os);
 
 		break;
 
 	case BAS_S_UPDATE:
-		os << Indent() << "RmsUpdate(" << Tree[0]->NoParen() <<
-			");" << std::endl;
+		result = Indent() + "RmsUpdate(" + Tree[0]->NoParen() +
+			");";
 		break;
 
 	case BAS_S_WAIT:
 	case BAS_S_SLEEP:
-		os << Indent() << "sleep(" << Tree[0]->NoParen() <<
-			");" << std::endl;
+		result = Indent() + "sleep(" + Tree[0]->NoParen() +
+			");";
 		break;
 
 	case BAS_S_WHILE:
-		os << Indent() << "while (" << Tree[0]->NoParen() <<
-			")" << std::endl;
+		result = Indent() + "while (" + Tree[0]->NoParen() +
+			")\n";
 
-		Block[1]->OutputBlock(os);
+		result += Block[1]->OutputBlock(os);
 		break;
 
 	default:
-		os << "??%" << Type << " @" << lineno << ":" <<
-			TextValue << "(";
+		result = "??%" + std::to_string(Type) + " @" + std::to_string(lineno) + ":" +
+			TextValue + "(";
 		if (Tree[0] != 0)
 		{
-			os << Tree[0];
+			result += Tree[0]->Expression();
 		}
-		os << ",";
+		result += ",";
 		if (Tree[1] != 0)
 		{
-			os << Tree[1];
+			result += Tree[1]->Expression();
 		}
-		os << ",";
+		result += ",";
 		if (Tree[2] != 0)
 		{
-			os << Tree[2];
+			result += Tree[2]->Expression();
 		}
-		os << ",";
+		result += ",";
 		if (Tree[3] != 0)
 		{
-			os << Tree[3];
+			result += Tree[3]->Expression();
 		}
-		os << ")" << std::endl;
+		result += ")";
 		break;
 	}
 

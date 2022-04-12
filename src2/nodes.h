@@ -173,7 +173,7 @@ public:
 
 	void Output(std::ostream& os);
 	void OutputCode(std::ostream& os);
-	void OutputCodeOne(std::ostream& os);
+	std::string OutputCodeOne(std::ostream& os);
 	std::string Expression();
 
 	int CountParam();
