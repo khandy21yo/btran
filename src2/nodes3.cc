@@ -1073,7 +1073,7 @@ std::string Node::OutputCodeOne(
 
 			if (GosubFlag != 0)
 			{
-				result += Indent() i+ "BStack(20);\n";
+				result += Indent() + "BStack(20);\n";
 				GosubFlag = 0;
 			}
 
@@ -1619,7 +1619,7 @@ std::string Node::OutputCodeOne(
 					break;
 
 				default:
-					result i+= Indent() + "else";
+					result += Indent() + "else";
 					break;
 				}
 
@@ -2742,7 +2742,7 @@ std::string Node::OutputPName(
  *
  *	This function will mangle a print statement.
  */
-void Node::OutputPrint(
+std::string Node::OutputPrint(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
@@ -2763,7 +2763,7 @@ void Node::OutputPrint(
 		//
 		// Handle print statement
 		//
-		ReturnFlag = Tree[0]->OutputPrintData(os, 0);
+		os << Tree[0]->OutputPrintData(os, 0, ReturnFlag);
 
 		//
 		// Finish off print using statement
@@ -2940,18 +2940,19 @@ void Node::OutputInput(
  *	1 - Normal item on right hand side.<BR>
  *	2 - Special item was just output
  */
-int Node::OutputPrintData(
+std::string Node::OutputPrintData(
 	std::ostream& os,	/**< Channel to write C++ code to */
-	int InputFlag		/**< Specifies if it is working on 
+	int InputFlag,		/**< Specifies if it is working on 
 				 * an input statement, ie. specifies the 
 				 * direction of the arrows. 
 				 */
+	int &ReturnFlag		//!< Does a carriage return seem to be needed
+				//!   Gets set to one if the print/Input command
+				//!   ends with a ',' or ';'.
 )
 {
-	int ReturnFlag;		// Does a return seem to be needed
-				//   Gets set to one if the print/Input command
-				//   ends with a ',' or ';'.
 	int TestFlag = 0;	// Test for special item
+	std::string result;
 
 	//
 	// Is this a piece of a list?
@@ -2964,7 +2965,7 @@ int Node::OutputPrintData(
 		//
 		if (Tree[0] != 0)
 		{
-			TestFlag = Tree[0]->OutputPrintData(os, InputFlag);
+			result = Tree[0]->OutputPrintData(os, InputFlag. TestFlag);
 		}
 
 		//
@@ -2974,8 +2975,8 @@ int Node::OutputPrintData(
 		if ((TextValue[0] == ',') &&
 			(TestFlag != 2) && (IOUsing == 0))
 		{
-			OutputIPChannel(os, InputFlag);
-			os << " << '\\t'";
+			result += OutputIPChannel(os, InputFlag) +
+				" << '\\t'";
 		}
 
 		//
@@ -2983,7 +2984,7 @@ int Node::OutputPrintData(
 		//
 		if (Tree[1] != 0)
 		{
-			ReturnFlag = Tree[1]->OutputPrintData(os, InputFlag);
+			result += Tree[1]->OutputPrintData(os, InputFlag, RetuenFlag);
 		}
 		else
 		{
@@ -3001,19 +3002,19 @@ int Node::OutputPrintData(
 		IOUsing = Tree[0];
 		ReturnFlag = 2;
 
-		os << Indent() << "PUse.SetFormat(" << IOUsing->Expression() <<
-			");" << std::endl;
+		result = Indent() + "PUse.SetFormat(" + IOUsing->Expression() +
+			");";
 
 		break;
 
 	case BAS_N_RECORD:
-		OutputIPChannel(os, InputFlag);
-		os << " << RECORD(" << Tree[0]->Expression() << ")";
+		result = OutputIPChannel(os, InputFlag) +
+			" << RECORD(" _ Tree[0]->Expression() + ")";
 		ReturnFlag = 2;
 		break;
 
 	case BAS_V_TEXTSTRING:
-		OutputIPChannel(os, 0);
+		result = OutputIPChannel(os, 0);
 
 		//
 		// Put a comma in print using statements, else
@@ -3021,12 +3022,12 @@ int Node::OutputPrintData(
 		//
 		if (IOUsing != 0)
 		{
-			os << " << PUse.Output(" << Expression() << ");" << std::endl;
+			result +=  " << PUse.Output(" + Expression() + ");";
 			IOChPrinted = 0;
 		}
 		else
 		{
-			os << " << " << Expression();
+			result += " << " + Expression();
 		}
 		ReturnFlag = 1;
 
@@ -3046,11 +3047,11 @@ int Node::OutputPrintData(
 			// cursor position to be correct, we have to put
 			// it at tyhe beginning of an output statement
 			//
-			os << ";" << std::endl;
+			result += ";";
 			IOChPrinted = 0;
 		}
 
-		OutputIPChannel(os, InputFlag);
+		result += OutputIPChannel(os, InputFlag);
 
 		//
 		// Put a comma in print using statements, else
@@ -3058,7 +3059,7 @@ int Node::OutputPrintData(
 		//
 		if (IOUsing != 0)
 		{
-			os << " << PUse.Output(" << Expression() << ");" << std::endl;
+			result += " << PUse.Output(" + Expression() + ");";
 			IOChPrinted = 0;
 		}
 		else
@@ -3073,13 +3074,12 @@ int Node::OutputPrintData(
 				// because dealing with negitive ones gets ug;y
 				// really fast.
 				//
-				os << " << ' '" <<
-					" << " << Expression() <<
+				result = " << ' ' << " + Expression() +
 					" << ' '";
 			}
 			else
 			{
-				os << " << " << Expression();
+				result += " << " + Expression();
 			}
 		}
 		ReturnFlag = 1;
@@ -3089,7 +3089,7 @@ int Node::OutputPrintData(
 	//
 	// Done
 	//
-	return ReturnFlag;
+	return result;
 }
 
 /**
@@ -3553,35 +3553,42 @@ void Node::OutputMap(
 /**
  * \brief Output the "case" selections, one at a time.
  */
-void Node::OutputCaseLabel(
+std::string Node::OutputCaseLabel(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	//
 	// Handle this if it is a list
 	//
 	if (Type == BAS_N_LIST)
 	{
-		Tree[0]->OutputCaseLabel(os);
-		Tree[1]->OutputCaseLabel(os);
-		return;
+		result = Tree[0]->OutputCaseLabel(os) + "\n" +
+			Tree[1]->OutputCaseLabel(os);
+	}
+	else
+	{
+		//
+		// Output one case statement
+		//
+		result = Indent() + "case " + Expression() + ":";
 	}
 
-	//
-	// Output one case statement
-	//
-	os << Indent() << "case " << Expression() << ":" << std::endl;
+	return result;
 }
 
 
 /**
  * \brief Output the "case" selections, one at a time.
  */
-void Node::OutputCaseIf(
+std::string Node::OutputCaseIf(
 	std::ostream& os,	/**< iostream to write C++ code to */
 	Node *Parent		/**< parent node */
 )
 {
+	std::string result;
+
 	//
 	// Handle this if it is a list
 	//
@@ -3589,50 +3596,52 @@ void Node::OutputCaseIf(
 	{
 	case BAS_N_LIST:
 
-		os << "(";
-		Tree[0]->OutputCaseIf(os, Parent);
-		os << ") || (";
-		Tree[1]->OutputCaseIf(os, Parent);
-		os << ")";
+		result =  "(" +
+			Tree[0]->OutputCaseIf(os, Parent) +
+			") || ("+
+			Tree[1]->OutputCaseIf(os, Parent)+
+			")";
 		break;
 
 	case BAS_X_UNARYLT:
-		os << "TempS" << " < " <<
+		result = "TempS < " +
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYLE:
-		os << "TempS" << " <= " <<
+		result = "TempS <= " +
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYGT:
-		os << "TempS" << " > " <<
+		result = "TempS > " +
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYGE:
-		os << "TempS" << " >= " <<
+		result = "TempS >= " +
 			Tree[0]->Expression();
 		break;
 
 	case BAS_X_UNARYNEQ:
-		os << "TempS" << " != " <<
+		result = "TempS != " +
 			Tree[0]->Expression();
 		break;
 
 	case BAS_S_TO:
-		os << "TempS" << " >= " <<
-			Tree[0]->Expression() << " && " <<
-			"TempS" << " <= " <<
+		result = "TempS >= " +
+			Tree[0]->Expression() + " && " +
+			"TempS <= " +
 			Tree[1]->Expression();
 		break;
 
 	default:
-		os << "TempS" << " == " <<
+		result = "TempS == " +
 			Expression();
 		break;
 	}
+
+	return result;
 }
 
 /**

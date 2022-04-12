@@ -190,10 +190,10 @@ public:
 
 private:
 	std::string OutputBlock(std::ostream& os);
-	void OutputPrint(std::ostream& os);
+	std::string OutputPrint(std::ostream& os);
 	void OutputIPChannel(std::ostream& os, int InputFlag);
 	void OutputInput(std::ostream& os, int InputFlag);
-	int OutputPrintData(std::ostream& os, int InputFlag);
+	std::string OutputPrintData(std::ostream& os, int InputFlag, int &ReturnFlag);
 	int CheckCpos();
 	int OutputInputData(std::ostream& os, int InputFlag);
 	void OutputData(std::ostream& os);
@@ -201,8 +201,8 @@ private:
 	void OutputMap(std::ostream& os);
 	void ScanMap();
 	void ScanOneMap(VariableStruct* MapVar, int skipprefix);
-	void OutputCaseLabel(std::ostream& os);
-	void OutputCaseIf(std::ostream& os, Node *Parent);
+	std::string OutputCaseLabel(std::ostream& os);
+	std::string OutputCaseIf(std::ostream& os, Node *Parent);
 	int CheckCaseLabel(void);
 	std::string OutputVarName(Node* array, int indefine = 0);
 	std::string OutputPName(Node* array, int indefine = 0);
