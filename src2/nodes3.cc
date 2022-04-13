@@ -1311,7 +1311,7 @@ std::string Node::OutputCodeOne(
 					", sizeof(" + ThisVar->GetName() +
 					"), sizeof(" + ThisVar->GetName() +
 					"[0]));" +
-					"), sizeof(" + ThisVar->GetName() +<
+					"), sizeof(" + ThisVar->GetName() +
 					"[0][0]));";
 				break;
 			default:
@@ -1327,7 +1327,7 @@ std::string Node::OutputCodeOne(
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
 			result = Indent() + "MatTrn(" + ThisVar->GetName() + ", ";
 			ThisVar = Variables->Lookup(Tree[1]->TextValue, Tree[1]->Tree[0]);
-			resuilt = ThisVar->GetName() + ");";
+			result = ThisVar->GetName() + ");";
 			break;
 
 		case BAS_S_INV:		// MAT xx = INV(yyy)
@@ -1420,7 +1420,7 @@ std::string Node::OutputCodeOne(
 					Indent() +
 					"\tstd::cerr << \"ON-GOTO out of range\" << std::endl; abort();\t// Out of range";
 		}
-		result += "\n" + Indent() + "}" + std::endl;
+		result += "\n" + Indent() + "}";
 		break;
 
 	case BAS_N_ONGOSUB:
@@ -1486,8 +1486,7 @@ std::string Node::OutputCodeOne(
 			"if (!" +
 			GetIPChannel(Tree[2], 0) +
 			".is_open()) { OnErrorHit(5, " +
-			erl + "); }" +
-			std::endl;;
+			erl + "); }";
 		break;
 
 	case BAS_S_PRINT:
@@ -2746,6 +2745,7 @@ std::string Node::OutputPrint(
 	std::ostream& os	/**< iostream to write C++ code to */
 )
 {
+	std::string result;
 	int ReturnFlag = 0;
 
 	//
@@ -2763,15 +2763,14 @@ std::string Node::OutputPrint(
 		//
 		// Handle print statement
 		//
-		os << Tree[0]->OutputPrintData(os, 0, ReturnFlag);
+		result = Tree[0]->OutputPrintData(os, 0, ReturnFlag);
 
 		//
 		// Finish off print using statement
 		//
 		if (IOUsing != 0)
 		{
-			OutputIPChannel(os, 0);
-			os << " << PUse.Finish()";
+			result += OutputIPChannel(os, 0) + " << PUse.Finish()";
 		}
 
 		//
@@ -2781,8 +2780,8 @@ std::string Node::OutputPrint(
 		{
 			if ((IOChannel == 0) || (IOChPrinted != 0))
 			{
-				OutputIPChannel(os, 0);
-				os << " << std::endl";
+				result += OutputIPChannel(os, 0) +
+					" << std::endl";
 			}
 			else
 			{
@@ -2790,8 +2789,8 @@ std::string Node::OutputPrint(
 				// When using a BChannel, it doesn't handle this
 				// case properly in C++, so fake it.
 				//
-				OutputIPChannel(os, 0);
-				os << " << std::endl";
+				result += OutputIPChannel(os, 0) +
+					" << std::endl";
 			}
 		}
 	}
@@ -2802,8 +2801,7 @@ std::string Node::OutputPrint(
 		//
 		if ((IOChannel == 0) || (IOChPrinted != 0))
 		{
-			OutputIPChannel(os, 0);
-			os << " << std::endl";
+			result += OutputIPChannel(os, 0) + " << std::endl";
 		}
 		else
 		{
@@ -2811,8 +2809,7 @@ std::string Node::OutputPrint(
 			// When using a BChannel, it doesn't handle this
 			// case properly in C++, so fake it.
 			//
-			OutputIPChannel(os, 0);
-			os << " << std::endl";
+			result +=  OutputIPChannel(os, 0) + " << std::endl";
 		}
 	}
 
@@ -2821,30 +2818,34 @@ std::string Node::OutputPrint(
 	//
 	if (IOChPrinted != 0)
 	{
-		os << ";" << std::endl;
+		result += ";";
 	}
+	return result;
 }
 
 /**
  * \brief Output IO channel information
  */
-void Node::OutputIPChannel(
+std::string  Node::OutputIPChannel(
 	std::ostream& os,	/**< iostream to write C++ code to */
 	int InputFlag		/**< INPUT/PRINT flag */
 )
 {
+	std::string result;
+
 	//
 	// Output channel only if we haven't already
 	//
 	if (IOChPrinted == 0)
 	{
-		os << Indent() << GetIPChannel(IOChannel, InputFlag);
+		result = Indent() + GetIPChannel(IOChannel, InputFlag);
 
 		//
 		// Flag that we have printed the channel
 		//
 		IOChPrinted = 1;
 	}
+	return result;
 }
 
 /**
@@ -2882,7 +2883,7 @@ std::string GetIPChannel(
  *
  *	This function will mangle a input statement.
  */
-void Node::OutputInput(
+std::string Node::OutputInput(
 	std::ostream& os,	/**< iostream to write C++ code to */
 	int InputFlag		/**< INPUT/PRINT flag */
 )
@@ -2899,7 +2900,7 @@ void Node::OutputInput(
 	//
 	if (Tree[0] != 0)
 	{
-		Tree[0]->OutputInputData(os, InputFlag);
+		os << Tree[0]->OutputInputData(os, InputFlag);
 	}
 
 	//
@@ -2965,7 +2966,7 @@ std::string Node::OutputPrintData(
 		//
 		if (Tree[0] != 0)
 		{
-			result = Tree[0]->OutputPrintData(os, InputFlag. TestFlag);
+			result = Tree[0]->OutputPrintData(os, InputFlag, TestFlag);
 		}
 
 		//
@@ -2984,7 +2985,7 @@ std::string Node::OutputPrintData(
 		//
 		if (Tree[1] != 0)
 		{
-			result += Tree[1]->OutputPrintData(os, InputFlag, RetuenFlag);
+			result += Tree[1]->OutputPrintData(os, InputFlag, ReturnFlag);
 		}
 		else
 		{
@@ -3009,7 +3010,7 @@ std::string Node::OutputPrintData(
 
 	case BAS_N_RECORD:
 		result = OutputIPChannel(os, InputFlag) +
-			" << RECORD(" _ Tree[0]->Expression() + ")";
+			" << RECORD(" + Tree[0]->Expression() + ")";
 		ReturnFlag = 2;
 		break;
 
@@ -3150,13 +3151,14 @@ int Node::CheckCpos(void)
  *	1 - Normal item on right hand side.<BR>
  *	2 - Special item was just output
  */
-int Node::OutputInputData(
+std::string Node::OutputInputData(
 	std::ostream& os,	/**< iostream to write C++ code to */
 	int InputFlag		/**< Specifies if it is working on 
 				 * an input statement, ie. specifies the 
 				 * direction of the arrows. */
 )
 {
+	std::string result;
 	int ReturnFlag;		// Does a return seem to be needed
 				//   Gets set to one if the print/Input command
 				//   ends with a ',' or ';'.
@@ -3173,7 +3175,7 @@ int Node::OutputInputData(
 		//
 		if (Tree[0] != 0)
 		{
-			TestFlag = Tree[0]->OutputInputData(os, InputFlag);
+			result = Tree[0]->OutputInputData(os, InputFlag);
 		}
 
 		//
@@ -3181,7 +3183,7 @@ int Node::OutputInputData(
 		//
 		if (Tree[1] != 0)
 		{
-			ReturnFlag = Tree[1]->OutputInputData(os, InputFlag);
+			result += Tree[1]->OutputInputData(os, InputFlag);
 		}
 		else
 		{
@@ -3199,14 +3201,14 @@ int Node::OutputInputData(
 		IOUsing = Tree[0];
 		ReturnFlag = 2;
 
-		os << Indent() << "PUse.SetFormat(" << IOUsing->Expression() <<
-			");" << std::endl;
+		result += Indent() + "PUse.SetFormat(" +
+			IOUsing->Expression() + ");\n";
 
 		break;
 
 	case BAS_N_RECORD:
-		OutputIPChannel(os, InputFlag);
-		os << " >> RECORD(" << Tree[0]->Expression() << ")";
+		result = OutputIPChannel(os, InputFlag) +
+			" >> RECORD(" + Tree[0]->Expression() + ")";
 		ReturnFlag = 2;
 		break;
 
@@ -3217,15 +3219,15 @@ int Node::OutputInputData(
 		//
 		if (IOChPrinted != 0)
 		{
-			os << ";" << std::endl;
+			result += ";\n";
 		}
 
 		//
 		// If this is an input statement, create the whole
 		// statement on one line
 		//
-		os << Indent() << "std::cout << " <<
-			Expression() << ";" << std::endl;
+		result += Indent() + "std::cout << " +
+			Expression() + ";\n";
 		ReturnFlag = 2;
 		IOChPrinted = 0;
 		break;
@@ -3240,11 +3242,11 @@ int Node::OutputInputData(
 		{
 			if (IOChPrinted != 0)
 			{
-				os << ";" << std::endl;
+				result += ";\n";
 				IOChPrinted = 0;
 			}
-			OutputIPChannel(os, 0);
-			os << " << \"? \";" << std::endl;
+			result += OutputIPChannel(os, 0) +
+				" << \"? \";\n";
 			IOChPrinted = 0;
 		}
 
@@ -3257,25 +3259,25 @@ int Node::OutputInputData(
 		{
 			if (IOChPrinted != 0)
 			{
-				os << ";" << std::endl;
+				result += ";\n";
 				IOChPrinted = 0;
 			}
 
-			os << Indent() <<
-				"getline(" <<
-				GetIPChannel(IOChannel, InputFlag) <<
-				", " <<
-				Expression() <<
-				");" << std::endl;
+			result += Indent() +
+				"getline(" +
+				GetIPChannel(IOChannel, InputFlag) +
+				", " +
+				Expression() +
+				");\n";
 
 			//
 			//  getline drops terminater. INPUT LINE wants it back on.
 			//
 			if (InputFlag == 2)
 			{
-				os << Indent() <<
-					Expression() <<
-					" += \"\\n\";" << std::endl;
+				result += Indent() +
+					Expression() +
+					" += \"\\n\";\n";
 			}
 
 			break;
@@ -3290,8 +3292,8 @@ int Node::OutputInputData(
 		// Regular input
 		//
 		case 1:
-			OutputIPChannel(os, InputFlag);
-			os << " >> " << Expression();
+			result += OutputIPChannel(os, InputFlag) +
+				" >> " + Expression();
 			ReturnFlag = 1;
 			break;
 
@@ -3299,17 +3301,17 @@ int Node::OutputInputData(
 		// LINPUT/INPUT LINE
 		//
 		case 2:
-			os << Indent() <<
-				"getline(" <<
-				GetIPChannel(IOChannel, InputFlag) <<
-				", " <<
-				Expression() <<
-				");" << std::endl;
+			result += Indent() +
+				"getline(" +
+				GetIPChannel(IOChannel, InputFlag) +
+				", " +
+				Expression() +
+				");\n";
 			//
 			//  getline drops terminater. INPUT LINE wants it back on.
 			//
-			os << Indent() <<
-				Expression() << " += \"\\n\";" << std::endl;
+			result += Indent() +
+				Expression() + " += \"\\n\";\n";
 
 			if (IOChannel != 0)
 			{
@@ -3317,20 +3319,18 @@ int Node::OutputInputData(
 				// If we are on an IO channel, then
 				// throw an error if we are at an eof
 				//
-				os << Indent() <<
-					"if (" <<
-					GetIPChannel(IOChannel, InputFlag) <<
-					".eof()) { OnErrorHit(11, " <<
-					erl << "); }" <<
-					"\t// End of file on device" <<
-					std::endl;
-				os << Indent() <<
-					"if (" <<
-					GetIPChannel(IOChannel, InputFlag) <<
-					".fail()) { OnErrorHit(12, " <<
-					erl << "); }" <<
-					"\t// Fatal system I/O failure" <<
-					std::endl;
+				result += Indent() +
+					"if (" +
+					GetIPChannel(IOChannel, InputFlag) +
+					".eof()) { OnErrorHit(11, " +
+					erl + "); }" +
+					"\t// End of file on device\n";
+				result += Indent() +
+					"if (" +
+					GetIPChannel(IOChannel, InputFlag) +
+					".fail()) { OnErrorHit(12, " +
+					erl << "); }" +
+					"\t// Fatal system I/O failure\n";
 			}
 
 			IOChPrinted = 0;
@@ -3343,7 +3343,7 @@ int Node::OutputInputData(
 	//
 	// Done
 	//
-	return ReturnFlag;
+	return result;
 }
 
 /**
@@ -3488,15 +3488,17 @@ void Node::OutputDataValue(
  *
  *	This function will mangle a map or common statement.
  */
-void Node::OutputMap(
+std::string Node::OutputMap(
 	std::ostream& os		/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	VariableStruct* ThisVar = Variables->Lookup(Tree[0]->TextValue, 0);
 
-	os << std::endl << Indent() <<
-		"// #pragma psect static_rw " << ThisVar->GetName(1) <<
-		",gbl,ovr" << std::endl;
+	result = "\n" + Indent() +
+		"// #pragma psect static_rw " + ThisVar->GetName(1) +
+		std::string(",gbl,ovr\n");
 
 	//
 	// We implement MAP and COMMON as classes because dealing with
@@ -3514,40 +3516,40 @@ void Node::OutputMap(
 	//
 	if ((Tree[1]->Type == BAS_V_DEFINEVAR) && (Tree[1]->Block[0] == 0))
 	{
-		os <<
-			Indent() << "class " << ThisVar->GetName(1) <<
-				"_C : public " <<
-				Tree[1]->Tree[1]->OutputNodeVarType() <<
-				std::endl <<
-			Indent() << "{" << std::endl;
+		result +=
+			Indent() + "class " + ThisVar->GetName(1) +
+				"_C : public " +
+				Tree[1]->Tree[1]->OutputNodeVarType() +
+				"\n" +
+			Indent() + "{\n";
 
-		std::cout <<
-			Indent() << "} " << Tree[1]->Tree[0]->Expression() <<
-				";" << std::endl <<
-			std::endl;
+		result +=
+			Indent() + "} " + Tree[1]->Tree[0]->Expression() +
+				";\n\n";
 	}
 	else
 	{
-		os <<
-			Indent() << "class " << ThisVar->GetName(1) <<
-				"_C" << std::endl <<
-			Indent() << "{" << std::endl <<
-			Indent() << "public:" << std::endl;
+		result +=
+			Indent() + "class " + ThisVar->GetName(1) +
+				"_C\n" +
+			Indent() + "{\n" +
+			Indent() + "public:\n";
 
 		Level++;
 
 		if (Tree[1] != 0)
 		{
-			os << Tree[1]->OutputDefinitionList(os, 0, 0) << std::endl;
+			result += Tree[1]->OutputDefinitionList(os, 0, 0) +
+				"\n";
 		}
 
 		Level--;
-		std::cout <<
-			Indent() << "} " << ThisVar->GetName(1) << ";" << std::endl <<
-			std::endl;
+		result +=
+			Indent() + "} " + ThisVar->GetName(1) + ";\n\n";
 	}
 
 //	os << "// #pragma psect end " << ThisVar->GetName() << std::endl;
+	return result;
 }
 
 /**
@@ -3840,44 +3842,44 @@ std::string Node::OutputRemark(
  *
  *	\return returns nonzero if a default case was output, else it returns 0.
  */
-int Node::OutputOngo(
+std::string Node::OutputOngo(
 	std::ostream& os,	/**< iostream to write C++ code to */
 	const char* OnType,	/**< data type */
 	int GoLevel		/**< goto level */
 )
 {
-	int flag = 0;
+	std::string result;
 
 	switch(Type)
 	{
 	case BAS_N_LIST:
-		flag = Tree[0]->OutputOngo(os, OnType, GoLevel);
-		flag += Tree[1]->OutputOngo(os, OnType, GoLevel + 1);
+		result = Tree[0]->OutputOngo(os, OnType, GoLevel) + "\n" +
+			Tree[1]->OutputOngo(os, OnType, GoLevel + 1);
 		break;
 
 	case BAS_V_USELABEL:
-		os << Indent() << "case " << GoLevel << ":" << std::endl;
+		result = Indent() + "case " + std::to_string(GoLevel) + ":\n";
 		Level++;
-		os << Indent() << OnType;
+		result += Indent() + OnType;
 		if (strcmp(OnType, "goto") == 0)
 		{
-			os << ' ' << OutputLabel() << ";" << std::endl;
+			result += ' ' + OutputLabel() + ";";
 			// goto doesn't need to be followed by a break
 		}
 		else
 		{
-			os << '(' << OutputLabel() << ");" << std::endl;
-			os << Indent() << "break;" << std::endl;
+			result += '(' + OutputLabel() + ");\n";
+			result += Indent() + "break;";
 		}
 		Level--;
 		break;
 
 	default:
-		os << "Error in computed " << OnType <<
-			" (" << Expression() << ") @ " << lineno << std::endl;
+		result = "Error in computed " + std::string(OnType) +
+			" (" + Expression() + ") @ " + std::to_string(lineno);
 		break;
 	}
-	return flag;
+	return result;
 }
 
 /**

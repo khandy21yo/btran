@@ -191,14 +191,14 @@ public:
 private:
 	std::string OutputBlock(std::ostream& os);
 	std::string OutputPrint(std::ostream& os);
-	void OutputIPChannel(std::ostream& os, int InputFlag);
-	void OutputInput(std::ostream& os, int InputFlag);
+	std::string OutputIPChannel(std::ostream& os, int InputFlag);
+	std::string OutputInput(std::ostream& os, int InputFlag);
 	std::string OutputPrintData(std::ostream& os, int InputFlag, int &ReturnFlag);
 	int CheckCpos();
 	int OutputInputData(std::ostream& os, int InputFlag);
 	void OutputData(std::ostream& os);
 	void OutputDataValue(std::ostream& os);
-	void OutputMap(std::ostream& os);
+	std::string OutputMap(std::ostream& os);
 	void ScanMap();
 	void ScanOneMap(VariableStruct* MapVar, int skipprefix);
 	std::string OutputCaseLabel(std::ostream& os);
@@ -216,7 +216,7 @@ private:
 	void ScanVarList(VARTYPE ThisType, VARCLASS ThisClass, int Status);
 	std::string OutputRemark(std::ostream& os);
 	std::string OutputLabel();
-	int OutputOngo(std::ostream& os, const char* GoType, int GoLevel);
+	std::string OutputOngo(std::ostream& os, const char* GoType, int GoLevel);
 	std::string OutputDefinitionList(std::ostream& os, Node* MainType,
 		int ExtType, int GlobalStat = 0);
 	std::string OutputVirtualList(std::ostream& os, Node* Channel,
