@@ -287,8 +287,8 @@ std::string Node::OutputBlock(
 			//
 			if ((Program->FromInclude == 0) || (CompileFlag != 0))
 			{
-				result += "\n" + Program->OutputCodeOne(os) +
-					"\n";
+				result += "\n" +
+					Program->OutputCodeOne(os);
 			}
 
 			//
@@ -793,7 +793,7 @@ std::string Node::OutputCodeOne(
 			result += Tree[0]->Tree[0]->Expression() + "++";
 		}
 
-		result += ")";
+		result += ")\n";
 
 		result += Block[1]->OutputBlock(os);
 
