@@ -671,6 +671,8 @@ std::string ListOfVariables::OutputDef(
 				(*i).second.OutputDef() + ";\n";
 		}
 	}
+
+	return result;
 }
 
 /**
