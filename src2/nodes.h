@@ -195,9 +195,9 @@ private:
 	std::string OutputInput(std::ostream& os, int InputFlag);
 	std::string OutputPrintData(std::ostream& os, int InputFlag, int &ReturnFlag);
 	int CheckCpos();
-	int OutputInputData(std::ostream& os, int InputFlag);
-	void OutputData(std::ostream& os);
-	void OutputDataValue(std::ostream& os);
+	std::string OutputInputData(std::ostream& os, int InputFlag);
+	std::string OutputData(std::ostream& os);
+	std::string OutputDataValue(std::ostream& os);
 	std::string OutputMap(std::ostream& os);
 	void ScanMap();
 	void ScanOneMap(VariableStruct* MapVar, int skipprefix);

@@ -287,7 +287,8 @@ std::string Node::OutputBlock(
 			//
 			if ((Program->FromInclude == 0) || (CompileFlag != 0))
 			{
-				result += "\n" + Program->OutputCodeOne(os) << std::endl;
+				result += "\n" + Program->OutputCodeOne(os) +
+					"\n";
 			}
 
 			//
@@ -510,7 +511,7 @@ std::string Node::OutputCodeOne(
 					{
 						if (Tree[1]->Tree[1]->Expression() == "1")
 						{
-							resullt = Indent() + Tree[0]->Expression() + "++;" ;
+							result = Indent() + Tree[0]->Expression() + "++;" ;
 						}
 						else
 						{
@@ -561,8 +562,8 @@ std::string Node::OutputCodeOne(
 		}
 		else
 		{
-			result = "Result = " +<
-				Tree[1]->Expression() +< ";";
+			result = "Result = " +
+				Tree[1]->Expression() + ";";
 		}
 		break;
 
@@ -2888,6 +2889,8 @@ std::string Node::OutputInput(
 	int InputFlag		/**< INPUT/PRINT flag */
 )
 {
+	std::string result;
+
 	//
 	// Initialize flags
 	//
@@ -2900,7 +2903,7 @@ std::string Node::OutputInput(
 	//
 	if (Tree[0] != 0)
 	{
-		os << Tree[0]->OutputInputData(os, InputFlag);
+		result = Tree[0]->OutputInputData(os, InputFlag);
 	}
 
 	//
@@ -2908,7 +2911,7 @@ std::string Node::OutputInput(
 	//
 	if (IOChPrinted != 0)
 	{
-		os << ";" << std::endl;
+		result += ";\n";
 	}
 	
 	//
@@ -2917,16 +2920,15 @@ std::string Node::OutputInput(
 	//
 	if (InputFlag & 1)
 	{
-		os << Indent() <<
-			"if (" << GetIPChannel(IOChannel, InputFlag) <<
-			".fail()) { " << 
-			GetIPChannel(IOChannel, InputFlag) << ".clear(); " <<
-			std::endl;
-		os << Indent() <<
-			GetIPChannel(IOChannel, InputFlag) << 
-			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }" <<
-			std::endl;
+		result += Indent() +
+			"if (" + GetIPChannel(IOChannel, InputFlag) +
+			".fail()) { " +
+			GetIPChannel(IOChannel, InputFlag) + ".clear();\n";
+		result += Indent() +
+			GetIPChannel(IOChannel, InputFlag) +
+			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }\n";
 	}
+	return result;
 }
 
 
@@ -3329,7 +3331,7 @@ std::string Node::OutputInputData(
 					"if (" +
 					GetIPChannel(IOChannel, InputFlag) +
 					".fail()) { OnErrorHit(12, " +
-					erl << "); }" +
+					erl + "); }" +
 					"\t// Fatal system I/O failure\n";
 			}
 
@@ -3351,23 +3353,25 @@ std::string Node::OutputInputData(
  *
  *	This function will mangle a data statement.
  */
-void Node::OutputData(
+std::string Node::OutputData(
 	std::ostream& os	/**< Output stream */
 )
 {
+	std::string result;
+
 	DataWidth = 0;
-	os << Indent();
+	result = Indent();
 
 	//
 	// Handle NULL values specially
 	//
 	if (Tree[0] == 0)
 	{
-		os << "\"\"";
+		result += "\"\"";
 	}
 	else
 	{
-		Tree[0]->OutputDataValue(os);
+		result += Tree[0]->OutputDataValue(os);
 	}
 
 	//
@@ -3381,23 +3385,24 @@ void Node::OutputData(
 		// data statement, so we keep more of the
 		// original formatting.
 		//
-		os << "," << std::endl;
+		result += ",\n";
 		DataWidth = 0;
-		os << Indent();
+		result += Indent();
 
 		//
 		// Handle NULL values specially
 		//
 		if (Loop->Tree[0] == 0)
 		{
-			os << "\"\"";
+			result += "\"\"";
 		}
 		else
 		{
-			Loop->Tree[0]->OutputDataValue(os);
+			result += Loop->Tree[0]->OutputDataValue(os);
 		}
 		Loop = Loop->Tree[1];
 	}
+	return result;
 }
 
 
@@ -3407,10 +3412,12 @@ void Node::OutputData(
  *	This function will mangle one data value for a data statement.
  *	It forces everything to be a string.
  */
-void Node::OutputDataValue(
+std::string Node::OutputDataValue(
 	std::ostream& os		/**< iostream to write C++ code to */
 )
 {
+	std::string result;
+
 	if (Type == BAS_N_LIST)
 	{
 		//
@@ -3418,32 +3425,32 @@ void Node::OutputDataValue(
 		//
 		if (Tree[0] == 0)
 		{
-			os << "\"\"";
+			result +=  "\"\"";
 			DataWidth += 2;
 		}
 		else
 		{
-			Tree[0]->OutputDataValue(os);
+			result += Tree[0]->OutputDataValue(os);
 		}
-		os << ",";
+		result += ",";
 		DataWidth++;
 		if (DataWidth > 65)
 		{
-			os << std::endl;
+			result += "\n";
 			DataWidth = 0;
-			os << Indent();
+			result += Indent();
 		}
 		//
 		// Handle NULL values specially
 		//
 		if (Tree[1] == 0)
 		{
-			os << "\"\"";
+			result += "\"\"";
 			DataWidth += 2;
 		}
 		else
 		{
-			Tree[1]->OutputDataValue(os);
+			result += Tree[1]->OutputDataValue(os);
 		}
 	}
 	else
@@ -3454,11 +3461,11 @@ void Node::OutputDataValue(
 
 			if (TextValue[0] == '"')
 			{
-				os << TextValue;
+				result += TextValue;
 			}
 			else
 			{
-				os << '"' << TextValue << '"';
+				result += '"' + TextValue + '"';
 			}
 			DataWidth += TextValue.length();
 			break;
@@ -3468,7 +3475,7 @@ void Node::OutputDataValue(
 		case BAS_V_INTEGER:
 		case BAS_V_FLOAT:
 
-			os << '"' << TextValue << '"';
+			result += '"' + TextValue + '"';
 			DataWidth += TextValue.length() + 2;
 			break;
 
@@ -3476,11 +3483,12 @@ void Node::OutputDataValue(
 			//
 			// Force quotes around data value
 			//
-			os << '"' << Expression() << '"';
+			result += '"' + Expression() + '"';
 			DataWidth +=Expression().length() + 2;
 			break;
 		}
 	}
+	return result;
 }
 
 /**
