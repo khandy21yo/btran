@@ -2911,7 +2911,7 @@ std::string Node::OutputInput(
 	//
 	if (IOChPrinted != 0)
 	{
-		result += ";\n";
+		result += ";";
 	}
 	
 	//
@@ -2920,13 +2920,13 @@ std::string Node::OutputInput(
 	//
 	if (InputFlag & 1)
 	{
-		result += Indent() +
+		result += "\n" + Indent() +
 			"if (" + GetIPChannel(IOChannel, InputFlag) +
 			".fail()) { " +
 			GetIPChannel(IOChannel, InputFlag) + ".clear();\n";
 		result += Indent() +
 			GetIPChannel(IOChannel, InputFlag) +
-			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }\n";
+			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }";
 	}
 	return result;
 }
