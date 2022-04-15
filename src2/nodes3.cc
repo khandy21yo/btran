@@ -227,7 +227,7 @@ std::string Node::OutputCode(
 		//
 		if ((Program->FromInclude == 0) || (CompileFlag != 0))
 		{
-			result += "\n" + Program->OutputCodeOne(os);
+			result += Program->OutputCodeOne(os) + "\n";
 		}
 
 		//
@@ -263,7 +263,7 @@ std::string Node::OutputBlock(
 		//
 		// Start the block
 		//
-		result = Indent() + "{";
+		result = Indent() + "{\n";
 
 		Level++;
 
@@ -287,8 +287,8 @@ std::string Node::OutputBlock(
 			//
 			if ((Program->FromInclude == 0) || (CompileFlag != 0))
 			{
-				result += "\n" +
-					Program->OutputCodeOne(os);
+				result +=
+					Program->OutputCodeOne(os) + "\n";
 			}
 
 			//
@@ -1600,7 +1600,7 @@ std::string Node::OutputCodeOne(
 				switch(LookDown->Type)
 				{
 				case BAS_S_REMARK:
-					result += Indent() + LookDown->OutputRemark(os) + "\n";
+					result += Indent() + LookDown->OutputRemark(os);
 					break;
 
 				case BAS_S_CASE:
@@ -1999,7 +1999,7 @@ std::string Node::OutputCodeOne(
 
 		default:
 			result = Indent() + "if (!(" +
-				LookDown->Expression() + "))";
+				LookDown->Expression() + "))\n";
 			break;
 		}
 
