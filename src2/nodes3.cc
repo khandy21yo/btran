@@ -2800,18 +2800,7 @@ std::string Node::OutputPrint(
 		//
 		// Empty print command
 		//
-		if ((IOChannel == 0) || (IOChPrinted != 0))
-		{
-			result += OutputIPChannel(os, 0) + " << std::endl";
-		}
-		else
-		{
-			//
-			// When using a BChannel, it doesn't handle this
-			// case properly in C++, so fake it.
-			//
-			result +=  OutputIPChannel(os, 0) + " << std::endl";
-		}
+		result += OutputIPChannel(os, 0) + " << std::endl";
 	}
 
 	//
@@ -2968,7 +2957,7 @@ std::string Node::OutputPrintData(
 		//
 		if (Tree[0] != 0)
 		{
-			result = Tree[0]->OutputPrintData(os, InputFlag, TestFlag);
+			result += Tree[0]->OutputPrintData(os, InputFlag, TestFlag);
 		}
 
 		//
@@ -3005,19 +2994,19 @@ std::string Node::OutputPrintData(
 		IOUsing = Tree[0];
 		ReturnFlag = 2;
 
-		result = Indent() + "PUse.SetFormat(" + IOUsing->Expression() +
+		result += Indent() + "PUse.SetFormat(" + IOUsing->Expression() +
 			");";
 
 		break;
 
 	case BAS_N_RECORD:
-		result = OutputIPChannel(os, InputFlag) +
+		result += OutputIPChannel(os, InputFlag) +
 			" << RECORD(" + Tree[0]->Expression() + ")";
 		ReturnFlag = 2;
 		break;
 
 	case BAS_V_TEXTSTRING:
-		result = OutputIPChannel(os, 0);
+		result += OutputIPChannel(os, 0);
 
 		//
 		// Put a comma in print using statements, else
@@ -3077,7 +3066,7 @@ std::string Node::OutputPrintData(
 				// because dealing with negitive ones gets ug;y
 				// really fast.
 				//
-				result = " << ' ' << " + Expression() +
+				result += " << ' ' << " + Expression() +
 					" << ' '";
 			}
 			else
