@@ -555,14 +555,14 @@ std::string Node::OutputCodeOne(
 				//
 				// A simple assignment statement
 				//
-				result = Tree[0]->Expression() +
+				result = Indent() + Tree[0]->Expression() +
 					" = " + Tree[1]->Expression() +
 					";";
 			}
 		}
 		else
 		{
-			result = "Result = " +
+			result = Indent() + "Result = " +
 				Tree[1]->Expression() + ";";
 		}
 		break;
