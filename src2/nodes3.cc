@@ -1619,7 +1619,7 @@ std::string Node::OutputCodeOne(
 					break;
 
 				default:
-					result += Indent() + "else";
+					result += Indent() + "else\n";
 					break;
 				}
 
@@ -2915,7 +2915,7 @@ std::string Node::OutputInput(
 			GetIPChannel(IOChannel, InputFlag) + ".clear();\n";
 		result += Indent() +
 			GetIPChannel(IOChannel, InputFlag) +
-			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }";
+			".ignore(std::numeric_limits<std::streamsize>::max(), '\'); }";
 	}
 	return result;
 }
@@ -3193,7 +3193,7 @@ std::string Node::OutputInputData(
 		ReturnFlag = 2;
 
 		result += Indent() + "PUse.SetFormat(" +
-			IOUsing->Expression() + ");\n";
+			IOUsing->Expression() + ");";
 
 		break;
 
@@ -3218,7 +3218,7 @@ std::string Node::OutputInputData(
 		// statement on one line
 		//
 		result += Indent() + "std::cout << " +
-			Expression() + ";\n";
+			Expression() + ";";
 		ReturnFlag = 2;
 		IOChPrinted = 0;
 		break;
@@ -3259,7 +3259,7 @@ std::string Node::OutputInputData(
 				GetIPChannel(IOChannel, InputFlag) +
 				", " +
 				Expression() +
-				");\n";
+				");";
 
 			//
 			//  getline drops terminater. INPUT LINE wants it back on.
@@ -3268,7 +3268,7 @@ std::string Node::OutputInputData(
 			{
 				result += Indent() +
 					Expression() +
-					" += \"\\n\";\n";
+					" += \"\\n\";";
 			}
 
 			break;
