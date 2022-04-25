@@ -301,7 +301,7 @@ std::string Node::OutputBlock(
 		// End the block
 		//
 		Level--;
-		result += "\n" + Indent() + "}";
+		result += Indent() + "}";
 	}
 	return result;
 }
