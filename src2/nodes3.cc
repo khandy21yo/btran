@@ -287,8 +287,13 @@ std::string Node::OutputBlock(
 			//
 			if ((Program->FromInclude == 0) || (CompileFlag != 0))
 			{
-				result +=
-					Program->OutputCodeOne(os) + "\n";
+				std::string Result;
+
+				Result = Program->OutputCodeOne(os);
+				if (Result != "")
+				{
+					result += Result + "\n";
+				}
 			}
 
 			//
