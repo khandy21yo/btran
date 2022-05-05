@@ -227,7 +227,12 @@ std::string Node::OutputCode(
 		//
 		if ((Program->FromInclude == 0) || (CompileFlag != 0))
 		{
-			result += Program->OutputCodeOne(os) + "\n";
+			std::string temp;
+			temp = Program->OutputCodeOne(os);
+			if (temp != "")
+			{
+				result += temp + "\n";
+			}
 		}
 
 		//
@@ -2920,7 +2925,7 @@ std::string Node::OutputInput(
 			GetIPChannel(IOChannel, InputFlag) + ".clear();\n";
 		result += Indent() +
 			GetIPChannel(IOChannel, InputFlag) +
-			".ignore(std::numeric_limits<std::streamsize>::max(), '\'); }";
+			".ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); }";
 	}
 	return result;
 }
