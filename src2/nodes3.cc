@@ -3228,9 +3228,9 @@ std::string Node::OutputInputData(
 		// statement on one line
 		//
 		result += Indent() + "std::cout << " +
-			Expression() + ";";
+			Expression();
 		ReturnFlag = 2;
-		IOChPrinted = 0;
+		IOChPrinted = 2;
 		break;
 
 
@@ -3247,8 +3247,8 @@ std::string Node::OutputInputData(
 				IOChPrinted = 0;
 			}
 			result += OutputIPChannel(os, 0) +
-				" << \"? \";\n";
-			IOChPrinted = 0;
+				" << \"? \"";
+			IOChPrinted = 1;
 		}
 
 		//
@@ -3293,6 +3293,11 @@ std::string Node::OutputInputData(
 		// Regular input
 		//
 		case 1:
+			if (IOChPrinted != 0)
+			{
+				result += ";\n";
+				IOChPrinted = 0;
+			}
 			result += OutputIPChannel(os, InputFlag) +
 				" >> " + Expression();
 			ReturnFlag = 1;

@@ -2932,7 +2932,7 @@ void Node::OutputInput(
 		os << Indent() <<
 			"if (" << GetIPChannel(IOChannel, InputFlag) <<
 			".fail()) { " << 
-			GetIPChannel(IOChannel, InputFlag) << ".clear(); " <<
+			GetIPChannel(IOChannel, InputFlag) << ".clear();" <<
 			std::endl;
 		os << Indent() <<
 			GetIPChannel(IOChannel, InputFlag) << 
