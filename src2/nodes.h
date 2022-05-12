@@ -209,9 +209,11 @@ private:
 	/**
 	 * \brief Output indentation to C++ file
 	 */
-	std::string Indent()
+	std::string Indent(int offset = 0)
 	{ 
-		return std::string(Level >= 0 ? Level : 0, '\t'); 
+		return std::string((Level + offset) >= 0 ? Level + offset : 0, '\t'); 
+//		return "<" + std::to_string(Level) + ">" +
+			std::string((Level + offset) >= 0 ? Level + offset : 0, '\t'); 
 	}
 	void ScanVarList(VARTYPE ThisType, VARCLASS ThisClass, int Status);
 	std::string OutputRemark(std::ostream& os);
