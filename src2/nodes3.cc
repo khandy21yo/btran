@@ -54,7 +54,6 @@ static std::string IncrString(const std::string &orig, long increment)
 	const char *nptr = orig.c_str();
 	char *endptr = 0;
 	long value;
-	char buffer[64];
 
 	/*
 	 * Try to convert original string
@@ -66,21 +65,18 @@ static std::string IncrString(const std::string &orig, long increment)
 	 */
 	if (*endptr == 0)
 	{
-		sprintf(buffer, "%ld", value + increment);
-		return buffer;
+		return std::to_string(value + increment);
 	}
 	else
 	{
 		std::string Result = orig;
 		if (increment >= 0)
 		{
-			sprintf(buffer, "%ld", increment);
-			Result = Result + " + " + buffer;
+			Result = Result + " + " + std::to_string(increment);
 		}
 		else
 		{
-			sprintf(buffer, "%ld", -increment);
-			Result = Result + " - " + buffer;
+			Result = Result + " - " + std::to_string(-increment);
 		}
 		return Result;
 	}
@@ -2393,7 +2389,8 @@ std::string Node::Expression(void)
 		break;
 
 	case BAS_S_IMP:
-		result = std::string("basic::BasicImp( ") + Tree[0]->Expression() + ", " +
+		result = std::string("basic::BasicImp( ") +
+			Tree[0]->Expression() + ", " +
 			Tree[1]->Expression() + ")";
 		break;
 
@@ -2610,10 +2607,9 @@ std::string Node::Expression(void)
 
 	default:
 		{
-			// FIXME: There must be a better way
-			char buffer[32];
-			sprintf(buffer, "%d@%d", Type, lineno);
-			result = std::string("[Unknown Node Type ") + buffer + "]";
+			result = std::string("[Unknown Node Type ") +
+				std::to_string(Type) + "@" +
+				std::to_string(lineno)	+ "]";
 		}
 		break;
 	}
@@ -3858,8 +3854,8 @@ std::string Node::OutputOngo(
 		}
 		else
 		{
-			result += '(' + OutputLabel() + ");\n";
-			result += Indent() + "break;";
+			result += '(' + OutputLabel() + ");\n" +
+				Indent() + "break;";
 		}
 		Level--;
 		break;
@@ -4092,10 +4088,7 @@ std::string Node::OutputArrayDef(Node *base)
 	//
 	if (IsSimpleInteger())
 	{
-		// FIXME: There really ought to be a better way
-		char buffer[16];
-		sprintf(buffer, ", %d>", atoi(TextValue.c_str()) + 1);
-		working += buffer;
+		working += std::to_string(atoi(TextValue.c_str()) + 1) + ">";
 	}
 	else
 	{
@@ -4296,7 +4289,8 @@ std::string Node::OutputNewDefinition(void)
 	{
 	case BAS_N_EXTERNALFUNCTION:
 		IsFunction = 1;
-		result = std::string("extern ") + Tree[0]->OutputNodeVarType() + " ";
+		result = std::string("extern ") + Tree[0]->OutputNodeVarType() +
+			" ";
 		break;
 
 	case BAS_N_EXTERNALSUB:
@@ -4372,11 +4366,8 @@ std::string Node::OutputNewDefinition(void)
 			{
 				if (Tree[3]->IsSimpleInteger())
 				{
-					// FIXME: Isn't there a better way?
-					char buffer[16];
-					sprintf(buffer, "[%d]",
-						(atoi(Tree[3]->TextValue.c_str()) + 1));
-					result += buffer;
+					result += 
+						std::to_string((atoi(Tree[3]->TextValue.c_str()) + 1));
 				}
 				else
 				{
@@ -4473,11 +4464,8 @@ std::string Node::OutputDefinition(
 		{
 			if (Tree[3]->IsSimpleInteger())
 			{
-				// FIXME: There has to be a better way
-				char buffer[16];
-				sprintf(buffer, "[%d]",
-					(atoi(Tree[3]->TextValue.c_str()) + 1));
-				result += buffer;
+				result += 
+					std::to_string((atoi(Tree[3]->TextValue.c_str()) + 1));
 			}
 			else
 			{
@@ -4558,11 +4546,8 @@ std::string Node::OutputDefinition(
 			{
 				if (Tree[3]->IsSimpleInteger())
 				{
-					// FIXME: There has to be a better way
-					char buffer[16];
-					sprintf(buffer, "[%d]",
-						(atoi(Tree[3]->TextValue.c_str()) + 1));
-					result += buffer;
+					result +=
+						std::to_string((atoi(Tree[3]->TextValue.c_str()) + 1));
 				}
 				else
 				{
@@ -4642,10 +4627,10 @@ std::string Node::OutputDefinition(
 
 		default:
 			{
-				// FIXME: There has to be a better way
-				char buffer[32];
-				sprintf(buffer, "%d@%d", Type, lineno);
-				result = std::string("(\?\?) ") + buffer + "(\?\?)" + TextValue;
+				result = std::string("(\?\?) ") +
+					std::to_string(Type) + "@" +
+					std::to_string(lineno) +
+					"(\?\?)" + TextValue;
 			}
 			break;
 		}
@@ -4694,14 +4679,14 @@ std::string Node::OutputArrayParam(
 		{
 			if (IsSimpleInteger())
 			{
-				// FIXME: There really ought to be a better way
-				char buffer[16];
-				sprintf(buffer, "%d", atoi(TextValue.c_str()) + 1);
-				result = buffer;
+				result =
+					std::to_string(atoi(TextValue.c_str()) +
+						1);
 			}
 			else
 			{
-				result = OutputForcedType(VARTYPE_INTEGER) + " + 1";
+				result = OutputForcedType(VARTYPE_INTEGER) +
+					" + 1";
 			}
 		}
 		else
@@ -5179,7 +5164,6 @@ std::string Node::OutputForcedType(
 	{
 		result = NoParen();
 		return result;
-//		return 0;
 	}
 
 	//
