@@ -644,11 +644,10 @@ std::string Node::OutputCodeOne(
 			Indent() + "//\n" +
 			Indent() + "static const char* DataValue[] = {\n";
 		Level++;
-		result += OutputData(os);
-		result += ", NULL};\n";
-		Level--;
-		result += Indent() +
+		result += OutputData(os) + ", NULL};\n" +
+			Indent(-1) +
 			"static basic::DataListClass DataList(DataValue);";
+		Level--;
 		break;
 
 	case BAS_S_DECLARE:
@@ -737,28 +736,25 @@ std::string Node::OutputCodeOne(
 		Level++;
 		result +=  Indent() + "char* FieldBase = BasicChannel[" +
 			Tree[0]->OutputForcedType(VARTYPE_INTEGER) +
-			"].BufferLoc();\n";
-		result += Tree[1]->OutputField(os) +"\n";
+			"].BufferLoc();\n" +
+			Tree[1]->OutputField(os) +"\n" +
+			Indent(-1) + "}";
 		Level--;
-		result += Indent() + "}";
 		break;
 
 	case BAS_S_FIND:
 		if (Tree[1] != 0)
 		{
-			result = Tree[1]->OutputGetPutOptions(Tree[0], os) + "\n";
+			result = Tree[1]->OutputGetPutOptions(Tree[0], os) +
+				"\n";
 		}
 		result += Indent() +
 			GetIPChannel(Tree[0], 0);
 		break;
 
 	case BAS_S_FOR:
-		result = Indent() + "for (";
-
-		//
-		// from
-		//
-		result += Tree[0]->Expression() + "; ";
+		result = Indent() + "for (" +
+			Tree[0]->Expression() + "; ";
 
 		//
 		// to
@@ -789,12 +785,14 @@ std::string Node::OutputCodeOne(
 			//
 			if (Tree[2]->Type == BAS_N_UMINUS)
 			{
-				result += Tree[0]->Tree[0]->Expression() + " -= " +
+				result += Tree[0]->Tree[0]->Expression() +
+					" -= " +
 					Tree[2]->Tree[0]->Expression();
 			}
 			else
 			{
-				result += Tree[0]->Tree[0]->Expression() + " += " +
+				result += Tree[0]->Tree[0]->Expression() +
+					" += " +
 					Tree[2]->Expression();
 			}
 		}
@@ -803,9 +801,8 @@ std::string Node::OutputCodeOne(
 			result += Tree[0]->Tree[0]->Expression() + "++";
 		}
 
-		result += ")\n";
-
-		result += Block[1]->OutputBlock(os);
+		result += ")\n" +
+			Block[1]->OutputBlock(os);
 
 		break;
 
@@ -814,12 +811,8 @@ std::string Node::OutputCodeOne(
 		//
 		// from
 		//
-		result = Indent() + "for (" + Tree[0]->NoParen() + "; ";
-
-		//
-		// until
-		//
-		result += "!(" + Tree[1]->NoParen() + "); ";
+		result = Indent() + "for (" + Tree[0]->NoParen() + "; " +
+			"!(" + Tree[1]->NoParen() + "); ";
 
 		//
 		// step
@@ -843,20 +836,11 @@ std::string Node::OutputCodeOne(
 		//
 		// from
 		//
-		result = Indent() + "for (" + Tree[0]->Expression() + "; ";
-
-		//
-		// until
-		//
-		result += Tree[0]->Tree[0]->Expression() + "==" +
-			Tree[1]->Expression() + "; ";
-
-		//
-		// step
-		//
-		result += Tree[0]->Tree[0]->Expression() + "++)\n";
-
-		result += Block[1]->OutputBlock(os);
+		result = Indent() + "for (" + Tree[0]->Expression() + "; " +
+			Tree[0]->Tree[0]->Expression() + "==" +
+			Tree[1]->Expression() + "; " +
+			Tree[0]->Tree[0]->Expression() + "++)\n" +
+			Block[1]->OutputBlock(os);
 
 		break;
 
@@ -1067,12 +1051,9 @@ std::string Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		result += "\n" + Indent() + "int main(int argc, char **argv)\n";
-
-		//
-		// Braces starting function
-		//
-		result += Indent() + "{\n";
+		result += "\n" + Indent() +
+			"int main(int argc, char **argv)\n" +
+			Indent() + "{\n";
 		Level++;
 
 		//
@@ -1104,9 +1085,9 @@ std::string Node::OutputCodeOne(
 		//
 		// Give back a result code
 		//
-		result += "\n" +  Indent() + "return EXIT_SUCCESS;\n";
+		result += "\n" +  Indent() + "return EXIT_SUCCESS;\n" +
+			Indent(-1) + "}";
 		Level--;
-		result +=  Indent() + "}";
 
 		//
 		// Clean up
@@ -1179,9 +1160,8 @@ std::string Node::OutputCodeOne(
 
 		if (Block[2] != 0)
 		{
-			result += "\n" + Indent() + "else\n";
-
-			result += Block[2]->OutputBlock(os);
+			result += "\n" + Indent() + "else\n" +
+				Block[2]->OutputBlock(os);
 		}
 		break;
 
@@ -1196,9 +1176,9 @@ std::string Node::OutputCodeOne(
 
 		if (Block[2] != 0)
 		{
-			result += "\n" +  Indent() + "catch(basic::BasicError &Be)\n";
-
-			result += Block[2]->OutputBlock(os);
+			result += "\n" +  Indent() +
+				"catch(basic::BasicError &Be)\n" +
+				Block[2]->OutputBlock(os);
 		}
 		break;
 
@@ -1297,12 +1277,14 @@ std::string Node::OutputCodeOne(
 		{
 		case BAS_S_CON:     // MAT xxx = CON
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			result = Indent() + "MatCon(" + ThisVar->GetName() + ");";
+			result = Indent() + "MatCon(" + ThisVar->GetName() +
+				");";
 			break;
 
 		case BAS_S_IDN:
 			ThisVar = Variables->Lookup(Tree[0]->TextValue, Tree[0]->Tree[0]);
-			result = Indent() + "MatIdn(" + ThisVar->GetName() + ");";
+			result = Indent() + "MatIdn(" + ThisVar->GetName() +
+				");";
 			break;
 
 		case BAS_S_ZER:
@@ -1415,13 +1397,14 @@ std::string Node::OutputCodeOne(
 	case BAS_N_ONGOTO:
 		result = Indent() + "switch(" +
 			Tree[0]->OutputForcedType(VARTYPE_INTEGER) +
-			")" + "\n" + Indent() + "{\n";
-		result += Tree[1]->OutputOngo(os, "goto", 1);
+			")" + "\n" + Indent() + "{\n" +
+			Tree[1]->OutputOngo(os, "goto", 1);
 		if (Tree[2] != 0)
 		{
 				result +="\n" + Indent() + 
 					"default:\n" +
-					Indent() + "\tgoto " + Tree[2]->OutputLabel() +
+					Indent() + "\tgoto " +
+					Tree[2]->OutputLabel() +
 					";";
 		}
 		else
@@ -1463,6 +1446,7 @@ std::string Node::OutputCodeOne(
 		{
 			result += Tree[0]->Expression();
 		}
+
 		//
 		// For INPUT/OUTPUT
 		//
@@ -1778,12 +1762,8 @@ std::string Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		result += "\n" +OutputNewDefinition();
-
-		//
-		// Braces starting function
-		//
-		result += "\n" +  Indent() + "{\n";
+		result += "\n" +OutputNewDefinition() +
+			"\n" +  Indent() + "{\n";
 		Level++;
 
 		//
@@ -1872,12 +1852,8 @@ std::string Node::OutputCodeOne(
 		//
 		// Output function name
 		//
-		result += "\n" +OutputNewDefinition() + "\n";
-
-		//
-		// Braces starting function
-		//
-		result += Indent() + "{\n";
+		result += "\n" +OutputNewDefinition() + "\n" +
+			Indent() + "{\n";
 		Level++;
 
 		//
@@ -1950,7 +1926,8 @@ std::string Node::OutputCodeOne(
 		//
 		// TO used in a case statement
 		//
-		result = Tree[0]->Expression() + " ... " + Tree[1]->Expression();
+		result = Tree[0]->Expression() + " ... " +
+			Tree[1]->Expression();
 		break;
 
 	case BAS_S_UNLESS:
@@ -2050,7 +2027,8 @@ std::string Node::OutputCodeOne(
 		break;
 
 	default:
-		result = "??%" + std::to_string(Type) + " @" + std::to_string(lineno) + ":" +
+		result = "??%" + std::to_string(Type) + " @" +
+			std::to_string(lineno) + ":" +
 			TextValue + "(";
 		if (Tree[0] != 0)
 		{
